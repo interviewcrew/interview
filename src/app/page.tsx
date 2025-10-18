@@ -12,7 +12,7 @@ export default function Home() {
 
   const { data: session } = authClient.useSession();
   const onSubmit = () => {
-    console.log(email, password, name);
+    console.log(email, name);
 
     authClient.signUp.email(
       {
