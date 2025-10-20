@@ -53,7 +53,11 @@ export const SignUpView = () => {
     setPending(true);
     setError(null);
 
-    authClient.signUp.email(data, {
+    authClient.signUp.email({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    }, {
       onError: ( { error }) => {
         setError(error.message);
         setPending(false);
@@ -132,7 +136,7 @@ export const SignUpView = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="password"
+                    name="confirmPassword"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Confirm Password</FormLabel>
@@ -155,7 +159,7 @@ export const SignUpView = () => {
                   </Alert>
                 )}
                 <Button className="w-full" type="submit" disabled={pending}>
-                  {pending ? <Loader2Icon className="h-4 w-4 animate-spin" /> : "Sign In"}
+                  {pending ? <Loader2Icon className="h-4 w-4 animate-spin" /> : "Create Account"}
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">

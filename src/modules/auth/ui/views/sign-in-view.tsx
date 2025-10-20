@@ -46,7 +46,10 @@ export const SignInView = () => {
     setPending(true);
     setError(null);
 
-    authClient.signIn.email(data, {
+    authClient.signIn.email({
+      email: data.email,
+      password: data.password,
+    }, {
       onError: ( { error }) => {
         setError(error.message);
         setPending(false);
