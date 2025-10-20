@@ -1,15 +1,20 @@
 "use client";
 
+// Imports from the framework
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
+// Imports from the packages
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, OctagonAlertIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { FaGit, FaGithub, FaGoogle } from "react-icons/fa";
 
+// Imports from the components
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,7 +27,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Image from "next/image";
 
 const formSchema = z.object({
   email: z.email({ message: "Invalid email address" }),
@@ -30,10 +34,10 @@ const formSchema = z.object({
 });
 
 export const SignInView = () => {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
-  
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,19 +50,44 @@ export const SignInView = () => {
     setPending(true);
     setError(null);
 
-    authClient.signIn.email({
-      email: data.email,
-      password: data.password,
-    }, {
-      onError: ( { error }) => {
-        setError(error.message);
-        setPending(false);
+    authClient.signIn.email(
+      {
+        email: data.email,
+        password: data.password,
+        callbackURL: "/",
       },
-      onSuccess: () => {
-        router.push("/");
-        setPending(false);
+      {
+        onError: ({ error }) => {
+          setError(error.message);
+          setPending(false);
+        },
+        onSuccess: () => {
+          setPending(false);
+          router.push("/");
+        },
+      }
+    );
+  };
+
+  const onSocialSubmit = (provider: "github" | "google") => {
+    setPending(true);
+    setError(null);
+
+    authClient.signIn.social(
+      {
+        provider,
+        callbackURL: "/",
       },
-    });
+      {
+        onError: ({ error }) => {
+          setError(error.message);
+          setPending(false);
+        },
+        onSuccess: () => {
+          setPending(false);
+        },
+      }
+    );
   };
 
   return (
@@ -117,7 +146,11 @@ export const SignInView = () => {
                   </Alert>
                 )}
                 <Button className="w-full" type="submit" disabled={pending}>
-                  {pending ? <Loader2Icon className="h-4 w-4 animate-spin" /> : "Sign In"}
+                  {pending ? (
+                    <Loader2Icon className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -125,11 +158,23 @@ export const SignInView = () => {
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <Button variant="outline" className="w-full" type="button" disabled={pending}>
-                    Google
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    type="button"
+                    disabled={pending}
+                    onClick={() => onSocialSubmit("google")}
+                  >
+                    <FaGoogle /> 
                   </Button>
-                  <Button variant="outline" className="w-full" type="button" disabled={pending}>
-                    Github
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    type="button"
+                    disabled={pending}
+                    onClick={() => onSocialSubmit("github")}
+                  >
+                    <FaGithub /> 
                   </Button>
                 </div>
                 <div className="text-center text-sm">
