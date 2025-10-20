@@ -191,7 +191,7 @@ export const SignInView = () => {
           </Form>
           <div className="relative hidden md:flex flex-col gap-y-4 items-center justify-center min-h-[600px] overflow-hidden">
             <Image
-              src="/background-gradiant.jpg"
+              src="/background-gradient.jpg"
               alt="background"
               className="absolute inset-0 h-full w-full object-cover"
               fill

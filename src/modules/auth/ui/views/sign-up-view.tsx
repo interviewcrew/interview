@@ -239,7 +239,7 @@ export const SignUpView = () => {
           </Form>
           <div className="relative hidden md:flex flex-col gap-y-4 items-center justify-center min-h-[600px] overflow-hidden">
             <Image
-              src="/background-gradiant.jpg"
+              src="/background-gradient.jpg"
               alt="background"
               className="absolute inset-0 h-full w-full object-cover"
               fill
@@ -256,7 +256,7 @@ export const SignUpView = () => {
       </Card>
 
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-sm text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking sign in, you agree to our{" "}
+        By clicking sign up, you agree to our{" "}
         <Link href="/terms" className="underline underline-offset-4">
           Terms of Service
         </Link>{" "}
