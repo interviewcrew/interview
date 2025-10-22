@@ -1,3 +1,5 @@
+"use client";
+
 // import from the framework
 import { useRouter } from "next/navigation";
 
