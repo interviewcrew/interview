@@ -34,7 +34,6 @@ export const HomeView = () => {
             },
           })
         }
-        variant="destructive"
       >
         Sign Out
       </Button>
