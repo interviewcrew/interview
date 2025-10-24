@@ -17,15 +17,15 @@ import {
 
 const CoachingPage = async () => {
   const queryClient = getQueryClient();
-  queryClient.prefetchQuery(trpc.agents.getMany.queryOptions());
+  await queryClient.prefetchQuery(trpc.agents.getMany.queryOptions());
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<AgentsViewLoading />}>
-        <ErrorBoundary fallback={<AgentsViewError />}>
+      <ErrorBoundary fallback={<AgentsViewError />}>
+        <Suspense fallback={<AgentsViewLoading />}>
           <AgentsView />
-        </ErrorBoundary>
-      </Suspense>
+        </Suspense>
+      </ErrorBoundary>
     </HydrationBoundary>
   );
 };
