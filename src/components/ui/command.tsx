@@ -20,6 +20,7 @@ import {
   DrawerDescription,
 } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect, useState } from "react";
 
 function Command({
   className,
@@ -82,11 +83,20 @@ function CommandResponsiveDialog({
   showCloseButton?: boolean;
 }) {
   const isMobile = useIsMobile();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   if (isMobile) {
     return (
       <Drawer {...props}>
-        <DrawerContent className="overflow-hidden p-0">
+        <DrawerContent className={cn("overflow-hidden p-0", className)}>
           <DrawerHeader className="sr-only">
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
