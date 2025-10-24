@@ -248,7 +248,7 @@ export const SignUpView = () => {
             <div className="relative z-10 flex flex-col gap-y-4 items-center">
               <Image src="/logo.svg" alt="logo" width={92} height={92} />
               <p className="text-2xl font-semibold text-white">
-                InterviewCrew Interviewer
+                InterviewCrew
               </p>
             </div>
           </div>

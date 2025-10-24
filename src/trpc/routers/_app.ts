@@ -1,21 +1,9 @@
-// Imports from packages
-import { z } from 'zod';
-
 // Imports from libraries
-import { baseProcedure, createTRPCRouter } from '@/trpc/init';
+import { createTRPCRouter } from '@/trpc/init';
+import { agentsRouter } from '@/modules/agents/server/procedures';
 
 export const appRouter = createTRPCRouter({
-  hello: baseProcedure
-    .input(
-      z.object({
-        text: z.string(),
-      }),
-    )
-    .query((opts) => {
-      return {
-        greeting: `Hello ${opts.input.text}`,
-      };
-    }),
+  agents: agentsRouter,
 });
 
 // export type definition of API
