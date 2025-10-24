@@ -54,7 +54,6 @@ export const DashboardSidebar = () => {
           <Image src="/logo.svg" alt="Logo" width={36} height={36} />
           <div>
             <p className="text-lg font-semibold">Interviewcrew</p>
-            <p className="text-lg font-semibold pl-5">Interviewer</p>
           </div>
         </Link>
       </SidebarHeader>
