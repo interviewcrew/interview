@@ -2,7 +2,12 @@
 import { Dispatch, SetStateAction } from "react";
 
 // Imports from components
-import { CommandDialog, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import {
+  CommandResponsiveDialog,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 
 interface DashboardCommandProps {
   open: boolean;
@@ -11,13 +16,11 @@ interface DashboardCommandProps {
 
 export const DashboardCommand = ({ open, setOpen }: DashboardCommandProps) => {
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Find an interview"/>
+    <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
+      <CommandInput placeholder="Find an interview" />
       <CommandList>
-        <CommandItem>
-            Test
-        </CommandItem>
+        <CommandItem>Test</CommandItem>
       </CommandList>
-    </CommandDialog>
+    </CommandResponsiveDialog>
   );
 };
