@@ -1,15 +1,13 @@
 // import from the libraries
 import { db } from "@/db";
 import { agents } from "@/db/schema";
-import {
-  createTRPCRouter,
-  protectedProcedure,
-} from "@/trpc/init";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { createAgentSchema } from "@/modules/agents/schemas";
 
 // import from the packages
 import z from "zod";
 import { eq } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
 
 export const agentsRouter = createTRPCRouter({
   getMany: protectedProcedure.query(async () => {
@@ -23,6 +21,10 @@ export const agentsRouter = createTRPCRouter({
         .from(agents)
         .where(eq(agents.id, input.id))
         .limit(1);
+
+      if (!agent) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Agent not found" });
+      }
 
       return agent;
     }),

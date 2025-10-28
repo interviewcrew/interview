@@ -121,7 +121,7 @@ export const CoachForm = ({
             <Button
               type="button"
               variant="ghost"
-              onClick={() => onCancel}
+              onClick={onCancel}
               disabled={isPending}
             >
               Cancel
