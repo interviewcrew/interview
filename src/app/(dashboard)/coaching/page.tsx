@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 // import from packages
 import { ErrorBoundary } from "react-error-boundary";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { SearchParams } from "nuqs";
 
 // import from libraries
 import { getQueryClient, trpc } from "@/trpc/server";
@@ -13,13 +14,19 @@ import { auth } from "@/lib/auth";
 
 // import from the components
 import {
-  AgentsView,
-  AgentsViewError,
-  AgentsViewLoading,
-} from "@/modules/agents/ui/views/agents-view";
+  CoachesView,
+  CoachesViewError,
+  CoachesViewLoading,
+} from "@/modules/agents/ui/views/coaches-view";
 import { CoachingListHeader } from "@/modules/agents/ui/components/coaching-list-header";
+import { loadSearchParams } from "@/modules/agents/params";
 
-const CoachingPage = async () => {
+interface CoachingPageProps {
+  searchParams: Promise<SearchParams>;
+}
+
+const CoachingPage = async ({ searchParams }: CoachingPageProps) => {
+  const filters = await loadSearchParams(searchParams);
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -27,17 +34,17 @@ const CoachingPage = async () => {
   if (!session) {
     redirect("/sign-in");
   }
-  
+
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(trpc.agents.getMany.queryOptions());
+  await queryClient.prefetchQuery(trpc.agents.getMany.queryOptions({ ...filters }));
 
   return (
     <>
       <CoachingListHeader />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ErrorBoundary fallback={<AgentsViewError />}>
-          <Suspense fallback={<AgentsViewLoading />}>
-            <AgentsView />
+        <ErrorBoundary fallback={<CoachesViewError />}>
+          <Suspense fallback={<CoachesViewLoading />}>
+            <CoachesView />
           </Suspense>
         </ErrorBoundary>
       </HydrationBoundary>
