@@ -2,7 +2,7 @@
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 
 // import from the libraries
-import { CoachForm } from "@/modules/agents/ui/components/coach-form";
+import { CoachForm } from "@/modules/coaches/ui/components/coach-form";
 
 export const NewCoachDialog = ({
   open,

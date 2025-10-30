@@ -17,9 +17,9 @@ import {
   CoachesView,
   CoachesViewError,
   CoachesViewLoading,
-} from "@/modules/agents/ui/views/coaches-view";
-import { CoachingListHeader } from "@/modules/agents/ui/components/coaching-list-header";
-import { loadSearchParams } from "@/modules/agents/params";
+} from "@/modules/coaches/ui/views/coaches-view";
+import { CoachingListHeader } from "@/modules/coaches/ui/components/coaching-list-header";
+import { loadSearchParams } from "@/modules/coaches/params";
 
 interface CoachingPageProps {
   searchParams: Promise<SearchParams>;
@@ -36,7 +36,7 @@ const CoachingPage = async ({ searchParams }: CoachingPageProps) => {
   }
 
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(trpc.agents.getMany.queryOptions({ ...filters }));
+  await queryClient.prefetchQuery(trpc.coaches.getMany.queryOptions({ ...filters }));
 
   return (
     <>

@@ -2,9 +2,9 @@
 import { useForm } from "react-hook-form";
 
 // import from the libraries
-import { AgentGetById } from "@/modules/agents/types";
+import { CoachGetById } from "@/modules/coaches/types";
 import { useTRPC } from "@/trpc/client";
-import { createAgentSchema } from "@/modules/agents/schemas";
+import { createCoachSchema } from "@/modules/coaches/schemas";
 
 // import from the packages
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -29,7 +29,7 @@ import { GeneratedAvatar } from "@/components/generated-avatar";
 interface CoachFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
-  initialValues?: AgentGetById;
+  initialValues?: CoachGetById;
 }
 
 export const CoachForm = ({
@@ -41,13 +41,13 @@ export const CoachForm = ({
   const queryClient = useQueryClient();
 
   const createCoachMutation = useMutation(
-    trpc.agents.create.mutationOptions({
+    trpc.coaches.create.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}));
+        await queryClient.invalidateQueries(trpc.coaches.getMany.queryOptions({}));
 
         if (initialValues?.id) {
           await queryClient.invalidateQueries(
-            trpc.agents.getById.queryOptions({ id: initialValues.id })
+            trpc.coaches.getById.queryOptions({ id: initialValues.id })
           );
         }
 
@@ -60,8 +60,8 @@ export const CoachForm = ({
     })
   );
 
-  const form = useForm<z.infer<typeof createAgentSchema>>({
-    resolver: zodResolver(createAgentSchema),
+  const form = useForm<z.infer<typeof createCoachSchema>>({
+    resolver: zodResolver(createCoachSchema),
     defaultValues: {
       name: initialValues?.name || "",
       instructions: initialValues?.instructions || "",
@@ -71,7 +71,7 @@ export const CoachForm = ({
   const isEditing = !!initialValues?.id;
   const isPending = createCoachMutation.isPending;
 
-  const onSubmit = (data: z.infer<typeof createAgentSchema>) => {
+  const onSubmit = (data: z.infer<typeof createCoachSchema>) => {
     if (isEditing) {
       console.log("Editing coach");
     } else {

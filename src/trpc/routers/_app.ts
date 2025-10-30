@@ -1,9 +1,9 @@
 // Imports from libraries
 import { createTRPCRouter } from '@/trpc/init';
-import { agentsRouter } from '@/modules/agents/server/procedures';
+import { coachesRouter } from '@/modules/coaches/server/procedures';
 
 export const appRouter = createTRPCRouter({
-  agents: agentsRouter,
+  coaches: coachesRouter,
 });
 
 // export type definition of API

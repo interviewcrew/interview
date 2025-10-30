@@ -15,6 +15,13 @@
       "when": 1761292701897,
       "tag": "0001_create_agent_table",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1761817605946,
+      "tag": "0002_update_agents_to_coaches",
+      "breakpoints": true
     }
   ]
 }

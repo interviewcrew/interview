@@ -2,16 +2,16 @@
 
 // import from the packages
 import { ColumnDef } from "@tanstack/react-table";
-import { CornerDownRightIcon, VideoIcon } from "lucide-react";
+import { CheckIcon, CornerDownRightIcon, VideoIcon } from "lucide-react";
 
 // import from the libraries
-import { AgentGetById } from "@/modules/agents/types";
+import { CoachGetById } from "@/modules/coaches/types";
 
 // import from the components
 import { Badge } from "@/components/ui/badge";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 
-export const columns: ColumnDef<AgentGetById>[] = [
+export const columns: ColumnDef<CoachGetById>[] = [
   {
     accessorKey: "name",
     header: "Coach Name",
@@ -42,6 +42,16 @@ export const columns: ColumnDef<AgentGetById>[] = [
         <VideoIcon className="text-blue-700" />
         {row.original.meetingCount}{" "}
         {row.original.meetingCount === 1 ? "Meeting" : "Meetings"}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "isOfficial",
+    header: "Official",
+    cell: ({ row }) => (
+      <Badge variant="outline" className="flex items-center gap-x-2 [&>svg]:size-4">
+        <CheckIcon className="size-3 text-green-700" />
+        {row.original.isOfficial ? "Yes" : "No"}
       </Badge>
     ),
   },
