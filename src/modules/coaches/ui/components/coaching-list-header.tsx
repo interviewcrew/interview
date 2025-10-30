@@ -8,12 +8,12 @@ import { PlusIcon, XCircleIcon } from "lucide-react";
 
 // import from the libraries
 import { DEFAULT_PAGE } from "@/constants";
-import { CoachesSearchFilter } from "@/modules/agents/ui/components/coaches-search-filter";
+import { CoachesSearchFilter } from "@/modules/coaches/ui/components/coaches-search-filter";
 
 // import from the components
 import { Button } from "@/components/ui/button";
-import { NewCoachDialog } from "@/modules/agents/ui/components/new-coach-dialog";
-import { useCoachFilters } from "@/modules/agents/hooks/use-coach-filters";
+import { NewCoachDialog } from "@/modules/coaches/ui/components/new-coach-dialog";
+import { useCoachFilters } from "@/modules/coaches/hooks/use-coach-filters";
 
 export const CoachingListHeader = () => {
   const [filters, setFilters] = useCoachFilters();

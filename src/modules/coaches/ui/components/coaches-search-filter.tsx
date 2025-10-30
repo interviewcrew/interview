@@ -5,7 +5,7 @@ import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 // import from the libraries
-import { useCoachFilters } from "@/modules/agents/hooks/use-coach-filters";
+import { useCoachFilters } from "@/modules/coaches/hooks/use-coach-filters";
 
 export const CoachesSearchFilter = () => {
     const [filters, setFilters] = useCoachFilters();
