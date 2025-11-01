@@ -31,8 +31,8 @@ const firstSection = [
   },
   {
     icon: BotIcon,
-    label: "Coaching",
-    href: "/coaching",
+    label: "Coaches",
+    href: "/coaches",
   },
 ];
 

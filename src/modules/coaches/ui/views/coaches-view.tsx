@@ -1,5 +1,8 @@
 "use client";
 
+// import from the framework
+import { useRouter } from "next/navigation";
+
 // import from packages
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -8,16 +11,15 @@ import { useTRPC } from "@/trpc/client";
 import { useCoachFilters } from "@/modules/coaches/hooks/use-coach-filters";
 
 // import from the components
-import { LoadingState } from "@/components/loading-state";
-import { ErrorState } from "@/components/error-state";
-
-// import from the components
 import { DataTable } from "@/modules/coaches/ui/components/data-table";
 import { columns } from "@/modules/coaches/ui/components/columns";
 import { EmptyState } from "@/components/empty-state";
+import { LoadingState } from "@/components/loading-state";
+import { ErrorState } from "@/components/error-state";
 import { DataPagination } from "@/modules/coaches/ui/components/data-pagination";
 
 export const CoachesView = () => {
+  const router = useRouter();
   const [filters, setFilters] = useCoachFilters();
 
   const trpc = useTRPC();
@@ -27,7 +29,11 @@ export const CoachesView = () => {
 
   return (
     <div className="flex-1 pb-4 px-4 md:px-8 flex flex-col gap-y-4">
-      <DataTable columns={columns} data={items} />
+      <DataTable
+        columns={columns}
+        data={items}
+        onRowClick={(row) => router.push(`/coaches/${row.id}`)}
+      />
       <DataPagination
         page={filters.page}
         totalPages={totalPages}
