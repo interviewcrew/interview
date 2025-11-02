@@ -2,7 +2,10 @@
 import { db } from "@/db";
 import { coaches } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
-import { createCoachSchema } from "@/modules/coaches/schemas";
+import {
+  createCoachSchema,
+  updateCoachSchema,
+} from "@/modules/coaches/schemas";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "@/constants";
 
 // import from the packages
@@ -115,5 +118,64 @@ export const coachesRouter = createTRPCRouter({
         .returning();
 
       return createdCoach;
+    }),
+  remove: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.auth.user.id;
+
+      const [coach] = await db
+        .select(getTableColumns(coaches))
+        .from(coaches)
+        .where(eq(coaches.id, input.id))
+        .limit(1);
+
+      if (!coach) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Coach not found" });
+      }
+
+      if (coach.userId === null) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You cannot remove an official coach",
+        });
+      }
+
+      const [deletedCoach] = await db
+        .delete(coaches)
+        .where(and(eq(coaches.id, input.id), eq(coaches.userId, userId)))
+        .returning();
+
+      return deletedCoach;
+    }),
+  update: protectedProcedure
+    .input(updateCoachSchema)
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.auth.user.id;
+
+      const [coach] = await db
+        .select(getTableColumns(coaches))
+        .from(coaches)
+        .where(eq(coaches.id, input.id))
+        .limit(1);
+
+      if (!coach) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Coach not found" });
+      }
+
+      if (coach.userId === null) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You cannot update an official coach",
+        });
+      }
+
+      const [updatedCoach] = await db
+        .update(coaches)
+        .set(input)
+        .where(and(eq(coaches.id, input.id), eq(coaches.userId, userId)))
+        .returning();
+
+      return updatedCoach;
     }),
 });

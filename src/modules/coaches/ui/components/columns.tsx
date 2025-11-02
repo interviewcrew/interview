@@ -2,7 +2,12 @@
 
 // import from the packages
 import { ColumnDef } from "@tanstack/react-table";
-import { CheckIcon, CornerDownRightIcon, VideoIcon } from "lucide-react";
+import {
+  CornerDownRightIcon,
+  VideoIcon,
+  ShieldCheckIcon,
+  UserIcon,
+} from "lucide-react";
 
 // import from the libraries
 import { CoachGetById } from "@/modules/coaches/types";
@@ -38,7 +43,10 @@ export const columns: ColumnDef<CoachGetById>[] = [
     accessorKey: "meetingCount",
     header: "Meetings",
     cell: ({ row }) => (
-      <Badge variant="outline" className="flex items-center gap-x-2 [&>svg]:size-4">
+      <Badge
+        variant="outline"
+        className="flex items-center gap-x-2 [&>svg]:size-4"
+      >
         <VideoIcon className="text-blue-700" />
         {row.original.meetingCount}{" "}
         {row.original.meetingCount === 1 ? "Meeting" : "Meetings"}
@@ -49,9 +57,16 @@ export const columns: ColumnDef<CoachGetById>[] = [
     accessorKey: "isOfficial",
     header: "Official",
     cell: ({ row }) => (
-      <Badge variant="outline" className="flex items-center gap-x-2 [&>svg]:size-4">
-        <CheckIcon className="size-3 text-green-700" />
-        {row.original.isOfficial ? "Yes" : "No"}
+      <Badge
+        variant="outline"
+        className="flex items-center gap-x-2 [&>svg]:size-4"
+      >
+        {row.original.isOfficial ? (
+          <ShieldCheckIcon className="size-3 text-green-700" />
+        ) : (
+          <UserIcon className="size-3 text-green-700" />
+        )}
+        {row.original.isOfficial ? "Official Coach" : "Created by you"}
       </Badge>
     ),
   },

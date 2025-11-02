@@ -68,13 +68,13 @@ export const CoachIdViewHeader = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={onEdit}>
+          <DropdownMenuItem onClick={onEdit} disabled={coach.userId === null}>
             <PencilIcon className="size-4 text-black" />
-            Edit
+            {coach.userId !== null ? "Edit" : "Edit not possible (Official coach)"}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onRemove}>
+          <DropdownMenuItem onClick={onRemove} disabled={coach.userId === null}>
             <TrashIcon className="size-4 text-black" />
-            Delete
+            {coach.userId !== null ? "Delete" : "Delete not possible (Official coach)"}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
