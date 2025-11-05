@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { NewCoachDialog } from "@/modules/coaches/ui/components/new-coach-dialog";
 import { useCoachFilters } from "@/modules/coaches/hooks/use-coach-filters";
 
-export const CoachingListHeader = () => {
+export const CoachesListHeader = () => {
   const [filters, setFilters] = useCoachFilters();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
