@@ -43,7 +43,25 @@ export const CoachForm = ({
   const createCoachMutation = useMutation(
     trpc.coaches.create.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries(trpc.coaches.getMany.queryOptions({}));
+        await queryClient.invalidateQueries(
+          trpc.coaches.getMany.queryOptions({})
+        );
+
+        onSuccess?.();
+        toast.success("Coach created successfully");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    })
+  );
+
+  const updateCoachMutation = useMutation(
+    trpc.coaches.update.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.coaches.getMany.queryOptions({})
+        );
 
         if (initialValues?.id) {
           await queryClient.invalidateQueries(
@@ -52,7 +70,7 @@ export const CoachForm = ({
         }
 
         onSuccess?.();
-        toast.success("Coach created successfully");
+        toast.success("Coach updated successfully");
       },
       onError: (error) => {
         toast.error(error.message);
@@ -69,11 +87,15 @@ export const CoachForm = ({
   });
 
   const isEditing = !!initialValues?.id;
-  const isPending = createCoachMutation.isPending;
+  const isPending =
+    createCoachMutation.isPending || updateCoachMutation.isPending;
 
   const onSubmit = (data: z.infer<typeof createCoachSchema>) => {
     if (isEditing) {
-      console.log("Editing coach");
+      updateCoachMutation.mutate({
+        id: initialValues!.id,
+        ...data,
+      });
     } else {
       createCoachMutation.mutate(data);
     }
