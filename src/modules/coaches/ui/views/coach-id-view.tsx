@@ -10,20 +10,21 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { VideoIcon } from "lucide-react";
+import { toast } from "sonner";
 
 // import from the libraries
 import { useTRPC } from "@/trpc/client";
 
 // import from the components
+import { CoachIdViewHeader } from "@/modules/coaches/ui/components/coach-id-view-header";
+import { UpdateCoachDialog } from "@/modules/coaches/ui/components/update-coach-dialog";
 import { ErrorState } from "@/components/error-state";
 import { LoadingState } from "@/components/loading-state";
-import { CoachIdViewHeader } from "@/modules/coaches/ui/components/coach-id-view-header";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
+
+// import from the hooks
 import { useConfirm } from "@/hooks/use-confirm";
-import { useState } from "react";
-import { UpdateCoachDialog } from "../components/update-coach-dialog";
 
 interface CoachIdViewProps {
   coachId: string;
