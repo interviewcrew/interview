@@ -15,9 +15,9 @@ import {
 // import from the libraries
 import { getQueryClient, trpc } from "@/trpc/server";
 
-export default function InterviewsPage() {
+export default async function InterviewsPage() {
   const queryClient = getQueryClient();
-  queryClient.prefetchQuery(trpc.interviews.getMany.queryOptions({}));
+  await queryClient.prefetchQuery(trpc.interviews.getMany.queryOptions({}));
 
   return (
     <div>
