@@ -27,6 +27,13 @@ export const useConfirm = (
     setPromise(null);
   };
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open && promise) {
+      promise.resolve(false);
+      handleClose();
+    }
+  };
+
   const handleConfirm = () => {
     promise?.resolve(true);
     handleClose();
@@ -41,11 +48,11 @@ export const useConfirm = (
     return (
       <ResponsiveDialog
         open={promise !== null}
-        onOpenChange={handleClose}
+        onOpenChange={handleOpenChange}
         title={title}
         description={description}
       >
-        <div className="pt-4 w-full flex flex-col-reverse gap-y-2 lg:flex-row gap-x-2 item-center justify-end">
+        <div className="pt-4 w-full flex flex-col-reverse gap-y-2 lg:flex-row gap-x-2 items-center justify-end">
           <Button
             onClick={handleCancel}
             variant={"outline"}

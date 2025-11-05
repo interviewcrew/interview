@@ -55,6 +55,7 @@ export const CoachIdView = ({ coachId }: CoachIdViewProps) => {
       },
       onError: (error) => {
         toast.error(error.message);
+        setRemoving(false);
       },
     })
   );
