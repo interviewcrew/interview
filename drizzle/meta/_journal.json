@@ -22,6 +22,13 @@
       "when": 1761817605946,
       "tag": "0002_update_agents_to_coaches",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1762340025806,
+      "tag": "0003_create_interviews_table",
+      "breakpoints": true
     }
   ]
 }
