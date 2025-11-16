@@ -132,3 +132,55 @@
     cursor: pointer;
   }
 }
+
+/* Font for Landing Page */
+.font-sans {
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* Circle animations in Landing Page*/
+.circle1 {
+  background-color: color(display-p3 0.92 0.87 0 / 0.5);
+  animation: orbit 6s linear infinite;
+}
+
+.circle2 {
+  background-color: color(display-p3 0 0.78 1 / 0.6);
+  animation: rorbit 10s linear infinite;
+}
+
+.circle3 {
+  background-color: color(display-p3 1 0.71 1 / 0.6);
+  animation: rorbit 8s linear infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .circle1 {
+    background-color: color(display-p3 0.92 0.87 0 / 0.2);
+  }
+  .circle2 {
+    background-color: color(display-p3 0 0.78 1 / 0.2);
+  }
+  .circle3 {
+    background-color: color(display-p3 1 0.71 1 / 0.2);
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(20vmin) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(20vmin) rotate(-360deg);
+  }
+}
+
+@keyframes rorbit {
+  0% {
+    transform: rotate(360deg) translateX(20vmin) rotate(-360deg);
+  }
+  100% {
+    transform: rotate(0deg) translateX(20vmin) rotate(0deg);
+  }
+}
