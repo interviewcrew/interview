@@ -7,8 +7,12 @@ import SelectLandingPageAudience, {
 } from "@/modules/landing/ui/components/select-landing-page-audience";
 import { useState } from "react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
+import TerminalButton from "@/modules/landing/ui/components/terminal-button";
+import Terminal from "@/modules/landing/ui/components/terminal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Home() {
+  const isMobile = useIsMobile();
   const [isTerminalVisible, setIsTerminalVisible] = useState(false);
   const [landingPageAudience, setLandingPageAudience] = useQueryState(
     "audience",
@@ -25,7 +29,27 @@ export default function Home() {
         landingPageAudience={landingPageAudience}
         setLandingPageAudience={setLandingPageAudience}
       />
-      {/* <Features /> */}
+      {landingPageAudience === LandingPageAudience.CANDIDATES && (
+        <>
+          {/* Candidates */}
+          {isTerminalVisible && (
+            <Terminal exitTerminal={() => setIsTerminalVisible(false)} />
+          )}
+          {!isTerminalVisible && (
+            <>
+              {!isMobile && (
+                <TerminalButton
+                  isTerminalVisible={isTerminalVisible}
+                  setIsTerminalVisible={setIsTerminalVisible}
+                />
+              )}
+            </>
+          )}
+        </>
+      )}
+      {landingPageAudience === LandingPageAudience.COMPANIES && (
+        <> {/* Companies */}</>
+      )}
       <noscript>
         <div style={{ padding: "2rem" }}>
           <h1>Interview Crew Candidate Preparation Portal</h1>

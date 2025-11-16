@@ -184,3 +184,8 @@
     transform: rotate(0deg) translateX(20vmin) rotate(0deg);
   }
 }
+
+/* Font for Terminal */
+.font-neon {
+  font-family: var(--font-monaspace-neon), monospace;
+}
