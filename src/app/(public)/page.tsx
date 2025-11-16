@@ -1,10 +1,10 @@
 "use client";
 
-import Hero from "@/modules/landing/ui/views/hero";
-import CircleBackground from "@/modules/landing/ui/views/circle-background";
+import Hero from "@/modules/landing/ui/components/hero";
+import CircleBackground from "@/modules/landing/ui/components/circle-background";
 import SelectLandingPageAudience, {
   LandingPageAudience,
-} from "@/modules/landing/ui/views/select-landing-page-audience";
+} from "@/modules/landing/ui/components/select-landing-page-audience";
 import { useState } from "react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 
