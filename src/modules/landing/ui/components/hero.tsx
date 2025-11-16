@@ -1,7 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { FaGithub } from "react-icons/fa";
 
 export default function Hero() {
   return (
@@ -11,7 +13,7 @@ export default function Hero() {
           aria-label="Global"
           className="flex items-center justify-between p-6 lg:px-8"
         >
-          <div className="flex lg:flex-1">
+          <div className="flex flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Interview Crew</span>
               <Image
@@ -30,7 +32,17 @@ export default function Hero() {
               />
             </a>
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <div className="flex flex-1 justify-end items-center">
+            <Link
+              href="https://github.com/interviewcrew/interview"
+              target="_blank"
+              className="font-semibold text-gray-900 dark:text-white mr-4 "
+            >
+              <Button variant="outline" size="sm" className="p-0 m-0">
+                <FaGithub className="size-4"/>
+                <span className="hidden lg:block">Checkout the code</span>
+              </Button>
+            </Link>
             <Link
               href="/sign-in"
               className="text-sm/6 font-semibold text-gray-900 dark:text-white"
