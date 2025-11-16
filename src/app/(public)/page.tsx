@@ -11,6 +11,7 @@ import TerminalButton from "@/modules/landing/ui/components/terminal-button";
 import Terminal from "@/modules/landing/ui/components/terminal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import CandidateFeatures from "@/modules/landing/ui/components/candidate-features";
+import CandidateFAQ from "@/modules/landing/ui/components/candidate-faq";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -45,6 +46,7 @@ export default function Home() {
                 />
               )}
               <CandidateFeatures />
+              <CandidateFAQ />
             </>
           )}
         </>
