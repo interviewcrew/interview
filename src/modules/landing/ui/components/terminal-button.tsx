@@ -8,7 +8,7 @@ interface TerminalButtonProps {
   }: TerminalButtonProps) {
     return (
       <>
-        <div className="relative flex items-center justify-center my-32">
+        <div className="relative flex items-center justify-center mt-16 lg:mt-32">
           <button
             type="button"
             onClick={() => setIsTerminalVisible(!isTerminalVisible)}

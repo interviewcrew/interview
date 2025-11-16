@@ -10,6 +10,7 @@ import { parseAsStringEnum, useQueryState } from "nuqs";
 import TerminalButton from "@/modules/landing/ui/components/terminal-button";
 import Terminal from "@/modules/landing/ui/components/terminal";
 import { useIsMobile } from "@/hooks/use-mobile";
+import CandidateFeatures from "@/modules/landing/ui/components/candidate-features";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -43,6 +44,7 @@ export default function Home() {
                   setIsTerminalVisible={setIsTerminalVisible}
                 />
               )}
+              <CandidateFeatures />
             </>
           )}
         </>
