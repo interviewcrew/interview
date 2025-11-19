@@ -106,3 +106,19 @@ export const interviews = pgTable("interviews", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export const contactInquiries = pgTable("contact_inquiries", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  email: text("email").notNull(),
+  role: text("role"),
+  message: text("message"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});

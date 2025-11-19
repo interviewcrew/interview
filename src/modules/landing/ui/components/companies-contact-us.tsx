@@ -1,6 +1,48 @@
+"use client";
+
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { submitContactForm } from "@/modules/landing/server/actions";
+import { useTransition } from "react";
+import { z } from "zod";
+import { contactFormSchema } from "@/modules/landing/schemas";
 
 export default function CompaniesContactUs() {
+  const [isPending, startTransition] = useTransition();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<z.infer<typeof contactFormSchema>>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "",
+      message: "",
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof contactFormSchema>) => {
+    startTransition(async () => {
+      try {
+        const result = await submitContactForm(data);
+        if (result.success) {
+          toast.success("Thanks for reaching out! We'll be in touch shortly.");
+          reset();
+        } else {
+          toast.error(result.error || "Something went wrong");
+        }
+      } catch {
+        toast.error("Failed to submit form. Please try again.");
+      }
+    });
+  };
+
   return (
     <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8 dark:bg-gray-900">
       <svg
@@ -44,44 +86,58 @@ export default function CompaniesContactUs() {
           Tell us who you&apos;re looking for. We&apos;ll send you a curated
           list of pre-vetted engineers within 48 hours.
         </p>
-          <div className="mt-16 flex flex-col-reverse gap-16 sm:gap-y-20 lg:flex-row">
-            <form action="#" method="POST" className="lg:flex-auto">
+        <div className="mt-16 flex flex-col-reverse gap-16 sm:gap-y-20 lg:flex-row">
+          <form onSubmit={handleSubmit(onSubmit)} className="lg:flex-auto">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               <div>
                 <label
-                  htmlFor="first-name"
+                  htmlFor="firstName"
                   className="block text-sm/6 font-semibold text-gray-900 dark:text-white"
                 >
                   First name
                 </label>
                 <div className="mt-2.5">
                   <input
-                    id="first-name"
-                    name="first-name"
+                    id="firstName"
                     type="text"
                     autoComplete="given-name"
-                    className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500"
+                    className={`block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500 ${
+                      errors.firstName ? "outline-red-500" : ""
+                    }`}
+                    {...register("firstName")}
                   />
+                  {errors.firstName && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.firstName.message}
+                    </p>
+                  )}
                 </div>
               </div>
               <div>
                 <label
-                  htmlFor="last-name"
+                  htmlFor="lastName"
                   className="block text-sm/6 font-semibold text-gray-900 dark:text-white"
                 >
                   Last name
                 </label>
                 <div className="mt-2.5">
                   <input
-                    id="last-name"
-                    name="last-name"
+                    id="lastName"
                     type="text"
                     autoComplete="family-name"
-                    className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500"
+                    className={`block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500 ${
+                      errors.lastName ? "outline-red-500" : ""
+                    }`}
+                    {...register("lastName")}
                   />
+                  {errors.lastName && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.lastName.message}
+                    </p>
+                  )}
                 </div>
               </div>
-              <div>
+              <div className="sm:col-span-2">
                 <label
                   htmlFor="email"
                   className="block text-sm/6 font-semibold text-gray-900 dark:text-white"
@@ -91,70 +147,86 @@ export default function CompaniesContactUs() {
                 <div className="mt-2.5">
                   <input
                     id="email"
-                    name="email"
                     type="email"
                     autoComplete="email"
-                    className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500"
+                    className={`block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500 ${
+                      errors.email ? "outline-red-500" : ""
+                    }`}
+                    {...register("email")}
                   />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="website"
-                  className="block text-sm/6 font-semibold text-gray-900 dark:text-white"
-                >
-                  Company Website
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="website"
-                    name="website"
-                    type="url"
-                    className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500"
-                  />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="sm:col-span-2">
-                <label
-                  htmlFor="role"
-                  className="block text-sm/6 font-semibold text-gray-900 dark:text-white"
-                >
-                  Role you are hiring for (e.g., Senior Backend Engineer)
-                </label>
+                <div className="flex justify-between">
+                  <label
+                    htmlFor="role"
+                    className="block text-sm/6 font-semibold text-gray-900 dark:text-white"
+                  >
+                    Role you are hiring for
+                  </label>
+                  <span className="text-sm/6 text-gray-500 dark:text-gray-400">
+                    Optional
+                  </span>
+                </div>
                 <div className="mt-2.5">
                   <input
                     id="role"
-                    name="role"
                     type="text"
-                    className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500"
+                    placeholder="e.g. Senior Backend Engineer"
+                    className={`block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500 ${
+                      errors.role ? "outline-red-500" : ""
+                    }`}
+                    {...register("role")}
                   />
+                  {errors.role && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.role.message}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="sm:col-span-2">
-                <label
-                  htmlFor="message"
-                  className="block text-sm/6 font-semibold text-gray-900 dark:text-white"
-                >
-                  Additional Details (Stack, Stage, Timeline)
-                </label>
+                <div className="flex justify-between">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm/6 font-semibold text-gray-900 dark:text-white"
+                  >
+                    Additional Details
+                  </label>
+                  <span className="text-sm/6 text-gray-500 dark:text-gray-400">
+                    Optional
+                  </span>
+                </div>
                 <div className="mt-2.5">
                   <textarea
                     id="message"
-                    name="message"
                     rows={4}
                     placeholder="e.g. We are a Series A startup looking for a Node.js expert to lead our platform team. Need to hire within 30 days."
-                    className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500"
-                    defaultValue={""}
+                    className={`block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 backdrop-blur-sm placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-cyan-600 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-cyan-500 ${
+                      errors.message ? "outline-red-500" : ""
+                    }`}
+                    {...register("message")}
                   />
+                  {errors.message && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.message.message}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
             <div className="mt-10">
               <button
                 type="submit"
-                className="block w-full rounded-md bg-cyan-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-cyan-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600 dark:bg-cyan-500 dark:hover:bg-cyan-400 dark:focus-visible:outline-cyan-500"
+                disabled={isPending}
+                className="block w-full rounded-md bg-cyan-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-cyan-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600 dark:bg-cyan-500 dark:hover:bg-cyan-400 dark:focus-visible:outline-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Get Vetted Candidates
+                {isPending ? "Submitting..." : "Get Vetted Candidates"}
               </button>
             </div>
             <p className="mt-4 text-sm/6 text-gray-500 dark:text-gray-400">
