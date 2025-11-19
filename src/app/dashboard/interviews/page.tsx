@@ -1,5 +1,7 @@
 // import from the framework
 import { Suspense } from "react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 // import from the packages
 import { ErrorBoundary } from "react-error-boundary";
@@ -14,8 +16,19 @@ import {
 
 // import from the libraries
 import { getQueryClient, trpc } from "@/trpc/server";
+import { auth } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export default async function InterviewsPage() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(trpc.interviews.getMany.queryOptions({}));
 
