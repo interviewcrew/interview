@@ -18,14 +18,14 @@ import {
   CoachesViewError,
   CoachesViewLoading,
 } from "@/modules/coaches/ui/views/coaches-view";
-import { CoachingListHeader } from "@/modules/coaches/ui/components/coaching-list-header";
+import { CoachesListHeader } from "@/modules/coaches/ui/components/coaches-list-header";
 import { loadSearchParams } from "@/modules/coaches/params";
 
-interface CoachingPageProps {
+interface CoachesPageProps {
   searchParams: Promise<SearchParams>;
 }
 
-const CoachingPage = async ({ searchParams }: CoachingPageProps) => {
+const CoachesPage = async ({ searchParams }: CoachesPageProps) => {
   const filters = await loadSearchParams(searchParams);
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -40,7 +40,7 @@ const CoachingPage = async ({ searchParams }: CoachingPageProps) => {
 
   return (
     <>
-      <CoachingListHeader />
+      <CoachesListHeader />
       <HydrationBoundary state={dehydrate(queryClient)}>
         <ErrorBoundary fallback={<CoachesViewError />}>
           <Suspense fallback={<CoachesViewLoading />}>
@@ -52,4 +52,4 @@ const CoachingPage = async ({ searchParams }: CoachingPageProps) => {
   );
 };
 
-export default CoachingPage;
+export default CoachesPage;

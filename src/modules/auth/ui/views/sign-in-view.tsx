@@ -12,7 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, OctagonAlertIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { FaGit, FaGithub, FaGoogle } from "react-icons/fa";
+// import { FaGithub, FaGoogle } from "react-icons/fa";
 
 // Imports from the components
 import { Input } from "@/components/ui/input";
@@ -152,12 +152,12 @@ export const SignInView = () => {
                     "Sign In"
                   )}
                 </Button>
-                <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+                {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">
                     or continue with
                   </span>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+                </div> */}
+                {/* <div className="grid grid-cols-2 gap-4">
                   <Button
                     variant="outline"
                     className="w-full"
@@ -176,7 +176,7 @@ export const SignInView = () => {
                   >
                     <FaGithub /> 
                   </Button>
-                </div>
+                </div> */}
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
                   <Link
@@ -198,8 +198,8 @@ export const SignInView = () => {
               priority
             />
             <div className="relative z-10 flex flex-col gap-y-4 items-center">
-              <Image src="/logo.svg" alt="logo" width={92} height={92} />
-              <p className="text-2xl font-semibold text-white">
+              <Image src="/logo-dark.svg" alt="logo" width={92} height={92} />
+              <p className="text-2xl font-semibold text-sky-200">
                 InterviewCrew
               </p>
             </div>
