@@ -46,7 +46,7 @@ export default function CompaniesFeatures() {
         <div className="mx-auto max-w-2xl lg:mx-0">
           <h2 className="text-base/7 font-semibold text-cyan-700 dark:text-cyan-500">Exclusive Talent Network</h2>
           <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl dark:text-white">
-            Only A-Players. No Compromises.
+            Only A-Players. <br /> No Compromises.
           </p>
           <p className="mt-6 text-lg/8 text-gray-700 dark:text-gray-300">
             Most agencies send you a pile of resumes. We send you your next key hire. Access a strictly vetted, high-performance engineering workforce that is ready to deliver from day one.
