@@ -12,6 +12,7 @@ import Terminal from "@/modules/landing/ui/components/terminal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import CandidateFeatures from "@/modules/landing/ui/components/candidate-features";
 import CandidateFAQ from "@/modules/landing/ui/components/candidate-faq";
+import CompaniesFeatures from "@/modules/landing/ui/components/companies-features";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -25,7 +26,7 @@ export default function Home() {
 
   return (
     <div id="root">
-      <Hero />
+      <Hero landingPageAudience={landingPageAudience || LandingPageAudience.CANDIDATES} />
       <CircleBackground />
       <SelectLandingPageAudience
         landingPageAudience={landingPageAudience}
@@ -52,7 +53,10 @@ export default function Home() {
         </>
       )}
       {landingPageAudience === LandingPageAudience.COMPANIES && (
-        <> {/* Companies */}</>
+        <>
+          {/* Companies */}
+          <CompaniesFeatures />
+        </>
       )}
       <noscript>
         <div style={{ padding: "2rem" }}>

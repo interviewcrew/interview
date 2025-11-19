@@ -4,8 +4,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
+import { LandingPageAudience } from "@/modules/landing/ui/components/select-landing-page-audience";
 
-export default function Hero() {
+interface HeroProps {
+  landingPageAudience: LandingPageAudience;
+}
+
+export default function Hero({ landingPageAudience }: HeroProps) {
   return (
     <div className="bg-transparent min-h-[20vh]">
       <header className="absolute inset-x-0 top-0 z-50">
@@ -73,12 +78,25 @@ export default function Hero() {
                 <span className="block text-base font-bold tracking-widest uppercase text-cyan-600 dark:text-cyan-400 mb-4">
                   Interview Crew
                 </span>
-                <strong className="block mb-2 font-semibold text-pretty">
-                  Master the Technical Interview.
-                </strong>{" "}
-                <div className="text-4xl leading-10">
-                  Free AI tools to prepare, practice, and get hired.
-                </div>
+                {landingPageAudience === LandingPageAudience.CANDIDATES ? (
+                  <>
+                    <strong className="block mb-2 font-semibold text-pretty">
+                      Master the Technical Interview.
+                    </strong>{" "}
+                    <div className="text-4xl leading-10">
+                      Free AI tools to prepare, practice, and get hired.
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <strong className="block mb-2 font-semibold text-pretty">
+                      Hire the Top 1% of Engineers.
+                    </strong>{" "}
+                    <div className="text-4xl leading-10">
+                      Risk-free access to pre-vetted A-Players.
+                    </div>
+                  </>
+                )}
               </h1>
             </div>
           </div>
