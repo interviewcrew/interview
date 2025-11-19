@@ -5,7 +5,7 @@ import CircleBackground from "@/modules/landing/ui/components/circle-background"
 import SelectLandingPageAudience, {
   LandingPageAudience,
 } from "@/modules/landing/ui/components/select-landing-page-audience";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import TerminalButton from "@/modules/landing/ui/components/terminal-button";
 import Terminal from "@/modules/landing/ui/components/terminal";
@@ -26,6 +26,10 @@ export default function Home() {
       Object.values(LandingPageAudience)
     ).withDefault(LandingPageAudience.CANDIDATES)
   );
+
+  useEffect(() => {
+    setIsTerminalVisible(false);
+  }, [landingPageAudience]);
 
   return (
     <div id="root">
