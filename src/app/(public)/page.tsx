@@ -15,6 +15,7 @@ import CandidateFAQ from "@/modules/landing/ui/components/candidate-faq";
 import CompaniesFeatures from "@/modules/landing/ui/components/companies-features";
 import Clients from "@/modules/landing/ui/components/clients";
 import CompaniesFAQ from "@/modules/landing/ui/components/companies-faq";
+import CompaniesContactUs from "@/modules/landing/ui/components/companies-contact-us";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -60,6 +61,7 @@ export default function Home() {
           <CompaniesFeatures />
           <Clients />
           <CompaniesFAQ />
+          <CompaniesContactUs />
         </>
       )}
       <noscript>
