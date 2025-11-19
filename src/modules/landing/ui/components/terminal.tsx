@@ -107,57 +107,68 @@ const commands: Record<string, (...args: string[]) => string> = {
       .join("\n") +
     "</ul>",
   help: () => `
-    <div><span class="dark:text-orange-400 text-orange-600">about</span> - print what InterviewCrew is about <div>
-    <div><span class="dark:text-orange-400 text-orange-600">team</span> - print the team members <div>
-    <div><span class="dark:text-orange-400 text-orange-600">who [username]</span> - print the team member details <div>
-    <div><span class="dark:text-orange-400 text-orange-600">repo</span> - print the repository URL <div>
-    <div><span class="dark:text-orange-400 text-orange-600">ls</span> - list the commands <div>
-    <div><span class="dark:text-orange-400 text-orange-600">clear</span> - Clear terminal <div>
+    <div><span class="dark:text-orange-400 text-orange-600">about</span> - cat README.md <div>
+    <div><span class="dark:text-orange-400 text-orange-600">team</span> - ls -la /home/team <div>
+    <div><span class="dark:text-orange-400 text-orange-600">who [username]</span> - whois [username] <div>
+    <div><span class="dark:text-orange-400 text-orange-600">repo</span> - git remote -v <div>
+    <div><span class="dark:text-orange-400 text-orange-600">ls</span> - list available commands <div>
+    <div><span class="dark:text-orange-400 text-orange-600">clear</span> - clear screen <div>
   `,
   about: () => `
     <p>
-      <span class="font-bold">InterviewCrew</span> is a set of tools that helps you prepare for your dream job.
-      And the best part is that <span class="font-bold">it's free and open source</span>.
+      <span class="font-bold">Interview Crew</span> v0.1.0-beta
     </p>
     <p class="mt-4">
-      We have conducted thousands of interviews for many companies and we know what companies are looking for. We believe, although AI can act as a career coach, it's too generic and a good software engineer coach doesn't come out of the box. That's why we are creating tools with AI for software engineers to prepare and shine in their next interviews.
+      We are an <span class="font-bold">AI-first recruitment agency</span> built by engineers, for engineers.
+    </p>
+    <p class="mt-2">
+      > <span class="dark:text-green-400 text-green-600">Problem:</span> Traditional recruiting is broken. Interviews are biased, and prep tools are expensive.<br>
+      > <span class="dark:text-green-400 text-green-600">Solution:</span> Open-source AI tools to mock interview, review resumes, and roadmap your career.<br>
+      > <span class="dark:text-green-400 text-green-600">Goal:</span> We find the top 1% of "A-Players" and fast-track them to elite companies.
+    </p>
+    <p class="mt-4">
+      All tools are <span class="font-bold">free && open-source</span>.
     </p>`,
   repo: () =>
-    `<a class="link-color underline" href="https://github.com/interviewcrew/interview" target="_blank">https://github.com/interviewcrew/interview</a>`,
+    `<a class="link-color underline" href="https://github.com/interviewcrew/interview" target="_blank">git clone https://github.com/interviewcrew/interview.git</a>`,
   who: (username: string): string => {
     const user = team.find((t) => t.username === username);
     if (user) {
       return (
-        `<div><span class="text-color">${user.fullname}</span>` +
-        `<span> -> ${user.role}</span></div>` +
+        `<div><span class="text-color">User: ${user.fullname}</span>` +
+        `<span> [${user.role}]</span></div>` +
         `<div class="mt-4">${user.description
-          .map((d) => `<p class="mt-4">${d}</p>`)
+          .map((d) => `<p class="mt-1">> ${d}</p>`)
           .join("\n")}</div>` +
-        `<ul class="mt-4">${user.links
+        `<div class="mt-4">Connections:</div>` +
+        `<ul class="mt-1">${user.links
           .map(
             (l) =>
-              `<li>${l.label} - <a class="link-color underline" href="${l.link}" target="_blank">${l.text}</a></li>`
+              `<li>- ${l.label}: <a class="link-color underline" href="${l.link}" target="_blank">${l.text}</a></li>`
           )
           .join("\n")}</ul>`
       );
     }
-    return `user not found: ${username}. Type 'team' to see the team members.`;
+    return `error: user '${username}' not found. Try 'team' to list active users.`;
   },
   team: () =>
     "<div class='mt-4 mb-4 whitespace-pre'>" +
-    "username | fullname\n" +
-    "---------+----------------\n" +
+    "drwxr-xr-x  3 root  root  4096 Nov 19 10:00 .\n" +
+    "drwxr-xr-x  5 root  root  4096 Nov 18 14:20 ..\n" +
     team
       .map(
         (p) =>
-          '<span class="dark:text-orange-400 text-orange-600">' +
-          `${p.username.padEnd(8, " ")}` +
-          "</span> | " +
+          '-rwxr-xr-x  1 ' +
+          `<span class="dark:text-orange-400 text-orange-600">${p.username}</span>` +
+          '  staff  ' +
+          '8192 ' +
+          'Nov 19 ' +
+          '12:00 ' +
           p.fullname
       )
       .join("\n") +
     "</div>" +
-    "<p>To learn more about a team member, type 'who <span class='dark:text-orange-400 text-orange-600'>username</span>'</p>",
+    "<p>To inspect a user profile, run 'who <span class='dark:text-orange-400 text-orange-600'>[username]</span>'</p>",
   exit: () => "__EXIT__",
 
   clear: () => "__CLEAR__",

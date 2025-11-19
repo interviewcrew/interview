@@ -30,7 +30,7 @@ interface TerminalButtonProps {
             <span className="relative z-10 flex items-center gap-2">
               <span className="text-green-600 dark:text-green-500 animate-pulse text-2xl">&gt;</span>
               <span className="tracking-wide text-xl">
-                I code for living, show me the terminal
+                sudo open_terminal
               </span>
             </span>
             {/* Matrix-like glow effect */}

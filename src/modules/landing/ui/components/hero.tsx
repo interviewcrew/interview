@@ -66,15 +66,18 @@ export default function Hero() {
             className="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75 dark:opacity-20"
           />
         </div>
-        <div className="mt-25">
+        <div className="mt-14">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h1 className="text-4xl tracking-tight text-gray-900 sm:text-5xl lg:text-balance dark:text-white">
-                <strong className="block mb-2 font-semibold text-pretty">
+                <span className="block text-base font-bold tracking-widest uppercase text-cyan-600 dark:text-cyan-400 mb-4">
                   Interview Crew
+                </span>
+                <strong className="block mb-2 font-semibold text-pretty">
+                  Master the Technical Interview.
                 </strong>{" "}
                 <div className="text-4xl leading-10">
-                  Preparing A-Players for their dream job.
+                  Free AI tools to prepare, practice, and get hired.
                 </div>
               </h1>
             </div>

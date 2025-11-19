@@ -9,34 +9,29 @@ import {
 
 const faqs = [
   {
-    question: "What is InterviewCrew?",
+    question: "Is InterviewCrew really free for candidates?",
     answer:
-      "InterviewCrew is a set of tools that helps you prepare for your dream job. It includes an AI-powered mock interviews, an AI-powered resume builder, and a network of real human coaches to help you get your dream job.",
+      "Yes. Our business model is based on placing top talent with companies. We provide these premium AI preparation tools for free to help you become the best candidate you can be. When you succeed, we succeed.",
   },
   {
-    question: "How does the AI-powered mock interviews work?",
+    question: "How does the 'A-Player' Fast Track work?",
     answer:
-      "The mock interviews are powered by top frontier models. Based on the step of the interview (i.e. Initial screening, Live coding, System design), the AI will conduct a mock interview and give you feedback on your performance.",
+      "Candidates who consistently demonstrate excellence in our AI mock interviews and assessments are invited to our 'A-Player' program. This involves a rigorous human-led vetting process. If you pass, you gain access to exclusive coaching and direct placement opportunities with our partner companies.",
   },
   {
-    question: "How does the AI-powered resume builder work?",
+    question: "What AI tools are included?",
     answer:
-      "By uploading your resume, the AI will analyze your resume and give you feedback on it. We have many templates to choose from, and you can customize it to your dream job.",
+      "You get full access to our AI Mock Interviewer (covering screening, technical, and system design rounds), our Smart Resume & Cover Letter Builder, and personalized Career Pathway guides.",
   },
   {
-    question: "What's the network of A-player candidates and how does it work?",
+    question: "Is this just another job board?",
     answer:
-      "A-player means different things to different companies. We try to identify the best candidates that are prepared, and coach them with our real human coaches, for free, and help them find their dream job.",
+      "No. We are an AI-first recruitment agency. We don't just list jobs; we help you prepare for them. For our 'A-Player' candidates, we actively advocate for you with employers, bypassing the standard application 'black hole'.",
   },
   {
-    question: "Why is it Interview Crew free for candidates?",
+    question: "Why is the project open source?",
     answer:
-      "We try to find the best candidates for companies to hire. When you find your dream job through us, we will get paid by the company and everyone will be happy :)",
-  },
-  {
-    question: "Why is it open source?",
-    answer:
-      "We are building tools for software engineers to prepare for their next opportunity, so it's natural that they want to look under the hood and fix the parts that are bothering them, and we love to get help from the community building it",
+      "We believe in transparency and community. As a platform built for engineers, by engineers, we want you to trust the tools you're using. You can inspect our code, contribute features, and help us build the best recruitment platform in the world.",
   },
 ];
 
