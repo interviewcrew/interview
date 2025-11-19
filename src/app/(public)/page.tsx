@@ -13,6 +13,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import CandidateFeatures from "@/modules/landing/ui/components/candidate-features";
 import CandidateFAQ from "@/modules/landing/ui/components/candidate-faq";
 import CompaniesFeatures from "@/modules/landing/ui/components/companies-features";
+import Clients from "@/modules/landing/ui/components/clients";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -56,6 +57,7 @@ export default function Home() {
         <>
           {/* Companies */}
           <CompaniesFeatures />
+          <Clients />
         </>
       )}
       <noscript>
