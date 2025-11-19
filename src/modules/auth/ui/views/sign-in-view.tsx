@@ -69,26 +69,26 @@ export const SignInView = () => {
     );
   };
 
-  const onSocialSubmit = (provider: "github" | "google") => {
-    setPending(true);
-    setError(null);
-
-    authClient.signIn.social(
-      {
-        provider,
-        callbackURL: "/",
-      },
-      {
-        onError: ({ error }) => {
-          setError(error.message);
-          setPending(false);
-        },
-        onSuccess: () => {
-          setPending(false);
-        },
-      }
-    );
-  };
+  // const onSocialSubmit = (provider: "github" | "google") => {
+  //   setPending(true);
+  //   setError(null);
+  //
+  //   authClient.signIn.social(
+  //     {
+  //       provider,
+  //       callbackURL: "/",
+  //     },
+  //     {
+  //       onError: ({ error }) => {
+  //         setError(error.message);
+  //         setPending(false);
+  //       },
+  //       onSuccess: () => {
+  //         setPending(false);
+  //       },
+  //     }
+  //   );
+  // };
 
   return (
     <div className="flex flex-col gap-6">

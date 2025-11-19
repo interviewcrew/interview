@@ -5,7 +5,7 @@ import CircleBackground from "@/modules/landing/ui/components/circle-background"
 import SelectLandingPageAudience, {
   LandingPageAudience,
 } from "@/modules/landing/ui/components/select-landing-page-audience";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import TerminalButton from "@/modules/landing/ui/components/terminal-button";
 import Terminal from "@/modules/landing/ui/components/terminal";
@@ -17,7 +17,7 @@ import Clients from "@/modules/landing/ui/components/clients";
 import CompaniesFAQ from "@/modules/landing/ui/components/companies-faq";
 import CompaniesContactUs from "@/modules/landing/ui/components/companies-contact-us";
 
-export default function Home() {
+function HomeContent() {
   const isMobile = useIsMobile();
   const [isTerminalVisible, setIsTerminalVisible] = useState(false);
   const [landingPageAudience, setLandingPageAudience] = useQueryState(
@@ -93,5 +93,13 @@ export default function Home() {
         </div>
       </noscript>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
   );
 }
