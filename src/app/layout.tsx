@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 // import from packages
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // import from the libraries
 import "./globals.css";
@@ -41,6 +42,7 @@ export default function RootLayout({
               <Toaster />
               {children}
             </ThemeProvider>
+            <SpeedInsights />
           </body>
         </html>
       </TRPCReactProvider>

@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1100">
+    <defs>
+        <style>
+            /* --- 1. Visual Styles --- */
+            .logo-fill { fill: #0d1b3e; }
+            .nodes circle { fill: #0d1b3e; }
+            
+            .mesh-lines line {
+                stroke: #0d1b3e;
+                stroke-width: 22;
+                stroke-linecap: round;
+                /* Set dasharray slightly larger than longest line */
+                stroke-dasharray: 1200; 
+                /* Initial state: hidden */
+                stroke-dashoffset: 1200;
+            }
+
+            /* --- 2. Animation Config --- */
+            :root {
+                --total-time: 6s;
+            }
+
+            /* --- 3. Keyframes (The Scenarios) --- */
+            
+            /* DOTS: Pop in, stay, scale down */
+            /* Note: We keep a long buffer at the end (90-100) to handle stagger delays */
+            @keyframes dotCycle {
+                0%   { transform: scale(0); opacity: 1; }
+                5%   { transform: scale(1); opacity: 1; }
+                80%  { transform: scale(1); opacity: 1; } /* Start exit */
+                90%  { transform: scale(0); opacity: 0; } /* Fully gone */
+                100% { transform: scale(0); opacity: 0; } /* Wait for reset */
+            }
+
+            /* LINES: Three variations to create the "random" drawing look 
+               WITHOUT using animation-delay (which breaks the loop sync).
+               
+               Timeline:
+               0-20%: Hidden (Waiting)
+               20-45%: Drawing
+               45-80%: Stay Visible
+               80-90%: Fade Out
+               90-100%: Reset/Hidden
+            */
+
+            @keyframes lineCycleEarly {
+                0%, 15%  { stroke-dashoffset: 1200; opacity: 1; } /* Wait */
+                30%      { stroke-dashoffset: 0;    opacity: 1; } /* Drawn */
+                80%      { stroke-dashoffset: 0;    opacity: 1; } /* Stay */
+                90%      { stroke-dashoffset: 0;    opacity: 0; } /* Fade */
+                100%     { stroke-dashoffset: 1200; opacity: 0; } /* Reset */
+            }
+
+            @keyframes lineCycleMid {
+                0%, 20%  { stroke-dashoffset: 1200; opacity: 1; } 
+                35%      { stroke-dashoffset: 0;    opacity: 1; } 
+                80%      { stroke-dashoffset: 0;    opacity: 1; } 
+                90%      { stroke-dashoffset: 0;    opacity: 0; } 
+                100%     { stroke-dashoffset: 1200; opacity: 0; } 
+            }
+
+            @keyframes lineCycleLate {
+                0%, 25%  { stroke-dashoffset: 1200; opacity: 1; } 
+                40%      { stroke-dashoffset: 0;    opacity: 1; } 
+                80%      { stroke-dashoffset: 0;    opacity: 1; } 
+                90%      { stroke-dashoffset: 0;    opacity: 0; } 
+                100%     { stroke-dashoffset: 1200; opacity: 0; } 
+            }
+
+            /* ARROW: Wipes in from back to front */
+            @keyframes arrowCycle {
+                0%, 40% { clip-path: inset(0 100% 0 0); opacity: 1; } /* Hidden */
+                50%     { clip-path: inset(0 0 0 0);    opacity: 1; } /* Reveal */
+                80%     { clip-path: inset(0 0 0 0);    opacity: 1; } /* Stay */
+                90%     { clip-path: inset(0 0 0 0);    opacity: 0; } /* Fade */
+                100%    { clip-path: inset(0 100% 0 0); opacity: 0; } /* Reset */
+            }
+
+            /* --- 4. Assigning Animations --- */
+
+            /* DOTS */
+            .nodes circle {
+                transform-box: fill-box;
+                transform-origin: center;
+                animation: dotCycle var(--total-time) ease-in-out infinite;
+                transform: scale(0); /* Default state */
+            }
+            
+            /* Stagger Dots (Small delays are okay because of the 90-100% buffer) */
+            .nodes circle:nth-child(1)  { animation-delay: 0.0s; }
+            .nodes circle:nth-child(2)  { animation-delay: 0.1s; }
+            .nodes circle:nth-child(3)  { animation-delay: 0.2s; }
+            .nodes circle:nth-child(4)  { animation-delay: 0.15s; }
+            .nodes circle:nth-child(5)  { animation-delay: 0.25s; }
+            .nodes circle:nth-child(6)  { animation-delay: 0.3s; }
+            .nodes circle:nth-child(7)  { animation-delay: 0.35s; }
+            .nodes circle:nth-child(8)  { animation-delay: 0.4s; }
+            .nodes circle:nth-child(9)  { animation-delay: 0.45s; }
+            .nodes circle:nth-child(10) { animation-delay: 0.5s; }
+            .nodes circle:nth-child(11) { animation-delay: 0.55s; }
+            .nodes circle:nth-child(12) { animation-delay: 0.6s; }
+            .nodes circle:nth-child(13) { animation-delay: 0.65s; }
+            .nodes circle:nth-child(14) { animation-delay: 0.7s; }
+
+            /* LINES: Assign the 3 timing variations randomly using nth-child */
+            /* Crucially: NO animation-delay here. The delay is inside the keyframe. */
+            .mesh-lines line:nth-child(3n+1) {
+                animation: lineCycleEarly var(--total-time) ease-out infinite;
+            }
+            .mesh-lines line:nth-child(3n+2) {
+                animation: lineCycleMid var(--total-time) ease-out infinite;
+            }
+            .mesh-lines line:nth-child(3n+3) {
+                animation: lineCycleLate var(--total-time) ease-out infinite;
+            }
+
+            /* ARROW */
+            .arrow-group {
+                animation: arrowCycle var(--total-time) cubic-bezier(0.25, 1, 0.5, 1) infinite;
+                clip-path: inset(0 100% 0 0); /* Default hidden */
+            }
+
+        </style>
+    </defs>
+
+    <g transform="translate(36, 34)">
+
+        <g class="mesh-lines">
+            <line x1="841.8" y1="219.4" x2="584.3" y2="75.2" />
+            <line x1="841.8" y1="219.4" x2="447.7" y2="240.7" />
+            <line x1="841.8" y1="219.4" x2="726.3" y2="338.3" />
+            <line x1="841.8" y1="219.4" x2="932.2" y2="507.8" />
+            <line x1="584.3" y1="75.2"  x2="275.5" y2="151.6" />
+            <line x1="584.3" y1="75.2"  x2="447.7" y2="240.7" />
+            <line x1="584.3" y1="75.2"  x2="726.3" y2="338.3" />
+            <line x1="275.5" y1="151.6" x2="447.7" y2="240.7" />
+            <line x1="275.5" y1="151.6" x2="292.7" y2="370.3" />
+            <line x1="275.5" y1="151.6" x2="95.2"  y2="406.4" />
+            <line x1="447.7" y1="240.7" x2="726.3" y2="338.3" />
+            <line x1="447.7" y1="240.7" x2="292.7" y2="370.3" />
+            <line x1="726.3" y1="338.3" x2="932.2" y2="507.8" />
+            <line x1="726.3" y1="338.3" x2="760.4" y2="584.3" />
+            <line x1="932.2" y1="507.8" x2="760.4" y2="584.3" />
+            <line x1="932.2" y1="507.8" x2="804.3" y2="781.5" />
+            <line x1="760.4" y1="584.3" x2="804.3" y2="781.5" />
+            <line x1="760.4" y1="584.3" x2="541.3" y2="712.1" />
+            <line x1="760.4" y1="584.3" x2="533.4" y2="894.1" />
+            <line x1="804.3" y1="781.5" x2="541.3" y2="712.1" />
+            <line x1="804.3" y1="781.5" x2="533.4" y2="894.1" />
+            <line x1="541.3" y1="712.1" x2="533.4" y2="894.1" />
+            <line x1="541.3" y1="712.1" x2="380.8" y2="648.3" />
+            <line x1="533.4" y1="894.1" x2="380.8" y2="648.3" />
+            <line x1="533.4" y1="894.1" x2="383.1" y2="863.5" />
+            <line x1="380.8" y1="648.3" x2="292.7" y2="370.3" />
+            <line x1="380.8" y1="648.3" x2="95.2"  y2="406.4" />
+            <line x1="380.8" y1="648.3" x2="145.4" y2="682.0" />
+            <line x1="380.8" y1="648.3" x2="194.8" y2="982.2" />
+            <line x1="292.7" y1="370.3" x2="95.2"  y2="406.4" />
+            <line x1="292.7" y1="370.3" x2="145.4" y2="682.0" />
+            <line x1="95.2"  y1="406.4" x2="145.4" y2="682.0" />
+            <line x1="145.4" y1="682.0" x2="234.8" y2="781.1" />
+            <line x1="383.1" y1="863.5" x2="194.8" y2="982.2" />
+            <line x1="234.8" y1="781.1" x2="194.8" y2="982.2" />
+        </g>
+
+        <g class="arrow-group" transform="translate(380.8, 648.3) rotate(-49.16)">
+            <path class="logo-fill"
+                d="
+             M -15,-15 
+             L 233,-15 
+             L 233,-65   L 360,0     L 233,65    L 233,15 
+             L -15,15 
+             Z"
+            />
+        </g>
+
+        <g class="nodes">
+            <circle cx="841.8" cy="219.4" r="36" />
+            <circle cx="584.3" cy="75.2" r="36" />
+            <circle cx="275.5" cy="151.6" r="36" />
+            <circle cx="447.7" cy="240.7" r="36" />
+            <circle cx="726.3" cy="338.3" r="36" />
+            <circle cx="932.2" cy="507.8" r="36" />
+            <circle cx="760.4" cy="584.3" r="36" />
+            <circle cx="804.3" cy="781.5" r="36" />
+            <circle cx="541.3" cy="712.1" r="36" />
+            <circle cx="533.4" cy="894.1" r="36" />
+            <circle cx="380.8" cy="648.3" r="36" />
+            <circle cx="292.7" cy="370.3" r="36" />
+            <circle cx="95.2" cy="406.4" r="36" />
+            <circle cx="145.4" cy="682.0" r="36" />
+        </g>
+    </g>
+</svg>

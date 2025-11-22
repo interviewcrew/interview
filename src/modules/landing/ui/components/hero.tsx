@@ -17,28 +17,46 @@ export default function Hero({ landingPageAudience }: HeroProps) {
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
           aria-label="Global"
-          className="flex items-center justify-between p-6 lg:px-8"
+          className="flex items-center justify-between p-6 md:py-2 lg:px-8"
         >
           <div className="flex flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Interview Crew</span>
+              {/* Mobile logos */}
               <Image
                 alt="InterviewCrew Logo"
                 src="/logo-light.svg"
-                className="h-8 w-auto dark:hidden"
+                className="h-8 w-auto dark:hidden md:hidden"
                 width={32}
                 height={32}
               />
               <Image
                 alt="InterviewCrew Logo"
                 src="/logo-dark.svg"
-                className="h-8 w-auto not-dark:hidden"
+                className="h-8 w-auto hidden dark:block dark:md:hidden"
                 width={32}
                 height={32}
               />
+              {/* Desktop logos */}
+              <Image
+                alt="InterviewCrew Logo"
+                src="/logo-typography-light.svg"
+                className="h-16 w-auto hidden md:block dark:md:hidden"
+                width={158}
+                height={64}
+              />
+              <Image
+                alt="InterviewCrew Logo"
+                src="/logo-typography-dark.svg"
+                className="h-16 w-auto hidden dark:md:block"
+                width={158}
+                height={64}
+              />
             </a>
           </div>
-          <ThemeToggle />
+          <div className="hidden md:block">
+            <ThemeToggle />
+          </div>
           <div className="flex flex-1 justify-end items-center">
             <Link
               href="https://github.com/interviewcrew/interview"

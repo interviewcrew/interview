@@ -1,23 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3200 1300">
     <defs>
         <style>
             .logo-fill {
-                fill: #ffffff;
+                fill: #0d1b3e;
             }
             .mesh-lines {
                 fill: none;
-                stroke: #ffffff;
+                stroke: #0d1b3e;
                 stroke-width: 22;
                 stroke-linecap: round;
                 stroke-linejoin: round;
             }
             .nodes {
-                fill: #ffffff;
+                fill: #0d1b3e;
+            }
+            .text-main {
+                font-family: 'Arial', 'Helvetica', sans-serif;
+                fill: #0d1b3e;
             }
         </style>
     </defs>
 
-    <g transform="translate(36, 34)">
+    <g transform="translate(150, 150)">
 
         <path class="mesh-lines"
             d="
@@ -85,5 +89,10 @@
             <circle cx="95.2" cy="406.4" r="36" />
             <circle cx="145.4" cy="682.0" r="36" />
         </g>
+    </g>
+
+    <g class="text-main" font-size="320">
+        <text x="1200" y="600" font-weight="bold">INTERVIEW</text>
+        <text x="1200" y="900" font-weight="normal">CREW</text>
     </g>
 </svg>

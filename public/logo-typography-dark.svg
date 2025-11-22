@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3200 1300">
     <defs>
         <style>
             .logo-fill {
@@ -14,10 +14,14 @@
             .nodes {
                 fill: #ffffff;
             }
+            .text-main {
+                font-family: 'Arial', 'Helvetica', sans-serif;
+                fill: #ffffff;
+            }
         </style>
     </defs>
 
-    <g transform="translate(36, 34)">
+    <g transform="translate(150, 150)">
 
         <path class="mesh-lines"
             d="
@@ -85,5 +89,10 @@
             <circle cx="95.2" cy="406.4" r="36" />
             <circle cx="145.4" cy="682.0" r="36" />
         </g>
+    </g>
+
+    <g class="text-main" font-size="320">
+        <text x="1200" y="600" font-weight="bold">INTERVIEW</text>
+        <text x="1200" y="900" font-weight="normal">CREW</text>
     </g>
 </svg>
