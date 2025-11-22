@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { LandingPageAudience } from "@/modules/landing/ui/components/select-landing-page-audience";
+import ThemeToggle from "@/components/ui/theme-toggle";
 
 interface HeroProps {
   landingPageAudience: LandingPageAudience;
@@ -37,6 +38,7 @@ export default function Hero({ landingPageAudience }: HeroProps) {
               />
             </a>
           </div>
+          <ThemeToggle />
           <div className="flex flex-1 justify-end items-center">
             <Link
               href="https://github.com/interviewcrew/interview"

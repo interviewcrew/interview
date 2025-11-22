@@ -237,7 +237,7 @@ export default function CompaniesContactUs() {
             <Image
               alt="Zeeg Logo"
               src="/client-logos/zeeg.svg"
-              className="h-12 w-auto"
+              className="h-12 w-auto dark:invert"
               width={100}
               height={48}
             />

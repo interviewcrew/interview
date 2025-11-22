@@ -13,59 +13,28 @@ export default function Clients() {
             src="/client-logos/emma-sleep.svg"
             width={158}
             height={55}
-            className="col-span-2 max-h-10 w-full object-contain lg:col-span-1 dark:hidden"
-          />
-          <Image
-            alt="Emma Sleep"
-            src="/client-logos/emma-sleep.svg"
-            width={158}
-            height={55}
-            className="col-span-2 max-h-10 w-full object-contain not-dark:hidden lg:col-span-1"
-          />
-
-          <Image
-            alt="Faircado"
-            src="/client-logos/faircado.svg"
-            width={158}
-            height={95}
-            className="col-span-2 max-h-8 w-full object-contain lg:col-span-1 dark:hidden"
+            className="col-span-2 max-h-10 w-full object-contain lg:col-span-1 dark:invert"
           />
           <Image
             alt="Faircado"
             src="/client-logos/faircado.svg"
             width={158}
             height={95}
-            className="col-span-2 max-h-8 w-full object-contain not-dark:hidden lg:col-span-1"
-          />
-
-          <Image
-            alt="EnopAI"
-            src="/client-logos/enopai.svg"
-            width={158}
-            height={28}
-            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1 dark:hidden"
+            className="col-span-2 max-h-8 w-full object-contain lg:col-span-1 dark:invert"
           />
           <Image
             alt="EnopAI"
             src="/client-logos/enopai.svg"
             width={158}
             height={28}
-            className="col-span-2 max-h-12 w-full object-contain not-dark:hidden lg:col-span-1"
-          />
-
-          <Image
-            alt="Zeeg"
-            src="/client-logos/zeeg.svg"
-            width={158}
-            height={65}
-            className="col-span-2 max-h-11 w-full object-contain sm:col-start-2 lg:col-span-1 dark:hidden"
+            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1 dark:invert"
           />
           <Image
             alt="Zeeg"
             src="/client-logos/zeeg.svg"
             width={158}
             height={65}
-            className="col-span-2 max-h-11 w-full object-contain not-dark:hidden sm:col-start-2 lg:col-span-1"
+            className="col-span-2 max-h-11 w-full object-contain sm:col-start-2 lg:col-span-1 dark:invert"
           />
         </div>
       </div>
