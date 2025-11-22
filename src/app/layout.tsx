@@ -8,6 +8,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 // import from the libraries
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
+import { ThemeProvider } from "@/components/theme-provider";
 
 // import from the components
 import { Toaster } from "@/components/ui/sonner";
@@ -29,10 +30,17 @@ export default function RootLayout({
   return (
     <NuqsAdapter>
       <TRPCReactProvider>
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
           <body className={`${inter.className} antialiased`}>
-            <Toaster />
-            {children}
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster />
+              {children}
+            </ThemeProvider>
           </body>
         </html>
       </TRPCReactProvider>
