@@ -1,15 +1,15 @@
 "use client";
 
-import * as React from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import { useEffect, useId, useState } from "react";
 
 export default function ThemeToggle({ className }: { className?: string }) {
   const { setTheme, theme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-  const id = React.useId();
+  const [mounted, setMounted] = useState(false);
+  const id = useId();
 
-  React.useEffect(() => {
+  useEffect(() => {
     setMounted(true);
   }, []);
 
@@ -70,11 +70,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
           className="pointer-events-none relative z-10"
         >
           <circle cx="14" cy="14" r="3.5" stroke="currentColor" />
-          <path
-            d="M14 8.5V6.5"
-            stroke="currentColor"
-            strokeLinecap="round"
-          />
+          <path d="M14 8.5V6.5" stroke="currentColor" strokeLinecap="round" />
           <path
             d="M17.889 10.1115L19.3032 8.69727"
             stroke="currentColor"
@@ -90,11 +86,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
             stroke="currentColor"
             strokeLinecap="round"
           />
-          <path
-            d="M14 21.5V19.5"
-            stroke="currentColor"
-            strokeLinecap="round"
-          />
+          <path d="M14 21.5V19.5" stroke="currentColor" strokeLinecap="round" />
           <path
             d="M8.69663 19.3029L10.1108 17.8887"
             stroke="currentColor"
@@ -151,4 +143,3 @@ export default function ThemeToggle({ className }: { className?: string }) {
     </div>
   );
 }
-
