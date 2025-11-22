@@ -6,12 +6,15 @@ import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { LandingPageAudience } from "@/modules/landing/ui/components/select-landing-page-audience";
 import ThemeToggle from "@/components/ui/theme-toggle";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface HeroProps {
   landingPageAudience: LandingPageAudience;
 }
 
 export default function Hero({ landingPageAudience }: HeroProps) {
+  const isMobile = useIsMobile();
+
   return (
     <div className="bg-transparent min-h-[20vh]">
       <header className="absolute inset-x-0 top-0 z-50">
@@ -38,7 +41,9 @@ export default function Hero({ landingPageAudience }: HeroProps) {
               />
             </a>
           </div>
-          <ThemeToggle />
+          {!isMobile && (
+            <ThemeToggle />
+          )}
           <div className="flex flex-1 justify-end items-center">
             <Link
               href="https://github.com/interviewcrew/interview"
