@@ -20,25 +20,46 @@ export default function Hero({ landingPageAudience }: HeroProps) {
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
           aria-label="Global"
-          className="flex items-center justify-between p-6 lg:px-8"
+          className="flex items-center justify-between p-6 md:py-2 lg:px-8"
         >
           <div className="flex flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Interview Crew</span>
-              <Image
-                alt="InterviewCrew Logo"
-                src="/logo-light.svg"
-                className="h-8 w-auto dark:hidden"
-                width={32}
-                height={32}
-              />
-              <Image
-                alt="InterviewCrew Logo"
-                src="/logo-dark.svg"
-                className="h-8 w-auto not-dark:hidden"
-                width={32}
-                height={32}
-              />
+              {isMobile ? (
+                <>
+                  <Image
+                    alt="InterviewCrew Logo"
+                    src="/logo-light.svg"
+                    className="h-8 w-auto dark:hidden"
+                    width={32}
+                    height={32}
+                  />
+                  <Image
+                    alt="InterviewCrew Logo"
+                    src="/logo-dark.svg"
+                    className="h-8 w-auto hidden dark:block"
+                    width={32}
+                    height={32}
+                  />
+                </>
+              ) : (
+                <>
+                  <Image
+                    alt="InterviewCrew Logo"
+                    src="/logo-typography-light.svg"
+                    className="h-16 w-auto dark:hidden"
+                    width={158}
+                    height={64}
+                  />
+                  <Image
+                    alt="InterviewCrew Logo"
+                    src="/logo-typography-dark.svg"
+                    className="h-16 w-auto hidden dark:block"
+                    width={158}
+                    height={64}
+                  />
+                </>
+              )}
             </a>
           </div>
           {!isMobile && (
