@@ -6,15 +6,12 @@ import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { LandingPageAudience } from "@/modules/landing/ui/components/select-landing-page-audience";
 import ThemeToggle from "@/components/ui/theme-toggle";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface HeroProps {
   landingPageAudience: LandingPageAudience;
 }
 
 export default function Hero({ landingPageAudience }: HeroProps) {
-  const isMobile = useIsMobile();
-
   return (
     <div className="bg-transparent min-h-[20vh]">
       <header className="absolute inset-x-0 top-0 z-50">
@@ -25,46 +22,41 @@ export default function Hero({ landingPageAudience }: HeroProps) {
           <div className="flex flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Interview Crew</span>
-              {isMobile ? (
-                <>
-                  <Image
-                    alt="InterviewCrew Logo"
-                    src="/logo-light.svg"
-                    className="h-8 w-auto dark:hidden"
-                    width={32}
-                    height={32}
-                  />
-                  <Image
-                    alt="InterviewCrew Logo"
-                    src="/logo-dark.svg"
-                    className="h-8 w-auto hidden dark:block"
-                    width={32}
-                    height={32}
-                  />
-                </>
-              ) : (
-                <>
-                  <Image
-                    alt="InterviewCrew Logo"
-                    src="/logo-typography-light.svg"
-                    className="h-16 w-auto dark:hidden"
-                    width={158}
-                    height={64}
-                  />
-                  <Image
-                    alt="InterviewCrew Logo"
-                    src="/logo-typography-dark.svg"
-                    className="h-16 w-auto hidden dark:block"
-                    width={158}
-                    height={64}
-                  />
-                </>
-              )}
+              {/* Mobile logos */}
+              <Image
+                alt="InterviewCrew Logo"
+                src="/logo-light.svg"
+                className="h-8 w-auto dark:hidden md:hidden"
+                width={32}
+                height={32}
+              />
+              <Image
+                alt="InterviewCrew Logo"
+                src="/logo-dark.svg"
+                className="h-8 w-auto hidden dark:block dark:md:hidden"
+                width={32}
+                height={32}
+              />
+              {/* Desktop logos */}
+              <Image
+                alt="InterviewCrew Logo"
+                src="/logo-typography-light.svg"
+                className="h-16 w-auto hidden md:block dark:md:hidden"
+                width={158}
+                height={64}
+              />
+              <Image
+                alt="InterviewCrew Logo"
+                src="/logo-typography-dark.svg"
+                className="h-16 w-auto hidden dark:md:block"
+                width={158}
+                height={64}
+              />
             </a>
           </div>
-          {!isMobile && (
+          <div className="hidden md:block">
             <ThemeToggle />
-          )}
+          </div>
           <div className="flex flex-1 justify-end items-center">
             <Link
               href="https://github.com/interviewcrew/interview"
