@@ -87,7 +87,7 @@ export const SignUpView = () => {
         },
         onSuccess: () => {
           setPending(false);
-          router.push("/");
+          router.push("/dashboard");
         },
       }
     );

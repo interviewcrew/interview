@@ -14,7 +14,7 @@ const SignInPage = async () => {
   })
 
   if(!!session) {
-    redirect("/");
+    redirect("/dashboard");
   }
 
   return <SignInView />;

@@ -63,7 +63,7 @@ export const SignInView = () => {
         },
         onSuccess: () => {
           setPending(false);
-          router.push("/");
+          router.push("/dashboard");
         },
       }
     );

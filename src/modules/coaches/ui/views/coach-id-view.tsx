@@ -51,7 +51,7 @@ export const CoachIdView = ({ coachId }: CoachIdViewProps) => {
           trpc.coaches.getMany.queryOptions({})
         );
 
-        router.push("/coaches");
+        router.push("/dashboard/coaches");
 
         setRemoving(false);
       },
