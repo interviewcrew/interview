@@ -34,7 +34,7 @@ export const interviewsRouter = createTRPCRouter({
         .select({
           ...getTableColumns(interviews),
           coach: coaches,
-          duration: sql<number>`extract(epoch from interviews.ended_at - interviews.started_at)`.as("duration"),
+          duration: sql<number | null>`extract(epoch from interviews.ended_at - interviews.started_at)`.as("duration"),
         })
         .from(interviews)
         .innerJoin(coaches, eq(interviews.coachId, coaches.id))

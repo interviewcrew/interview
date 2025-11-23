@@ -45,6 +45,16 @@ const statusColorMap = {
   cancelled: "bg-rose-500/20 text-rose-800 border-rose-800/5",
 };
 
+function getStatusIcon(status: InterviewGetMany[number]["status"]) {
+  const icon = statusIconMap[status as keyof typeof statusIconMap];
+  return icon ?? ClockArrowUpIcon;
+}
+
+function getStatusColor(status: InterviewGetMany[number]["status"]) {
+  const color = statusColorMap[status as keyof typeof statusColorMap];
+  return color ?? "bg-yellow-500/20 text-yellow-800 border-yellow-800/5";
+}
+
 export const columns: ColumnDef<InterviewGetMany[number]>[] = [
   {
     accessorKey: "name",
@@ -77,15 +87,14 @@ export const columns: ColumnDef<InterviewGetMany[number]>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const StatusIcon =
-        statusIconMap[row.original.status as keyof typeof statusIconMap];
+      const StatusIcon = getStatusIcon(row.original.status);
 
       return (
         <Badge
           variant="outline"
           className={cn(
             "capitalize [&>svg]:size-4 text-muted-foreground",
-            statusColorMap[row.original.status as keyof typeof statusColorMap]
+            getStatusColor(row.original.status)
           )}
         >
           <StatusIcon
