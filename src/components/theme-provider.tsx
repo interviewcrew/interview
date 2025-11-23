@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentProps, useEffect } from "react";
+import * as React from "react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -8,11 +8,12 @@ function ThemeWatcher() {
   const { theme, setTheme } = useTheme();
   const isMobile = useIsMobile();
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isMobile && theme !== "system") {
       setTheme("system");
     }
-  }, [isMobile, theme, setTheme]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile, theme]);
 
   return null;
 }
@@ -20,7 +21,7 @@ function ThemeWatcher() {
 export function ThemeProvider({
   children,
   ...props
-}: ComponentProps<typeof NextThemesProvider>) {
+}: React.ComponentProps<typeof NextThemesProvider>) {
   return (
     <NextThemesProvider {...props}>
       <ThemeWatcher />

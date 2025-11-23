@@ -20,7 +20,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Interview Crew Candidate Preparation Portal",
-  description: "Preparing A-players Software Engineers to for their dream job",
+  description: "Preparing A-players Software Engineers for their dream job",
   icons: {
     icon: [
       {
