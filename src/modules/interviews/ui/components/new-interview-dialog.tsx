@@ -24,7 +24,7 @@ export const NewInterviewDialog = ({
       <InterviewForm
         onSuccess={(id) => {
           onOpenChange(false);
-          router.push(`/interviews/${id}`);
+          router.push(`/dashboard/interviews/${id}`);
         }}
         onCancel={() => onOpenChange(false)}
       />

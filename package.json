@@ -60,6 +60,7 @@
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.6",
     "embla-carousel-react": "^8.6.0",
+    "humanize-duration": "^3.33.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.546.0",
     "nanoid": "^5.1.6",
@@ -83,6 +84,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/humanize-duration": "^3.27.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

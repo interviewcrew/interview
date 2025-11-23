@@ -10,13 +10,13 @@ import {
 } from "lucide-react";
 
 // import from the libraries
-import { CoachGetById } from "@/modules/coaches/types";
+import { CoachGetMany } from "@/modules/coaches/types";
 
 // import from the components
 import { Badge } from "@/components/ui/badge";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 
-export const columns: ColumnDef<CoachGetById>[] = [
+export const columns: ColumnDef<CoachGetMany[number]>[] = [
   {
     accessorKey: "name",
     header: "Coach Name",
