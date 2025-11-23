@@ -14,7 +14,7 @@ const SignUpPage = async () => {
   });
 
   if (!!session) {
-    redirect("/");
+    redirect("/dashboard");
   }
 
   return <SignUpView />;

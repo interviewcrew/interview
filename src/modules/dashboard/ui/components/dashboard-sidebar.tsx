@@ -27,12 +27,12 @@ const firstSection = [
   {
     icon: VideoIcon,
     label: "Interviews",
-    href: "/interviews",
+    href: "/dashboard/interviews",
   },
   {
     icon: BotIcon,
     label: "Coaches",
-    href: "/coaches",
+    href: "/dashboard/coaches",
   },
 ];
 
@@ -40,7 +40,7 @@ const secondSection = [
   {
     icon: SettingsIcon,
     label: "Settings",
-    href: "/settings",
+    href: "/dashboard/settings",
   },
 ];
 
@@ -50,11 +50,8 @@ export const DashboardSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader className="text-sidebar-accent-foreground">
-        <Link href="/" className="flex items-center gap-2 px-2 pt-2">
-          <Image src="/logo.svg" alt="Logo" width={36} height={36} />
-          <div>
-            <p className="text-lg font-semibold">Interviewcrew</p>
-          </div>
+        <Link href="/dashboard" className="flex items-center gap-2 px-2 pt-2">
+          <Image src="/logo-typography-dark.svg" alt="Logo" width={158} height={64} />
         </Link>
       </SidebarHeader>
       <div className="px-4 py-2">

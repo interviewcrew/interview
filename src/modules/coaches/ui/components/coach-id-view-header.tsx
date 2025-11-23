@@ -45,7 +45,7 @@ export const CoachIdViewHeader = ({
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild className="font-medium text-xl">
-              <Link href="/coaches">Coaches</Link>
+              <Link href="/dashboard/coaches">Coaches</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator className="text-foreground text-xl font-medium [&>svg]:size-4">
@@ -56,7 +56,7 @@ export const CoachIdViewHeader = ({
               asChild
               className="font-medium text-xl text-foreground"
             >
-              <Link href={`/coaches/${coach.id}`}>{coach.name}</Link>
+              <Link href={`/dashboard/coaches/${coach.id}`}>{coach.name}</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>

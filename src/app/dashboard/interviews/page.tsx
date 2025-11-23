@@ -13,6 +13,7 @@ import {
   InterviewsViewError,
   InterviewsViewLoading,
 } from "@/modules/interviews/ui/views/interviews-view";
+import { InterviewsListHeader } from "@/modules/interviews/ui/components/interviews-list-header";
 
 // import from the libraries
 import { getQueryClient, trpc } from "@/trpc/server";
@@ -33,7 +34,8 @@ export default async function InterviewsPage() {
   await queryClient.prefetchQuery(trpc.interviews.getMany.queryOptions({}));
 
   return (
-    <div>
+    <>
+      <InterviewsListHeader />
       <HydrationBoundary state={dehydrate(queryClient)}>
         <ErrorBoundary fallback={<InterviewsViewError />}>
           <Suspense fallback={<InterviewsViewLoading />}>
@@ -41,6 +43,6 @@ export default async function InterviewsPage() {
           </Suspense>
         </ErrorBoundary>
       </HydrationBoundary>
-    </div>
+    </>
   );
 }
