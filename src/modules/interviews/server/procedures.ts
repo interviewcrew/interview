@@ -1,6 +1,6 @@
 // import from the libraries
 import { db } from "@/db";
-import { interviews } from "@/db/schema";
+import { coaches, interviews } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "@/constants";
 import {
@@ -10,7 +10,7 @@ import {
 
 // import from the packages
 import z from "zod";
-import { count, desc, eq, getTableColumns, ilike, and } from "drizzle-orm";
+import { count, desc, eq, getTableColumns, ilike, and, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 export const interviewsRouter = createTRPCRouter({
@@ -33,8 +33,11 @@ export const interviewsRouter = createTRPCRouter({
       const data = await db
         .select({
           ...getTableColumns(interviews),
+          coach: coaches,
+          duration: sql<number>`extract(epoch from interviews.ended_at - interviews.started_at)`.as("duration"),
         })
         .from(interviews)
+        .innerJoin(coaches, eq(interviews.coachId, coaches.id))
         .where(
           and(
             search ? ilike(interviews.title, `%${search}%`) : undefined,
@@ -51,6 +54,7 @@ export const interviewsRouter = createTRPCRouter({
       const [total] = await db
         .select({ count: count() })
         .from(interviews)
+        .innerJoin(coaches, eq(interviews.coachId, coaches.id))
         .where(
           and(
             search ? ilike(interviews.title, `%${search}%`) : undefined,

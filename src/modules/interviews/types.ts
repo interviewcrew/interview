@@ -4,4 +4,5 @@ import { inferRouterOutputs } from "@trpc/server";
 // import from the libraries
 import type { AppRouter } from "@/trpc/routers/_app";
 
+export type InterviewGetMany = inferRouterOutputs<AppRouter>["interviews"]["getMany"]["items"];
 export type InterviewGetById = inferRouterOutputs<AppRouter>["interviews"]["getById"];

@@ -11,7 +11,7 @@ import { useTRPC } from "@/trpc/client";
 import { useCoachFilters } from "@/modules/coaches/hooks/use-coach-filters";
 
 // import from the components
-import { DataTable } from "@/modules/coaches/ui/components/data-table";
+import { DataTable } from "@/components/data-table";
 import { columns } from "@/modules/coaches/ui/components/columns";
 import { EmptyState } from "@/components/empty-state";
 import { LoadingState } from "@/components/loading-state";
