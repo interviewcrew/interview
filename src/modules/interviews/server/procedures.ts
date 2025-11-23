@@ -3,17 +3,14 @@ import { db } from "@/db";
 import { interviews } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "@/constants";
+import {
+  createInterviewSchema,
+  updateInterviewSchema,
+} from "@/modules/interviews/schemas";
 
 // import from the packages
 import z from "zod";
-import {
-  count,
-  desc,
-  eq,
-  getTableColumns,
-  ilike,
-  and,
-} from "drizzle-orm";
+import { count, desc, eq, getTableColumns, ilike, and } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 export const interviewsRouter = createTRPCRouter({
@@ -83,6 +80,39 @@ export const interviewsRouter = createTRPCRouter({
         .from(interviews)
         .where(and(eq(interviews.id, input.id), eq(interviews.userId, userId)))
         .limit(1);
+
+      if (!interview) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Interview not found",
+        });
+      }
+
+      return interview;
+    }),
+  create: protectedProcedure
+    .input(createInterviewSchema)
+    .mutation(async ({ input, ctx }) => {
+      const [createdInterview] = await db
+        .insert(interviews)
+        .values({
+          ...input,
+          userId: ctx.auth.user.id,
+        })
+        .returning();
+
+      return createdInterview;
+    }),
+  update: protectedProcedure
+    .input(updateInterviewSchema)
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.auth.user.id;
+
+      const [interview] = await db
+        .update(interviews)
+        .set(input)
+        .where(and(eq(interviews.id, input.id), eq(interviews.userId, userId)))
+        .returning();
 
       if (!interview) {
         throw new TRPCError({
