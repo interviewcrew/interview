@@ -27,6 +27,9 @@ export const InterviewsView = () => {
     trpc.interviews.getMany.queryOptions({ ...filters })
   );
 
+  const hasActiveFilters =
+    !!filters.search || !!filters.status || !!filters.coachId;
+
   return (
     <div className="flex-1 pb-4 px-4 md:px-8 flex flex-col gap-y-4">
       <DataTable
@@ -36,8 +39,16 @@ export const InterviewsView = () => {
       />
       {interviews.items.length === 0 && (
         <EmptyState
-          title="Create your first interview"
-          description="Create an interview to get started."
+          title={
+            hasActiveFilters
+              ? "No interviews found"
+              : "Create your first interview"
+          }
+          description={
+            hasActiveFilters
+              ? "Try adjusting your filters to see more results."
+              : "Create an interview to get started."
+          }
         />
       )}
       <DataPagination

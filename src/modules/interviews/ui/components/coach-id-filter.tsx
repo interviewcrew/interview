@@ -1,11 +1,17 @@
+// import from the framework
 import { useState } from "react";
+
+// import from the packages
 import { useQuery } from "@tanstack/react-query";
 
+// import from the libraries
 import { useTRPC } from "@/trpc/client";
 import { CommandSelect } from "@/components/command-select";
-import { GeneratedAvatar } from "@/components/generated-avatar";
-
 import { useInterviewsFilters } from "@/modules/interviews/hooks/use-interviews-filters";
+import { MAX_PAGE_SIZE } from "@/constants";
+
+// import from the components
+import { GeneratedAvatar } from "@/components/generated-avatar";
 
 export const CoachIdFilter = () => {
     const [filters, setFilters] = useInterviewsFilters();
@@ -14,7 +20,7 @@ export const CoachIdFilter = () => {
 
     const trpc = useTRPC();
     const {data: coaches} = useQuery(trpc.coaches.getMany.queryOptions({
-        pageSize: 100,
+        pageSize: MAX_PAGE_SIZE,
         search: coachSearch,
     }));
 
