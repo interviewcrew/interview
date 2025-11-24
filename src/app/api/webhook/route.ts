@@ -72,14 +72,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await db
-      .update(interviews)
-      .set({
-        status: InterviewStatus.IN_PROGRESS,
-        startedAt: new Date(),
-      })
-      .where(eq(interviews.id, interviewId));
-
     const [coach] = await db
       .select()
       .from(coaches)
@@ -111,7 +103,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log("OpenAI bot connected", realtimeClient);
+    await db
+      .update(interviews)
+      .set({
+        status: InterviewStatus.IN_PROGRESS,
+        startedAt: new Date(),
+      })
+      .where(eq(interviews.id, interviewId));
   } else if (eventType === "call.session_participant_left") {
     const event = payload as CallSessionParticipantLeftEvent;
     const interviewId = event.call_cid.split(":")[1]; // call_cid is formatted as "type:id"
