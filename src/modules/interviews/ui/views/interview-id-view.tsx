@@ -15,12 +15,17 @@ import { toast } from "sonner";
 // import from the libraries
 import { useTRPC } from "@/trpc/client";
 import { useConfirm } from "@/hooks/use-confirm";
+import { InterviewStatus } from "@/modules/interviews/types";
 
 // import from the components
 import { LoadingState } from "@/components/loading-state";
 import { ErrorState } from "@/components/error-state";
 import { InterviewIdViewHeader } from "@/modules/interviews/ui/components/interview-id-view-header";
 import { UpdateInterviewDialog } from "@/modules/interviews/ui/components/update-interview-dialog";
+import { UpcomingState } from "@/modules/interviews/ui/components/upcoming-state";
+import { InProgressState } from "@/modules/interviews/ui/components/in-progress-state";
+import { CancelledState } from "@/modules/interviews/ui/components/cancelled-state";
+import { ProcessingState } from "@/modules/interviews/ui/components/processing-state";
 
 interface InterviewIdViewProps {
   interviewId: string;
@@ -43,6 +48,12 @@ export const InterviewIdView = ({ interviewId }: InterviewIdViewProps) => {
   const { data: interview } = useSuspenseQuery(
     trpc.interviews.getById.queryOptions({ id: interviewId })
   );
+
+  const isUpcoming = interview?.status === InterviewStatus.UPCOMING;
+  const isInProgress = interview?.status === InterviewStatus.IN_PROGRESS;
+  const isCompleted = interview?.status === InterviewStatus.COMPLETED;
+  const isCancelled = interview?.status === InterviewStatus.CANCELLED;
+  const isProcessing = interview?.status === InterviewStatus.PROCESSING;
 
   const removeInterviewMutation = useMutation(
     trpc.interviews.remove.mutationOptions({
@@ -92,7 +103,17 @@ export const InterviewIdView = ({ interviewId }: InterviewIdViewProps) => {
             onEdit={() => setUpdateInterviewDialogOpen(true)}
             onRemove={handleRemoveInterview}
           />
-          {JSON.stringify(interview)}
+          {isUpcoming && (
+            <UpcomingState
+              interviewId={interviewId}
+              onCancelInterview={() => {}}
+              isCancellingInterview={false}
+            />
+          )}
+          {isInProgress && <InProgressState interviewId={interviewId} />}
+          {isCompleted && <div>Completed</div>}
+          {isCancelled && <CancelledState />}
+          {isProcessing && <ProcessingState />}
         </div>
       )}
     </>
