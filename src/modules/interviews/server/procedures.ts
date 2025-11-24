@@ -12,6 +12,7 @@ import {
 import z from "zod";
 import { count, desc, eq, getTableColumns, ilike, and, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { InterviewStatus } from "@/modules/interviews/types";
 
 export const interviewsRouter = createTRPCRouter({
   getMany: protectedProcedure
@@ -24,10 +25,12 @@ export const interviewsRouter = createTRPCRouter({
           .max(MAX_PAGE_SIZE)
           .default(DEFAULT_PAGE_SIZE),
         search: z.string().nullish(),
+        coachId: z.string().nullish(),
+        status: z.enum(Object.values(InterviewStatus)).nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const { page, pageSize, search } = input;
+      const { page, pageSize, search, coachId, status } = input;
       const userId = ctx.auth.user.id;
 
       const data = await db
@@ -40,8 +43,10 @@ export const interviewsRouter = createTRPCRouter({
         .innerJoin(coaches, eq(interviews.coachId, coaches.id))
         .where(
           and(
+            eq(interviews.userId, userId),
             search ? ilike(interviews.title, `%${search}%`) : undefined,
-            eq(interviews.userId, userId)
+            coachId ? eq(interviews.coachId, coachId) : undefined,
+            status ? eq(interviews.status, status) : undefined,
           )
         )
         .orderBy(desc(interviews.createdAt), desc(interviews.id))
@@ -57,8 +62,10 @@ export const interviewsRouter = createTRPCRouter({
         .innerJoin(coaches, eq(interviews.coachId, coaches.id))
         .where(
           and(
+            eq(interviews.userId, userId),
             search ? ilike(interviews.title, `%${search}%`) : undefined,
-            eq(interviews.userId, userId)
+            coachId ? eq(interviews.coachId, coachId) : undefined,
+            status ? eq(interviews.status, status) : undefined,
           )
         );
 

@@ -14,12 +14,14 @@ import { CoachesSearchFilter } from "@/modules/coaches/ui/components/coaches-sea
 import { Button } from "@/components/ui/button";
 import { NewCoachDialog } from "@/modules/coaches/ui/components/new-coach-dialog";
 import { useCoachFilters } from "@/modules/coaches/hooks/use-coach-filters";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export const CoachesListHeader = () => {
   const [filters, setFilters] = useCoachFilters();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const isAnyFilterApplied = filters.search !== "" || filters.page !== DEFAULT_PAGE;
+  const isAnyFilterApplied =
+    filters.search !== "" || filters.page !== DEFAULT_PAGE;
 
   const onClearFilters = () => {
     setFilters({ search: "", page: DEFAULT_PAGE });
@@ -36,15 +38,18 @@ export const CoachesListHeader = () => {
             New Coach
           </Button>
         </div>
-        <div className="flex items-center gap-x-2 p-1">
-          <CoachesSearchFilter />
-          {isAnyFilterApplied && (
-            <Button variant="outline" size="sm" onClick={onClearFilters}>
-              <XCircleIcon/>
-              Clear Filters
-            </Button>
-          )}
-        </div>
+        <ScrollArea>
+          <div className="flex items-center gap-x-2 p-1">
+            <CoachesSearchFilter />
+            {isAnyFilterApplied && (
+              <Button variant="outline" size="sm" onClick={onClearFilters}>
+                <XCircleIcon />
+                Clear Filters
+              </Button>
+            )}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </>
   );
