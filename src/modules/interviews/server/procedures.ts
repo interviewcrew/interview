@@ -7,6 +7,8 @@ import {
   createInterviewSchema,
   updateInterviewSchema,
 } from "@/modules/interviews/schemas";
+import { streamVideo } from "@/lib/stream-video";
+import { generateAvatarUri } from "@/lib/avatar";
 
 // import from the packages
 import z from "zod";
@@ -15,6 +17,30 @@ import { TRPCError } from "@trpc/server";
 import { InterviewStatus } from "@/modules/interviews/types";
 
 export const interviewsRouter = createTRPCRouter({
+  generateToken: protectedProcedure.mutation(async ({ ctx }) => {
+    await streamVideo.upsertUsers([
+      {
+        id: ctx.auth.user.id,
+        name: ctx.auth.user.name,
+        role: "user",
+        image:
+          ctx.auth.user.image ??
+          generateAvatarUri({ seed: ctx.auth.user.id, variant: "initials" }),
+      },
+    ]);
+
+    const validityInSeconds = 3600;
+    const issuedAt = Math.floor(Date.now() / 1000);
+    const expirationTime = issuedAt + validityInSeconds;
+
+    const token = streamVideo.generateUserToken({
+      user_id: ctx.auth.user.id,
+      exp: expirationTime,
+      validity_in_seconds: validityInSeconds,
+    });
+
+    return token;
+  }),
   getMany: protectedProcedure
     .input(
       z.object({
@@ -37,7 +63,11 @@ export const interviewsRouter = createTRPCRouter({
         .select({
           ...getTableColumns(interviews),
           coach: coaches,
-          duration: sql<number | null>`extract(epoch from interviews.ended_at - interviews.started_at)`.as("duration"),
+          duration: sql<
+            number | null
+          >`extract(epoch from interviews.ended_at - interviews.started_at)`.as(
+            "duration"
+          ),
         })
         .from(interviews)
         .innerJoin(coaches, eq(interviews.coachId, coaches.id))
@@ -46,7 +76,7 @@ export const interviewsRouter = createTRPCRouter({
             eq(interviews.userId, userId),
             search ? ilike(interviews.title, `%${search}%`) : undefined,
             coachId ? eq(interviews.coachId, coachId) : undefined,
-            status ? eq(interviews.status, status) : undefined,
+            status ? eq(interviews.status, status) : undefined
           )
         )
         .orderBy(desc(interviews.createdAt), desc(interviews.id))
@@ -65,7 +95,7 @@ export const interviewsRouter = createTRPCRouter({
             eq(interviews.userId, userId),
             search ? ilike(interviews.title, `%${search}%`) : undefined,
             coachId ? eq(interviews.coachId, coachId) : undefined,
-            status ? eq(interviews.status, status) : undefined,
+            status ? eq(interviews.status, status) : undefined
           )
         );
 
@@ -88,7 +118,11 @@ export const interviewsRouter = createTRPCRouter({
         .select({
           ...getTableColumns(interviews),
           coach: coaches,
-          duration: sql<number | null>`extract(epoch from interviews.ended_at - interviews.started_at)`.as("duration"),
+          duration: sql<
+            number | null
+          >`extract(epoch from interviews.ended_at - interviews.started_at)`.as(
+            "duration"
+          ),
         })
         .from(interviews)
         .innerJoin(coaches, eq(interviews.coachId, coaches.id))
@@ -114,6 +148,54 @@ export const interviewsRouter = createTRPCRouter({
           userId: ctx.auth.user.id,
         })
         .returning();
+
+      // TODO: Create Stream Call, Upsert Stream Users
+      const call = streamVideo.video.call("default", createdInterview.id);
+      await call.create({
+        data: {
+          created_by_id: ctx.auth.user.id,
+          custom: {
+            interview_id: createdInterview.id,
+            interview_title: createdInterview.title,
+          },
+          settings_override: {
+            transcription: {
+              language: "en",
+              mode: "auto-on",
+              closed_caption_mode: "auto-on",
+            },
+            recording: {
+              mode: "auto-on",
+              quality: "1080p",
+            },
+          },
+        },
+      });
+
+      const [existingCoach] = await db
+        .select()
+        .from(coaches)
+        .where(eq(coaches.id, input.coachId))
+        .limit(1);
+
+      if (!existingCoach) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Coach not found",
+        });
+      }
+
+      await streamVideo.upsertUsers([
+        {
+          id: existingCoach.id,
+          name: existingCoach.name,
+          role: "user",
+          image: generateAvatarUri({
+            seed: existingCoach.name,
+            variant: "botttsNeutral",
+          }),
+        },
+      ]);
 
       return createdInterview;
     }),
