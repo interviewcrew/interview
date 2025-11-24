@@ -1,5 +1,8 @@
+// import from the framework
+import { ReactNode } from "react";
+
 interface CallsLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function CallsLayout({

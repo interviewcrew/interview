@@ -22,20 +22,21 @@ export const interviewsRouter = createTRPCRouter({
       {
         id: ctx.auth.user.id,
         name: ctx.auth.user.name,
-        role: "admin",
+        role: "user",
         image:
           ctx.auth.user.image ??
           generateAvatarUri({ seed: ctx.auth.user.id, variant: "initials" }),
       },
     ]);
 
-    const expirationTime = Math.floor(Date.now() / 1000) + 3600; // 1 hour
+    const validityInSeconds = 3600;
     const issuedAt = Math.floor(Date.now() / 1000);
+    const expirationTime = issuedAt + validityInSeconds;
 
     const token = streamVideo.generateUserToken({
       user_id: ctx.auth.user.id,
       exp: expirationTime,
-      validity_in_seconds: issuedAt,
+      validity_in_seconds: validityInSeconds,
     });
 
     return token;
