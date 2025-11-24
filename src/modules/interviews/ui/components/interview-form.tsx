@@ -150,7 +150,7 @@ export const InterviewForm = ({
                       id: coach.id,
                       value: coach.id,
                       children: (
-                        <div>
+                        <div className="flex items-center gap-x-2">
                           <GeneratedAvatar
                             seed={coach.name}
                             variant="botttsNeutral"

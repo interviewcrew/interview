@@ -87,8 +87,11 @@ export const interviewsRouter = createTRPCRouter({
       const [interview] = await db
         .select({
           ...getTableColumns(interviews),
+          coach: coaches,
+          duration: sql<number | null>`extract(epoch from interviews.ended_at - interviews.started_at)`.as("duration"),
         })
         .from(interviews)
+        .innerJoin(coaches, eq(interviews.coachId, coaches.id))
         .where(and(eq(interviews.id, input.id), eq(interviews.userId, userId)))
         .limit(1);
 
@@ -122,6 +125,25 @@ export const interviewsRouter = createTRPCRouter({
       const [interview] = await db
         .update(interviews)
         .set(input)
+        .where(and(eq(interviews.id, input.id), eq(interviews.userId, userId)))
+        .returning();
+
+      if (!interview) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Interview not found",
+        });
+      }
+
+      return interview;
+    }),
+  remove: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.auth.user.id;
+
+      const [interview] = await db
+        .delete(interviews)
         .where(and(eq(interviews.id, input.id), eq(interviews.userId, userId)))
         .returning();
 
