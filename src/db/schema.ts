@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { InterviewStatus } from "@/modules/interviews/types";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -76,11 +77,11 @@ export const coaches = pgTable("coach", {
 });
 
 export const interviewStatus = pgEnum("interview_status", [
-  "upcoming",
-  "in-progress",
-  "completed",
-  "processing",
-  "cancelled",
+  InterviewStatus.UPCOMING,
+  InterviewStatus.IN_PROGRESS,
+  InterviewStatus.COMPLETED,
+  InterviewStatus.PROCESSING,
+  InterviewStatus.CANCELLED,
 ]);
 
 export const interviews = pgTable("interviews", {
@@ -94,7 +95,7 @@ export const interviews = pgTable("interviews", {
   coachId: text("coach_id")
     .notNull()
     .references(() => coaches.id, { onDelete: "cascade" }),
-  status: interviewStatus("status").notNull().default("upcoming"),
+  status: interviewStatus("status").notNull().default(InterviewStatus.UPCOMING),
   startedAt: timestamp("started_at"),
   endedAt: timestamp("ended_at"),
   transcriptUrl: text("transcript_url"),

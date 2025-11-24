@@ -16,7 +16,7 @@ import { columns } from "@/modules/coaches/ui/components/columns";
 import { EmptyState } from "@/components/empty-state";
 import { LoadingState } from "@/components/loading-state";
 import { ErrorState } from "@/components/error-state";
-import { DataPagination } from "@/modules/coaches/ui/components/data-pagination";
+import { DataPagination } from "@/components/ui/data-pagination";
 
 export const CoachesView = () => {
   const router = useRouter();

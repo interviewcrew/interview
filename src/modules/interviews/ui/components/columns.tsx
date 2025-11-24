@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import humanizeDuration from "humanize-duration";
 
 // import from the libraries
-import { InterviewGetMany } from "@/modules/interviews/types";
+import { InterviewGetMany, InterviewStatus } from "@/modules/interviews/types";
 import { cn } from "@/lib/utils";
 
 // import from the components
@@ -30,19 +30,19 @@ function formatDuration(seconds: number) {
 }
 
 const statusIconMap = {
-  upcoming: ClockArrowUpIcon,
-  "in-progress": LoaderIcon,
-  completed: CircleCheckIcon,
-  processing: LoaderIcon,
-  cancelled: CircleXIcon,
+  [InterviewStatus.UPCOMING]: ClockArrowUpIcon,
+  [InterviewStatus.IN_PROGRESS]: LoaderIcon,
+  [InterviewStatus.COMPLETED]: CircleCheckIcon,
+  [InterviewStatus.PROCESSING]: LoaderIcon,
+  [InterviewStatus.CANCELLED]: CircleXIcon,
 };
 
 const statusColorMap = {
-  upcoming: "bg-yellow-500/20 text-yellow-800 border-yellow-800/5",
-  "in-progress": "bg-blue-500/20 text-blue-800 border-blue-800/5",
-  completed: "bg-emerald-500/20 text-emerald-800 border-emerald-800/5",
-  processing: "bg-gray-500/20 text-gray-800 border-gray-800/5",
-  cancelled: "bg-rose-500/20 text-rose-800 border-rose-800/5",
+  [InterviewStatus.UPCOMING]: "bg-yellow-500/20 text-yellow-800 border-yellow-800/5",
+  [InterviewStatus.IN_PROGRESS]: "bg-blue-500/20 text-blue-800 border-blue-800/5",
+  [InterviewStatus.COMPLETED]: "bg-emerald-500/20 text-emerald-800 border-emerald-800/5",
+  [InterviewStatus.PROCESSING]: "bg-gray-500/20 text-gray-800 border-gray-800/5",
+  [InterviewStatus.CANCELLED]: "bg-rose-500/20 text-rose-800 border-rose-800/5",
 };
 
 function getStatusIcon(status: InterviewGetMany[number]["status"]) {
