@@ -41,7 +41,7 @@ export const UpcomingState = ({
           className="w-full lg:w-auto"
           disabled={isCancellingInterview}
         >
-          <Link href={`/dashboard/calls/${interviewId}/`}>
+          <Link href={`/calls/${interviewId}/`}>
             <VideoIcon />
             Start Interview
           </Link>
