@@ -43,7 +43,7 @@ export const coachesRouter = createTRPCRouter({
       const data = await db
         .select({
           ...getTableColumns(coaches),
-          meetingCount: sql<number>`5`.as("meeting_count"),
+          interviewCount: sql<number>`5`.as("interview_count"),
           isOfficial: isNull(coaches.userId),
         })
         .from(coaches)
@@ -88,7 +88,7 @@ export const coachesRouter = createTRPCRouter({
       const [coach] = await db
         .select({
           ...getTableColumns(coaches),
-          meetingCount: sql<number>`5`.as("meeting_count"),
+          interviewCount: sql<number>`5`.as("interview_count"),
           isOfficial: isNull(coaches.userId),
         })
         .from(coaches)

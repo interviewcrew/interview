@@ -40,16 +40,16 @@ export const columns: ColumnDef<CoachGetMany[number]>[] = [
     ),
   },
   {
-    accessorKey: "meetingCount",
-    header: "Meetings",
+    accessorKey: "interviewCount",
+    header: "Interviews",
     cell: ({ row }) => (
       <Badge
         variant="outline"
         className="flex items-center gap-x-2 [&>svg]:size-4"
       >
         <VideoIcon className="text-blue-700" />
-        {row.original.meetingCount}{" "}
-        {row.original.meetingCount === 1 ? "Meeting" : "Meetings"}
+        {row.original.interviewCount}{" "}
+        {row.original.interviewCount === 1 ? "Interview" : "Interviews"}
       </Badge>
     ),
   },

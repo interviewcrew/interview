@@ -3,8 +3,6 @@ import { cn } from "@/lib/utils";
 import { monaspaceNeon } from "@/app/fonts";
 
 export const metadata: Metadata = {
-  title: "Interview Crew Candidate Preparation Portal",
-  description: "Preparing A-players Software Engineers to for their dream job",
   openGraph: {
     type: "website",
     title: "Interview Crew Candidate Preparation Portal",
@@ -28,9 +26,6 @@ export const metadata: Metadata = {
     description:
       "Preparing A-players Software Engineers to for their dream job",
     images: ["https://interviewcrew.io/social_card.png"],
-  },
-  icons: {
-    icon: "/interviewcrew.png",
   },
 };
 

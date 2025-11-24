@@ -65,9 +65,9 @@ export const CoachIdView = ({ coachId }: CoachIdViewProps) => {
   const [RemoveConfirmationDialog, confirmRemove] = useConfirm(
     "Remove coach",
     `Are you sure you want to remove this coach? It would also delete ${
-      coach.meetingCount
+      coach.interviewCount
     } ${
-      coach.meetingCount === 1 ? "meeting" : "meetings"
+      coach.interviewCount === 1 ? "interview" : "interviews"
     } associated with it permanently.`,
     "destructive"
   );
@@ -80,6 +80,8 @@ export const CoachIdView = ({ coachId }: CoachIdViewProps) => {
     setRemoving(true);
 
     await removeCoachMutation.mutateAsync({ id: coachId });
+
+    setRemoving(false);
   };
 
   return (
@@ -117,8 +119,8 @@ export const CoachIdView = ({ coachId }: CoachIdViewProps) => {
                 className="flex items-center gap-x-2 [&>svg]:size-4"
               >
                 <VideoIcon />
-                {coach.meetingCount}{" "}
-                {coach.meetingCount === 1 ? "meeting" : "meetings"}
+                {coach.interviewCount}{" "}
+                {coach.interviewCount === 1 ? "interview" : "interviews"}
               </Badge>
               <div className="flex flex-col gap-y-4">
                 <p className="text-lg font-medium">Instructions</p>

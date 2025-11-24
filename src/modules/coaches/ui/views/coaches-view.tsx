@@ -42,7 +42,7 @@ export const CoachesView = () => {
       {items.length === 0 && (
         <EmptyState
           title="Create your first coach"
-          description="Create a coach to join your meetings. Each coach will follow your instructions and can interact with participants during the call."
+          description="Create a coach to conduct your interviews. Each coach will follow your instructions and can interact with participants during the call."
         />
       )}
     </div>
