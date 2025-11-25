@@ -1,6 +1,8 @@
-import { and, eq } from "drizzle-orm";
+// import from the framework
 import { NextRequest, NextResponse } from "next/server";
 
+// import from the packages
+import { and, eq } from "drizzle-orm";
 import {
   CallEndedEvent,
   CallTranscriptionReadyEvent,
@@ -8,10 +10,11 @@ import {
   CallSessionParticipantLeftEvent,
   CallSessionStartedEvent,
 } from "@stream-io/node-sdk";
+import { streamVideo } from "@/lib/stream-video";
 
+// import from the libraries
 import { db } from "@/db";
 import { interviews, coaches } from "@/db/schema";
-import { streamVideo } from "@/lib/stream-video";
 import { InterviewStatus } from "@/modules/interviews/types";
 import { inngest } from "@/inngest/client";
 

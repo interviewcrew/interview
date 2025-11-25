@@ -1,10 +1,13 @@
-import { db } from "@/db";
-import { coaches, interviews, user } from "@/db/schema";
+// import from the packages
 import { inngest } from "@/inngest/client";
-import { InterviewStatus, StreamTranscriptItem } from "@/modules/interviews/types";
 import { createAgent, openai, TextMessage } from "@inngest/agent-kit";
 import { eq, inArray } from "drizzle-orm";
 import JSONL from "jsonl-parse-stringify";
+
+// import from the libraries
+import { db } from "@/db";
+import { coaches, interviews, user } from "@/db/schema";
+import { InterviewStatus, StreamTranscriptItem } from "@/modules/interviews/types";
 
 export const summarizer = createAgent({
   name: "summarizer",
