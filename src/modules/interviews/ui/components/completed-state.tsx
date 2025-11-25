@@ -15,10 +15,12 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 import { Badge } from "@/components/ui/badge";
+import { Transcript } from "@/modules/interviews/ui/components/transcript";
 
 // import from the libraries
 import { formatDuration } from "@/lib/utils";
 import { InterviewGetById } from "@/modules/interviews/types";
+import { ChatProvider } from "@/modules/interviews/ui/components/chat-provider";
 
 interface CompletedStateProps {
   interview: InterviewGetById;
@@ -127,17 +129,21 @@ export const CompletedState = ({ interview }: CompletedStateProps) => {
                         {...props}
                       />
                     ),
-                    li: (props) => (
-                      <li className="mb-1" {...props} />
-                    ),
+                    li: (props) => <li className="mb-1" {...props} />,
                     strong: (props) => (
                       <strong className="font-semibold" {...props} />
                     ),
                     code: (props) => (
-                      <code className="bg-gray-100 px-1 py-0.5 rounded" {...props} />
+                      <code
+                        className="bg-gray-100 px-1 py-0.5 rounded"
+                        {...props}
+                      />
                     ),
                     blockquote: (props) => (
-                      <blockquote className="border-l-4 pl-4 italic my-4" {...props} />
+                      <blockquote
+                        className="border-l-4 pl-4 italic my-4"
+                        {...props}
+                      />
                     ),
                   }}
                 >
@@ -147,6 +153,9 @@ export const CompletedState = ({ interview }: CompletedStateProps) => {
             </div>
           </div>
         </TabsContent>
+        <TabsContent value="transcript">
+          <Transcript interview={interview} />
+        </TabsContent>
         <TabsContent value="recording">
           <div className="bg-white rounded-lg border px-4 py-5">
             <video
@@ -155,6 +164,9 @@ export const CompletedState = ({ interview }: CompletedStateProps) => {
               controls
             />
           </div>
+        </TabsContent>
+        <TabsContent value="chat">
+          <ChatProvider interview={interview} />
         </TabsContent>
       </Tabs>
     </div>
