@@ -1,6 +1,6 @@
 // import from the libraries
 import { db } from "@/db";
-import { coaches } from "@/db/schema";
+import { coaches, interviews } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import {
   createCoachSchema,
@@ -16,7 +16,6 @@ import {
   eq,
   getTableColumns,
   ilike,
-  sql,
   and,
   isNull,
   or,
@@ -43,7 +42,7 @@ export const coachesRouter = createTRPCRouter({
       const data = await db
         .select({
           ...getTableColumns(coaches),
-          interviewCount: sql<number>`5`.as("interview_count"),
+          interviewCount: db.$count(interviews, eq(interviews.coachId, coaches.id)),
           isOfficial: isNull(coaches.userId),
         })
         .from(coaches)
@@ -88,7 +87,7 @@ export const coachesRouter = createTRPCRouter({
       const [coach] = await db
         .select({
           ...getTableColumns(coaches),
-          interviewCount: sql<number>`5`.as("interview_count"),
+          interviewCount: db.$count(interviews, eq(interviews.coachId, coaches.id)),
           isOfficial: isNull(coaches.userId),
         })
         .from(coaches)
