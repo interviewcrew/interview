@@ -12,9 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, OctagonAlertIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-// import { FaGithub, FaGoogle } from "react-icons/fa";
-
-import { validateInviteCode } from "@/modules/auth/server/actions";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
 // Imports from the components
 import { Input } from "@/components/ui/input";
@@ -38,7 +36,6 @@ const formSchema = z
     confirmPassword: z
       .string()
       .min(1, { message: "Confirm password is required" }),
-    inviteCode: z.string().min(1, { message: "Invite code is required" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
@@ -57,21 +54,12 @@ export const SignUpView = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      inviteCode: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setPending(true);
     setError(null);
-
-    const isValid = await validateInviteCode(data.inviteCode);
-
-    if (!isValid) {
-      setError("Invalid invite code");
-      setPending(false);
-      return;
-    }
 
     authClient.signUp.email(
       {
@@ -93,26 +81,26 @@ export const SignUpView = () => {
     );
   };
 
-  // const onSocialSubmit = (provider: "github" | "google") => {
-  //   setPending(true);
-  //   setError(null);
+  const onSocialSubmit = (provider: "github" | "google") => {
+    setPending(true);
+    setError(null);
 
-  //   authClient.signIn.social(
-  //     {
-  //       provider,
-  //       callbackURL: "/",
-  //     },
-  //     {
-  //       onError: ({ error }) => {
-  //         setError(error.message);
-  //         setPending(false);
-  //       },
-  //       onSuccess: () => {
-  //         setPending(false);
-  //       },
-  //     }
-  //   );
-  // };
+    authClient.signIn.social(
+      {
+        provider,
+        callbackURL: "/",
+      },
+      {
+        onError: ({ error }) => {
+          setError(error.message);
+          setPending(false);
+        },
+        onSuccess: () => {
+          setPending(false);
+        },
+      }
+    );
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -130,23 +118,6 @@ export const SignUpView = () => {
                   </p>
                 </div>
                 <div className="grid gap-3">
-                  <FormField
-                    control={form.control}
-                    name="inviteCode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Invite Code</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Enter invite code"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <FormField
                     control={form.control}
                     name="name"
@@ -229,12 +200,12 @@ export const SignUpView = () => {
                     "Create Account"
                   )}
                 </Button>
-                {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+                <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">
                     or continue with
                   </span>
-                </div> */}
-                {/* <div className="grid grid-cols-2 gap-4">
+                </div>
+                <div className="grid grid-cols-2 gap-4">
                   <Button
                     variant="outline"
                     className="w-full"
@@ -253,7 +224,7 @@ export const SignUpView = () => {
                   >
                     <FaGithub />
                   </Button>
-                </div> */}
+                </div>
                 <div className="text-center text-sm">
                   Already have an account?{" "}
                   <Link
@@ -276,9 +247,7 @@ export const SignUpView = () => {
             />
             <div className="relative z-10 flex flex-col gap-y-4 items-center">
               <Image src="/logo-dark.svg" alt="logo" width={92} height={92} />
-              <p className="text-2xl font-semibold text-white">
-                InterviewCrew
-              </p>
+              <p className="text-2xl font-semibold text-white">InterviewCrew</p>
             </div>
           </div>
         </CardContent>
