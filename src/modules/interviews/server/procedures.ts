@@ -1,6 +1,6 @@
 // import from the libraries
 import { db } from "@/db";
-import { coaches, interviews } from "@/db/schema";
+import { coaches, interviews, user } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "@/constants";
 import {
@@ -9,12 +9,26 @@ import {
 } from "@/modules/interviews/schemas";
 import { streamVideo } from "@/lib/stream-video";
 import { generateAvatarUri } from "@/lib/avatar";
+import {
+  InterviewStatus,
+  StreamTranscriptItem,
+} from "@/modules/interviews/types";
 
 // import from the packages
 import z from "zod";
-import { count, desc, eq, getTableColumns, ilike, and, sql } from "drizzle-orm";
+import {
+  count,
+  desc,
+  eq,
+  getTableColumns,
+  ilike,
+  and,
+  sql,
+  inArray,
+} from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
-import { InterviewStatus } from "@/modules/interviews/types";
+import JSONL from "jsonl-parse-stringify";
+import { streamChat } from "@/lib/stream-chat";
 
 export const interviewsRouter = createTRPCRouter({
   generateToken: protectedProcedure.mutation(async ({ ctx }) => {
@@ -37,6 +51,15 @@ export const interviewsRouter = createTRPCRouter({
       user_id: ctx.auth.user.id,
       exp: expirationTime,
       validity_in_seconds: validityInSeconds,
+    });
+
+    return token;
+  }),
+  generateChatToken: protectedProcedure.mutation(async ({ ctx }) => {
+    const token = streamChat.createToken(ctx.auth.user.id);
+    await streamChat.upsertUser({
+      id: ctx.auth.user.id,
+      role: "admin",
     });
 
     return token;
@@ -237,5 +260,97 @@ export const interviewsRouter = createTRPCRouter({
       }
 
       return interview;
+    }),
+  getTranscript: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const [interview] = await db
+        .select()
+        .from(interviews)
+        .where(
+          and(
+            eq(interviews.id, input.id),
+            eq(interviews.userId, ctx.auth.user.id)
+          )
+        )
+        .limit(1);
+
+      if (!interview) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Interview not found",
+        });
+      }
+
+      if (!interview.transcriptUrl) {
+        return [];
+      }
+
+      const transcript = await fetch(interview.transcriptUrl)
+        .then((result) => result.text())
+        .then((text) => JSONL.parse<StreamTranscriptItem>(text))
+        .catch(() => []);
+
+      const speakerIds = [
+        ...new Set(transcript.map((item) => item.speaker_id)),
+      ];
+
+      const userSpeakers = await db
+        .select()
+        .from(user)
+        .where(inArray(user.id, speakerIds))
+        .then((users) =>
+          users.map((user) => ({
+            ...user,
+            image:
+              user.image ??
+              generateAvatarUri({ seed: user.id, variant: "initials" }),
+          }))
+        );
+
+      const coachSpeakers = await db
+        .select()
+        .from(coaches)
+        .where(inArray(coaches.id, speakerIds))
+        .then((coaches) =>
+          coaches.map((coach) => ({
+            ...coach,
+            image: generateAvatarUri({
+              seed: coach.id,
+              variant: "botttsNeutral",
+            }),
+          }))
+        );
+
+      const allSpeakers = [...userSpeakers, ...coachSpeakers];
+
+      const transcriptWithSpeakers = transcript.map((item) => {
+        const speaker = allSpeakers.find(
+          (speaker) => speaker.id === item.speaker_id
+        );
+
+        if (!speaker) {
+          return {
+            ...item,
+            user: {
+              name: "Unknown",
+              image: generateAvatarUri({
+                seed: "unknown",
+                variant: "initials",
+              }),
+            },
+          };
+        }
+
+        return {
+          ...item,
+          user: {
+            name: speaker.name,
+            image: speaker.image,
+          },
+        };
+      });
+
+      return transcriptWithSpeakers;
     }),
 });
