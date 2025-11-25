@@ -26,6 +26,7 @@ import { UpcomingState } from "@/modules/interviews/ui/components/upcoming-state
 import { InProgressState } from "@/modules/interviews/ui/components/in-progress-state";
 import { CancelledState } from "@/modules/interviews/ui/components/cancelled-state";
 import { ProcessingState } from "@/modules/interviews/ui/components/processing-state";
+import { CompletedState } from "@/modules/interviews/ui/components/completed-state";
 
 interface InterviewIdViewProps {
   interviewId: string;
@@ -111,7 +112,7 @@ export const InterviewIdView = ({ interviewId }: InterviewIdViewProps) => {
             />
           )}
           {isInProgress && <InProgressState interviewId={interviewId} />}
-          {isCompleted && <div>Completed</div>}
+          {isCompleted && <CompletedState interview={interview} />}
           {isCancelled && <CancelledState />}
           {isProcessing && <ProcessingState />}
         </div>
