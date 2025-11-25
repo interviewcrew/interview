@@ -104,13 +104,7 @@ export const InterviewIdView = ({ interviewId }: InterviewIdViewProps) => {
             onEdit={() => setUpdateInterviewDialogOpen(true)}
             onRemove={handleRemoveInterview}
           />
-          {isUpcoming && (
-            <UpcomingState
-              interviewId={interviewId}
-              onCancelInterview={() => {}}
-              isCancellingInterview={false}
-            />
-          )}
+          {isUpcoming && <UpcomingState interviewId={interviewId} />}
           {isInProgress && <InProgressState interviewId={interviewId} />}
           {isCompleted && <CompletedState interview={interview} />}
           {isCancelled && <CancelledState />}

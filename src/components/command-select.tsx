@@ -21,7 +21,6 @@ interface CommandSelectProps {
   onSearch?: (search: string) => void;
   value: string;
   placeholder?: string;
-  isSearchable?: boolean;
   className?: string;
 }
 
@@ -31,7 +30,6 @@ export const CommandSelect = ({
   onSearch,
   value,
   placeholder = "Select an option",
-  isSearchable = true,
   className,
 }: CommandSelectProps) => {
   const [open, setOpen] = useState(false);
