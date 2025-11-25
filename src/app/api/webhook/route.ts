@@ -1,10 +1,10 @@
-import { and, eq /*not*/ } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 import {
-  //   CallEndedEvent,
-  //   CallTranscriptionReadyEvent,
-  //   CallRecordingReadyEvent,
+  CallEndedEvent,
+  CallTranscriptionReadyEvent,
+  CallRecordingReadyEvent,
   CallSessionParticipantLeftEvent,
   CallSessionStartedEvent,
 } from "@stream-io/node-sdk";
@@ -13,6 +13,7 @@ import { db } from "@/db";
 import { interviews, coaches } from "@/db/schema";
 import { streamVideo } from "@/lib/stream-video";
 import { InterviewStatus } from "@/modules/interviews/types";
+import { inngest } from "@/inngest/client";
 
 function verifySignatureWithSDK(body: string, signature: string): boolean {
   return streamVideo.verifyWebhook(body, signature);
@@ -123,6 +124,87 @@ export async function POST(request: NextRequest) {
 
     const call = streamVideo.video.call("default", interviewId);
     await call.end();
+  } else if (eventType === "call.session_ended") {
+    const event = payload as CallEndedEvent;
+    const interviewId = event.call.custom?.interview_id;
+
+    if (!interviewId) {
+      return NextResponse.json(
+        { error: "Interview ID not found" },
+        { status: 400 }
+      );
+    }
+
+    await db
+      .update(interviews)
+      .set({
+        status: InterviewStatus.PROCESSING,
+        endedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(interviews.id, interviewId),
+          eq(interviews.status, InterviewStatus.IN_PROGRESS)
+        )
+      );
+  } else if (eventType === "call.transcription_ready") {
+    const event = payload as CallTranscriptionReadyEvent;
+    const interviewId = event.call_cid.split(":")[1]; // call_cid is formatted as "type:id"
+
+    if (!interviewId) {
+      return NextResponse.json(
+        { error: "Interview ID not found" },
+        { status: 400 }
+      );
+    }
+
+    const [updatedInterview] = await db
+      .update(interviews)
+      .set({
+        transcriptUrl: event.call_transcription.url,
+      })
+      .where(eq(interviews.id, interviewId))
+      .returning();
+
+    if (!updatedInterview) {
+      return NextResponse.json(
+        { error: "Interview not found" },
+        { status: 404 }
+      );
+    }
+
+    await inngest.send({
+      name: "interviews/processing",
+      data: {
+        interviewId,
+        transcriptUrl: event.call_transcription.url,
+      },
+    });
+  } else if (eventType === "call.recording_ready") {
+    const event = payload as CallRecordingReadyEvent;
+    const interviewId = event.call_cid.split(":")[1]; // call_cid is formatted as "type:id"
+
+    if (!interviewId) {
+      return NextResponse.json(
+        { error: "Interview ID not found" },
+        { status: 400 }
+      );
+    }
+
+    const [updatedInterview] = await db
+      .update(interviews)
+      .set({
+        recordingUrl: event.call_recording.url,
+      })
+      .where(eq(interviews.id, interviewId))
+      .returning();
+
+    if (!updatedInterview) {
+      return NextResponse.json(
+        { error: "Interview not found" },
+        { status: 404 }
+      );
+    }
   }
 
   return NextResponse.json({ message: "Webhook received" }, { status: 200 });
