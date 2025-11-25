@@ -23,8 +23,6 @@ import { inngest } from "@/inngest/client";
 import { generateAvatarUri } from "@/lib/avatar";
 import { streamChat } from "@/lib/stream-chat";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
-
 function verifySignatureWithSDK(body: string, signature: string): boolean {
   return streamVideo.verifyWebhook(body, signature);
 }
@@ -279,8 +277,6 @@ export async function POST(request: NextRequest) {
       const channel = streamChat.channel("messaging", channelId);
       await channel.watch();
 
-      console.log(channel.state.messages);
-
       const previousMessages = channel.state.messages
         .slice(-5)
         .filter((message) => message.text && message.text.trim() !== "")
@@ -289,7 +285,17 @@ export async function POST(request: NextRequest) {
           content: message.text || "",
         }));
 
-      console.log(previousMessages);
+      const apiKey = process.env.OPENAI_API_KEY;
+
+      if (!apiKey) {
+        return NextResponse.json(
+          { error: "OpenAI API key not configured" },
+          { status: 500 }
+        );
+      }
+
+      const openai = new OpenAI({ apiKey });
+
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [
@@ -298,8 +304,6 @@ export async function POST(request: NextRequest) {
           { role: "user", content: text },
         ],
       });
-
-      console.log(response);
 
       const responseText = response.choices[0].message.content;
 
