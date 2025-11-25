@@ -33,28 +33,28 @@ export const CompletedState = ({ interview }: CompletedStateProps) => {
             <TabsList className="p-0 bg-background justify-start rounded-none h-13">
               <TabsTrigger
                 value="summary"
-                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 broder-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
               >
                 <BookOpenTextIcon />
                 Summary
               </TabsTrigger>
               <TabsTrigger
                 value="transcript"
-                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 broder-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
               >
                 <FileTextIcon />
                 Transcript
               </TabsTrigger>
               <TabsTrigger
                 value="recording"
-                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 broder-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
               >
                 <FileVideoIcon />
                 Recording
               </TabsTrigger>
               <TabsTrigger
                 value="chat"
-                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 broder-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
               >
                 <SparklesIcon />
                 Ask AI
