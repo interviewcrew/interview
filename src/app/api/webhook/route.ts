@@ -54,30 +54,62 @@ export async function POST(request: NextRequest) {
   const eventType = (payload as Record<string, unknown>)?.type;
 
   if (eventType === "call.session_started") {
+    console.log("Webhook: processing call.session_started", payload);
     const event = payload as CallSessionStartedEvent;
     const interviewId = event.call.custom?.interview_id;
 
     if (!interviewId) {
+      console.error("Webhook: Interview ID not found in custom data");
       return NextResponse.json(
         { error: "Interview ID not found" },
         { status: 400 }
       );
     }
 
+    console.log("Webhook: Fetching interview", interviewId);
     const [interview] = await db
       .select()
       .from(interviews)
+      .where(eq(interviews.id, interviewId));
+
+    if (!interview) {
+      console.error("Webhook: Interview not found", interviewId);
+      return NextResponse.json(
+        { error: "Interview not found" },
+        { status: 404 }
+      );
+    }
+
+    console.log("Webhook: Interview found", interview.id, interview.status);
+    if (interview.status !== InterviewStatus.UPCOMING) {
+        console.error("Webhook: Interview already started or completed", interview.id, interview.status);
+        return NextResponse.json(
+            { message: "Interview already started" },
+            { status: 200 }
+        );
+    }
+
+    console.log("Webhook: Updating interview status to IN_PROGRESS", interview.id);
+    // Update status to IN_PROGRESS immediately to prevent race conditions
+    const [updatedInterview] = await db
+      .update(interviews)
+      .set({
+        status: InterviewStatus.IN_PROGRESS,
+        startedAt: new Date(),
+      })
       .where(
         and(
           eq(interviews.id, interviewId),
           eq(interviews.status, InterviewStatus.UPCOMING)
         )
-      );
+      )
+      .returning();
 
-    if (!interview) {
+    if (!updatedInterview) {
+      console.error("Webhook: Failed to update interview status (race condition)", interview.id);
       return NextResponse.json(
-        { error: "Interview not found" },
-        { status: 404 }
+        { message: "Interview already started" },
+        { status: 200 }
       );
     }
 
@@ -97,30 +129,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update status to IN_PROGRESS immediately to prevent race conditions
-    const [updatedInterview] = await db
-      .update(interviews)
-      .set({
-        status: InterviewStatus.IN_PROGRESS,
-        startedAt: new Date(),
-      })
-      .where(
-        and(
-          eq(interviews.id, interviewId),
-          eq(interviews.status, InterviewStatus.UPCOMING)
-        )
-      )
-      .returning();
-
-    if (!updatedInterview) {
-      return NextResponse.json(
-        { message: "Interview already started" },
-        { status: 200 }
-      );
-    }
-
     try {
       const call = streamVideo.video.call("default", interviewId);
+      
+      const { members } = await call.queryMembers();
+      const hasAgent = members.some(
+        (member) => member.user_id === coach.id
+      );
+
+      if (hasAgent) {
+        console.error("Agent already in call for interview:", interviewId);
+        return NextResponse.json(
+          { message: "Agent already connected" },
+          { status: 200 }
+        );
+      }
+
       const realtimeClient = await streamVideo.video.connectOpenAi({
         call,
         openAiApiKey: process.env.OPENAI_API_KEY,
@@ -128,12 +152,18 @@ export async function POST(request: NextRequest) {
         model: "gpt-4o-realtime-preview",
       });
 
-      await realtimeClient.updateSession({
-        instructions: coach.instructions,
-        turn_detection: {
-          type: "server_vad",
-        },
-      });
+      try {
+        await realtimeClient.updateSession({
+          instructions: coach.instructions,
+          turn_detection: {
+            type: "server_vad",
+          },
+        });
+      } catch (error) {
+        console.error("Error updating session:", error);
+        // We do not revert status here because the agent is already connected.
+        // We also do not disconnect, because it might be a transient error or non-fatal.
+      }
     } catch (error) {
       console.error("Error connecting agent:", error);
 
