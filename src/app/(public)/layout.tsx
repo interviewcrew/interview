@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
 import { monaspaceNeon } from "@/app/fonts";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   openGraph: {
@@ -35,8 +37,16 @@ export default function PublicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={cn(monaspaceNeon.variable, "background-color font-sans")}>
-      {children}
-    </div>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <Toaster />
+      <div className={cn(monaspaceNeon.variable, "background-color font-sans")}>
+        {children}
+      </div>
+    </ThemeProvider>
   );
 }

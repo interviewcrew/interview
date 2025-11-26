@@ -9,10 +9,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 // import from the libraries
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
-import { ThemeProvider } from "@/components/theme-provider";
 
 // import from the components
-import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -47,15 +45,7 @@ export default function RootLayout({
       <TRPCReactProvider>
         <html lang="en" suppressHydrationWarning>
           <body className={`${inter.className} antialiased`}>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Toaster />
-              {children}
-            </ThemeProvider>
+            {children}
             <SpeedInsights />
           </body>
         </html>
