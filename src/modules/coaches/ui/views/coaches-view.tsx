@@ -32,7 +32,7 @@ export const CoachesView = () => {
       <DataTable
         columns={columns}
         data={items}
-        onRowClick={(row) => router.push(`/coaches/${row.id}`)}
+        onRowClick={(row) => router.push(`/dashboard/coaches/${row.id}`)}
       />
       <DataPagination
         page={filters.page}
