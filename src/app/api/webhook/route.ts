@@ -97,28 +97,60 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const call = streamVideo.video.call("default", interviewId);
-    const realtimeClient = await streamVideo.video.connectOpenAi({
-      call,
-      openAiApiKey: process.env.OPENAI_API_KEY,
-      agentUserId: coach.id,
-      model: "gpt-4o-realtime-preview",
-    });
-
-    await realtimeClient.updateSession({
-      instructions: coach.instructions,
-      turn_detection: {
-        type: "server_vad",
-      },
-    });
-
-    await db
+    // Update status to IN_PROGRESS immediately to prevent race conditions
+    const [updatedInterview] = await db
       .update(interviews)
       .set({
         status: InterviewStatus.IN_PROGRESS,
         startedAt: new Date(),
       })
-      .where(eq(interviews.id, interviewId));
+      .where(
+        and(
+          eq(interviews.id, interviewId),
+          eq(interviews.status, InterviewStatus.UPCOMING)
+        )
+      )
+      .returning();
+
+    if (!updatedInterview) {
+      return NextResponse.json(
+        { message: "Interview already started" },
+        { status: 200 }
+      );
+    }
+
+    try {
+      const call = streamVideo.video.call("default", interviewId);
+      const realtimeClient = await streamVideo.video.connectOpenAi({
+        call,
+        openAiApiKey: process.env.OPENAI_API_KEY,
+        agentUserId: coach.id,
+        model: "gpt-4o-realtime-preview",
+      });
+
+      await realtimeClient.updateSession({
+        instructions: coach.instructions,
+        turn_detection: {
+          type: "server_vad",
+        },
+      });
+    } catch (error) {
+      console.error("Error connecting agent:", error);
+
+      // Revert status so we can try again
+      await db
+        .update(interviews)
+        .set({
+          status: InterviewStatus.UPCOMING,
+          startedAt: null,
+        })
+        .where(eq(interviews.id, interviewId));
+
+      return NextResponse.json(
+        { error: "Failed to connect agent" },
+        { status: 500 }
+      );
+    }
   } else if (eventType === "call.session_participant_left") {
     const event = payload as CallSessionParticipantLeftEvent;
     const interviewId = event.call_cid.split(":")[1]; // call_cid is formatted as "type:id"
