@@ -54,7 +54,7 @@ export const SignInView = () => {
       {
         email: data.email,
         password: data.password,
-        callbackURL: "/",
+        callbackURL: "/dashboard",
       },
       {
         onError: ({ error }) => {
@@ -76,7 +76,7 @@ export const SignInView = () => {
     authClient.signIn.social(
       {
         provider,
-        callbackURL: "/",
+        callbackURL: "/dashboard",
       },
       {
         onError: ({ error }) => {
