@@ -9,6 +9,7 @@ An ADR is a document that captures an important architectural decision made alon
 | ID | Title | Status | Date |
 | :--- | :--- | :--- | :--- |
 | [001](./001-voice-ai-stack.md) | **Voice & Video AI Stack Selection** | Accepted | 2025-11-27 |
+| [002](./002-monorepo-migration.md) | **Monorepo Migration** | Accepted | 2025-11-27 |
 
 ## Template
 
