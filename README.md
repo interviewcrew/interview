@@ -56,6 +56,12 @@ This project is built with a modern, type-safe stack focused on performance and 
 *   **API:** [tRPC](https://trpc.io/) (Type-safe APIs)
 *   **AI:** OpenAI / Anthropic APIs (configurable)
 
+## 📚 Documentation & Architecture
+
+We maintain a log of all major architectural decisions in our **[Architecture Decision Records (ADRs)](docs/architecture/README.md)**.
+
+*   [ADR-001: Voice & Video AI Stack Selection](docs/architecture/001-voice-ai-stack.md)
+
 ---
 
 ## ⚡ Getting Started
