@@ -1,0 +1,23 @@
+FROM node:24-alpine
+
+WORKDIR /app
+
+# Install pnpm and python3 for node-gyp
+# python3-dev and linux-headers are needed for some native modules
+RUN apk add --no-cache python3 make g++ py3-setuptools
+RUN npm install -g pnpm
+
+# Copy workspace config
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json turbo.json ./
+
+# Copy package manifests
+COPY apps/agent/package.json ./apps/agent/
+COPY apps/web/package.json ./apps/web/
+COPY packages/shared/package.json ./packages/shared/
+COPY packages/config/package.json ./packages/config/
+
+# Install dependencies
+RUN pnpm install
+
+CMD ["pnpm", "--filter", "@interview/web", "dev"]
+
