@@ -2,6 +2,11 @@
 
 # dependencies
 /node_modules
+/apps/web/node_modules
+/apps/agent/node_modules
+/packages/shared/node_modules
+/packages/config/node_modules
+.turbo
 /.pnp
 .pnp.*
 .yarn/*

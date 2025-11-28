@@ -1,4 +1,4 @@
-# Interview Crew 
+# Interview Crew
 
 **The Open Source AI Career Coach for Engineers.**
 
@@ -47,7 +47,9 @@ Instead of recruiters spamming you, we use these tools to identify **"A-Players"
 
 This project is built with a modern, type-safe stack focused on performance and developer experience.
 
-*   **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+*   **Monorepo:** [TurboRepo](https://turbo.build/) + [pnpm](https://pnpm.io/)
+*   **Web App:** [Next.js 15](https://nextjs.org/) (App Router) - *UI, Auth, DB, Webhooks*
+*   **Agent Service:** Node.js / Express - *Real-time AI Audio/Video processing*
 *   **Language:** [TypeScript](https://www.typescriptlang.org/)
 *   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 *   **Database:** [PostgreSQL](https://www.postgresql.org/) (via Neon)
@@ -61,6 +63,7 @@ This project is built with a modern, type-safe stack focused on performance and 
 We maintain a log of all major architectural decisions in our **[Architecture Decision Records (ADRs)](docs/architecture/README.md)**.
 
 *   [ADR-001: Voice & Video AI Stack Selection](docs/architecture/001-voice-ai-stack.md)
+*   [ADR-002: Monorepo Migration](docs/architecture/002-monorepo-migration.md)
 
 ---
 
@@ -69,8 +72,9 @@ We maintain a log of all major architectural decisions in our **[Architecture De
 ### Prerequisites
 
 *   Node.js (v20+)
-*   npm or pnpm
-*   A PostgreSQL database (local or hosted)
+*   pnpm (v8+)
+*   Docker (for local services)
+*   Ngrok Account (for webhook tunnels)
 
 ### Installation
 
@@ -82,31 +86,56 @@ We maintain a log of all major architectural decisions in our **[Architecture De
 
 2.  **Install dependencies:**
     ```bash
-    npm install
+    pnpm install
     ```
 
 3.  **Environment Setup:**
-    Create a `.env` file in the root directory and add your database connection string and other secrets:
-    ```env
-    DATABASE_URL="postgresql://user:password@localhost:5432/interview_crew"
-    BETTER_AUTH_SECRET="your-secret-here"
-    BETTER_AUTH_URL="http://localhost:3000"
-    # Add your AI Provider Keys here
-    OPENAI_API_KEY="sk-..." 
-    ```
-
-4.  **Database Setup:**
-    Push the schema to your database:
+    Copy the example environment file and configure your secrets:
     ```bash
-    npm run db:push
+    cp .env.example .env.local
     ```
+    You will need keys for:
+    *   Database (Postgres connection)
+    *   Better Auth
+    *   OpenAI API
+    *   Stream.io (Video/Chat)
+    *   Inngest
+    *   Ngrok
 
-5.  **Run the Development Server:**
+### Running Locally
+
+We use a hybrid approach for local development:
+*   **Docker:** Runs the isolated Agent Service, Inngest, and Postgres.
+*   **Host Machine:** Runs the Web App (Next.js) for fast HMR.
+
+1.  **Start Backend Services:**
     ```bash
-    npm run dev
+    docker-compose up -d
+    ```
+    This starts:
+    *   `agent`: The AI Voice Agent (port 8000)
+    *   `inngest`: Event orchestrator (port 8288)
+    *   `postgres`: Local database (port 5432) - *Optional if using cloud DB*
+    *   `ngrok`: Tunnel for public access - *Required for webhooks*
+
+2.  **Setup Database:**
+    Run migrations to the local or remote database:
+    ```bash
+    pnpm --filter @interview/web db:push
     ```
 
-    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3.  **Start Web App:**
+    ```bash
+    pnpm --filter @interview/web dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+4.  **Start Webhook Tunnel (Alternative):**
+    If you are not using the Dockerized Ngrok, run this manually to expose your local Next.js app:
+    ```bash
+    export NGROK_DOMAIN="your-static-domain.ngrok-free.app"
+    pnpm --filter @interview/web dev:webhook
+    ```
 
 ---
 
