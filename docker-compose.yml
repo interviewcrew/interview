@@ -1,0 +1,92 @@
+services:
+  agent:
+    build:
+      context: .
+      dockerfile: apps/agent/Dockerfile.dev
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/interview
+    volumes:
+      - ./apps/agent:/app/apps/agent
+      - ./packages:/app/packages
+      - /app/apps/agent/node_modules
+    command: pnpm --filter @interview/agent dev
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile.dev
+    working_dir: /app/apps/web
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/interview
+      - INNGEST_BASE_URL=http://inngest:8288
+      - INNGEST_EVENT_KEY=local
+    env_file:
+      - .env
+    volumes:
+      - ./apps/web:/app/apps/web
+      - ./packages:/app/packages
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
+    command: pnpm dev
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  studio:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile.dev
+    ports:
+      - "4983:4983"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/interview
+    volumes:
+      - ./apps/web:/app/apps/web
+      - ./packages:/app/packages
+      - /app/apps/web/node_modules
+    command: pnpm --filter @interview/web db:studio --host 0.0.0.0
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  inngest:
+    image: inngest/inngest:latest
+    ports:
+      - "8288:8288"
+    environment:
+      - INNGEST_DEV=1
+    volumes:
+      - ./inngest:/var/inngest
+    command: "inngest dev --host 0.0.0.0 -u http://web:3000/api/inngest"
+    restart: always
+
+  # Optional: Local Postgres if needed
+  postgres:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=interview
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Optional: Ngrok for exposing local services
+  ngrok:
+    image: ngrok/ngrok:latest
+    ports:
+      - "4040:4040"
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command: "http --domain=${NGROK_DOMAIN} web:3000"
+
+volumes:
+  postgres_data:
