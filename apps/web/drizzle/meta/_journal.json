@@ -36,6 +36,13 @@
       "when": 1763589850733,
       "tag": "0004_create_contact_inqueries_table",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1764416405517,
+      "tag": "0005_add_system_prompt_and_interview_instructions",
+      "breakpoints": true
     }
   ]
 }

@@ -42,7 +42,7 @@ This architecture will separate the project into distinct applications and share
 ├── packages/
 │   ├── shared/               # (Shared Logic)
 │   │   ├── Tech: TypeScript, Zod
-│   │   └── Responsibility: InterviewFlow Types, Constants (FAQ), Shared Utilities
+│   │   └── Responsibility: InterviewInstructions Types, Constants (FAQ), Shared Utilities
 │   │
 │   └── config/               # (Shared Config)
 │       └── eslint, typescript, tailwind
@@ -59,7 +59,7 @@ This architecture will separate the project into distinct applications and share
 3.  Create `apps/agent` as a clean Node.js TypeScript project.
 
 #### Phase 2: Extract Shared Libraries
-1.  **`packages/shared`**: Initialize the shared package. This will house the future `InterviewFlow` types, schemas, and constants to be shared between the Web App and Agent Service.
+1.  **`packages/shared`**: Initialize the shared package. This will house the future `InterviewInstructions` types, schemas, and constants to be shared between the Web App and Agent Service.
 2.  **Database**: The Database (`src/db`) and Drizzle configuration will remain inside `apps/web` since the Agent is stateless and does not access the DB.
 
 #### Phase 3: Implement Agent Service
@@ -80,8 +80,8 @@ This architecture will separate the project into distinct applications and share
       "interviewId": "uuid",
       "coachId": "uuid",
       "openaiApiKey": "sk-...", // (Or loaded from Agent env)
-      "instructions": "System Prompt...",
-      "interviewFlow": { "phases": [...] }
+      "systemPrompt": "System Prompt...",
+      "interviewInstructions": { "phases": [...] }
     }
     ```
 4.  **Execution**: `apps/agent` connects to Stream & OpenAI and runs the interview loop.

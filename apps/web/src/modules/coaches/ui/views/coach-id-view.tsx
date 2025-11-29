@@ -123,8 +123,8 @@ export const CoachIdView = ({ coachId }: CoachIdViewProps) => {
                 {coach.interviewCount === 1 ? "interview" : "interviews"}
               </Badge>
               <div className="flex flex-col gap-y-4">
-                <p className="text-lg font-medium">Instructions</p>
-                <p className="text-neutral-800">{coach.instructions}</p>
+                <p className="text-lg font-medium">System Prompt</p>
+                <p className="text-neutral-800">{coach.systemPrompt}</p>
               </div>
             </div>
           </div>

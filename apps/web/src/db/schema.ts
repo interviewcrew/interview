@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, pgEnum, pgTable, text, timestamp, json } from "drizzle-orm/pg-core";
 import { InterviewStatus } from "@/modules/interviews/types";
 
 export const user = pgTable("user", {
@@ -67,7 +67,8 @@ export const coaches = pgTable("coach", {
     .primaryKey()
     .$defaultFn(() => nanoid()),
   name: text("name").notNull(),
-  instructions: text("instructions").notNull(),
+  systemPrompt: text("system_prompt").notNull(),
+  interviewInstructions: json("interview_instructions"),
   userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

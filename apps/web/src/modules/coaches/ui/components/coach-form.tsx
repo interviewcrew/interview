@@ -82,7 +82,7 @@ export const CoachForm = ({
     resolver: zodResolver(createCoachSchema),
     defaultValues: {
       name: initialValues?.name || "",
-      instructions: initialValues?.instructions || "",
+      systemPrompt: initialValues?.systemPrompt || "",
     },
   });
 
@@ -123,11 +123,11 @@ export const CoachForm = ({
           )}
         />
         <FormField
-          name="instructions"
+          name="systemPrompt"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Instructions</FormLabel>
+              <FormLabel>System Prompt</FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
