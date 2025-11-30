@@ -222,6 +222,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    try {
+      const agentServiceUrl =
+        process.env.AGENT_SERVICE_URL || "http://agent:8000";
+      console.log(
+        `Webhook: Stopping agent at ${agentServiceUrl} for interview ${interviewId}`
+      );
+
+      await fetch(`${agentServiceUrl}/stop-agent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-agent-secret": process.env.AGENT_SECRET || "secret",
+        },
+        body: JSON.stringify({ interviewId }),
+      });
+    } catch (error) {
+      console.error("Webhook: Failed to stop agent", error);
+    }
+
     await db
       .update(interviews)
       .set({

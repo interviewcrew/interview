@@ -12,6 +12,9 @@ const PORT = process.env.PORT || 8000;
 
 const AGENT_SECRET = process.env.AGENT_SECRET || "secret"; // Fallback for dev, but should be set
 
+// Store active interview conductors
+const activeInterviews = new Map<string, InterviewConductor>();
+
 app.use(cors());
 app.use(express.json());
 
@@ -69,6 +72,8 @@ app.post("/start-agent", async (req, res) => {
       interviewInstructions as InterviewInstructions
     );
 
+    activeInterviews.set(interviewId, conductor);
+
     conductor.start();
 
     res.json({ status: "started", interviewId });
@@ -78,6 +83,33 @@ app.post("/start-agent", async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to start agent", details: String(error) });
+  }
+});
+
+app.post("/stop-agent", async (req, res) => {
+  const authHeader = req.headers["x-agent-secret"];
+  if (authHeader !== AGENT_SECRET) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const { interviewId } = req.body;
+
+  if (!interviewId) {
+    return res.status(400).json({ error: "Missing interviewId" });
+  }
+
+  console.log(`Stopping agent for interview: ${interviewId}`);
+
+  const conductor = activeInterviews.get(interviewId);
+
+  if (conductor) {
+    conductor.stop();
+    activeInterviews.delete(interviewId);
+    console.log(`Agent stopped for interview: ${interviewId}`);
+    return res.json({ status: "stopped", interviewId });
+  } else {
+    console.log(`No active agent found for interview: ${interviewId}`);
+    return res.status(404).json({ error: "Agent not found" });
   }
 });
 
