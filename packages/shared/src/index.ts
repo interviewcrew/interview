@@ -1,2 +1,1 @@
-export const WORKSPACE_NAME = "Interview Monorepo";
-
+export * from "./interview-content";

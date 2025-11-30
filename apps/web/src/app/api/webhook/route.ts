@@ -14,6 +14,7 @@ import {
   CallSessionStartedEvent,
 } from "@stream-io/node-sdk";
 import { streamVideo } from "@/lib/stream-video";
+import { DEFAULT_INTERVIEW_INSTRUCTIONS, InterviewInstructionsSchema } from "@interview/shared";
 
 // import from the libraries
 import { db } from "@/db";
@@ -130,8 +131,8 @@ export async function POST(request: NextRequest) {
     }
 
     try {
+      // Check if agent is already connected (idempotency)
       const call = streamVideo.video.call("default", interviewId);
-      
       const { members } = await call.queryMembers();
       const hasAgent = members.some(
         (member) => member.user_id === coach.id
@@ -145,27 +146,43 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const realtimeClient = await streamVideo.video.connectOpenAi({
-        call,
-        openAiApiKey: process.env.OPENAI_API_KEY,
-        agentUserId: coach.id,
-        model: "gpt-4o-realtime-preview",
+      // Prepare data for Agent Service
+      const interviewInstructionsData = coach.interviewInstructions;
+      const parsedInterviewInstructions = InterviewInstructionsSchema.safeParse(interviewInstructionsData);
+      const interviewInstructions = parsedInterviewInstructions.success
+        ? parsedInterviewInstructions.data
+        : DEFAULT_INTERVIEW_INSTRUCTIONS;
+
+      const agentPayload = {
+        interviewId,
+        coachId: coach.id,
+        systemPrompt: coach.systemPrompt,
+        interviewInstructions,
+        openaiApiKey: process.env.OPENAI_API_KEY,
+        voice: coach.voice,
+      };
+
+      const agentServiceUrl = process.env.AGENT_SERVICE_URL || "http://agent:8000";
+      console.log(`Webhook: Delegating to Agent Service at ${agentServiceUrl}`);
+
+      const response = await fetch(`${agentServiceUrl}/start-agent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-agent-secret": process.env.AGENT_SECRET || "secret",
+        },
+        body: JSON.stringify(agentPayload),
       });
 
-      try {
-        await realtimeClient.updateSession({
-          instructions: coach.instructions,
-          turn_detection: {
-            type: "server_vad",
-          },
-        });
-      } catch (error) {
-        console.error("Error updating session:", error);
-        // We do not revert status here because the agent is already connected.
-        // We also do not disconnect, because it might be a transient error or non-fatal.
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Agent service responded with ${response.status}: ${errorText}`);
       }
+
+      console.log("Webhook: Agent started successfully");
+
     } catch (error) {
-      console.error("Error connecting agent:", error);
+      console.error("Error delegating to agent service:", error);
 
       // Revert status so we can try again
       await db
@@ -177,7 +194,7 @@ export async function POST(request: NextRequest) {
         .where(eq(interviews.id, interviewId));
 
       return NextResponse.json(
-        { error: "Failed to connect agent" },
+        { error: "Failed to start agent" },
         { status: 500 }
       );
     }
@@ -316,7 +333,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (userId !== coach.id) {
-      const instructions = `
+      const systemPrompt = `
               You are an AI assistant helping the user revisit a recently completed meeting.
               Below is a summary of the meeting, generated from the transcript:
               
@@ -324,7 +341,7 @@ export async function POST(request: NextRequest) {
               
               The following are your original instructions from the live meeting assistant. Please continue to follow these behavioral guidelines as you assist the user:
               
-              ${coach.instructions}
+              ${coach.systemPrompt}
               
               The user may ask questions about the meeting, request clarifications, or ask for follow-up actions.
               Always base your responses on the meeting summary above.
@@ -361,7 +378,7 @@ export async function POST(request: NextRequest) {
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [
-          { role: "system", content: instructions },
+          { role: "system", content: systemPrompt },
           ...previousMessages,
           { role: "user", content: text },
         ],
