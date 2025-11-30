@@ -1,5 +1,5 @@
 {
-  "buildCommand": "turbo run build --filter=@interview/web",
+  "buildCommand": "pnpm --filter=@interview/web db:migrate && turbo run build --filter=@interview/web",
   "outputDirectory": ".next",
   "ignoreCommand": "npx turbo-ignore",
   "installCommand": "pnpm install"
