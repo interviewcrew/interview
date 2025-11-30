@@ -43,6 +43,13 @@
       "when": 1764416405517,
       "tag": "0005_add_system_prompt_and_interview_instructions",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1764499322623,
+      "tag": "0006_add_voice_to_coaches",
+      "breakpoints": true
     }
   ]
 }

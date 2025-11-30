@@ -69,6 +69,7 @@ export const coaches = pgTable("coach", {
   name: text("name").notNull(),
   systemPrompt: text("system_prompt").notNull(),
   interviewInstructions: json("interview_instructions"),
+  voice: text("voice").notNull().default("verse"),
   userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

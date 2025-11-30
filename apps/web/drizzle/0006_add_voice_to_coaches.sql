@@ -1,0 +1,1 @@
+ALTER TABLE "coach" ADD COLUMN "voice" text DEFAULT 'verse' NOT NULL;
