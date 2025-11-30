@@ -9,6 +9,8 @@ services:
       - PORT=8000
       - NODE_ENV=development
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/interview
+    env_file:
+      - .env
     volumes:
       - ./apps/agent:/app/apps/agent
       - ./packages:/app/packages
