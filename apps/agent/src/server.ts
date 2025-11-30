@@ -49,7 +49,9 @@ app.post("/start-agent", async (req, res) => {
   try {
     const call = StreamService.getCall(interviewId);
 
-    console.log(`Interview ${interviewId}: Joining OpenAI Agent to the call...`);
+    console.log(
+      `Interview ${interviewId}: Joining OpenAI Agent to the call...`
+    );
     const realtimeClient = await StreamService.connectOpenAi(
       call,
       openaiApiKey,
@@ -57,8 +59,11 @@ app.post("/start-agent", async (req, res) => {
     );
 
     // Initial Instructions
+    console.log(
+      `Interview ${interviewId}: Updating session with initial instructions which is ${systemPrompt}\n${interviewInstructions.phases[0]?.instructions || ""}`
+    );
     await realtimeClient.updateSession({
-      instructions: systemPrompt,
+      instructions: `${systemPrompt}\n${interviewInstructions.phases[0]?.instructions || ""}`,
       voice: voice || "verse",
       turn_detection: {
         type: "server_vad",
