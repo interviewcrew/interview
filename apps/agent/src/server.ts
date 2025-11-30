@@ -39,6 +39,9 @@ app.post("/start-agent", async (req, res) => {
   }
 
   console.log(`Starting agent for interview: ${interviewId}`);
+  console.log(systemPrompt);
+  console.log(interviewInstructions);
+  console.log(voice);
 
   try {
     const call = StreamService.getCall(interviewId);
