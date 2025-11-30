@@ -49,7 +49,7 @@ app.post("/start-agent", async (req, res) => {
   try {
     const call = StreamService.getCall(interviewId);
 
-    console.log("Joining OpenAI Agent to the call...");
+    console.log(`Interview ${interviewId}: Joining OpenAI Agent to the call...`);
     const realtimeClient = await StreamService.connectOpenAi(
       call,
       openaiApiKey,

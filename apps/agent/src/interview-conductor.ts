@@ -56,7 +56,7 @@ export class InterviewConductor {
     const elapsedMinutes = (Date.now() - this.interviewStartTime) / (1000 * 60);
 
     console.log(
-      `Interview conductor: ${elapsedMinutes.toFixed(2)}m elapsed, Phase ${
+      `Interview conductor for Interview ${this.interviewId}: ${elapsedMinutes.toFixed(2)}m elapsed, Phase ${
         this.currentPhaseIndex + 1
       }`
     );
@@ -67,7 +67,7 @@ export class InterviewConductor {
       const newPhase = this.interviewInstructions.phases[newPhaseIndex];
 
       console.log(
-        `Switching from Phase ${this.currentPhaseIndex + 1} to Phase ${
+        `Interview conductor for Interview ${this.interviewId}: Switching from Phase ${this.currentPhaseIndex + 1} to Phase ${
           newPhaseIndex + 1
         }: ${newPhase.name}`
       );
@@ -85,7 +85,10 @@ export class InterviewConductor {
             `,
           });
         } catch (error) {
-          console.error("Error updating session in conductor:", error);
+          console.error(
+            `Interview conductor for Interview ${this.interviewId}: Error updating session in conductor:`,
+            error
+          );
         }
       }
     }
