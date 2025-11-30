@@ -130,7 +130,7 @@ const commands: Record<string, (...args: string[]) => string> = {
       All tools are <span class="font-bold">free && open-source</span>.
     </p>`,
   repo: () =>
-    `<a class="link-color underline" href="https://github.com/interviewcrew/interview" target="_blank">git clone https://github.com/interviewcrew/interview.git</a>`,
+    `<a class="link-color underline" href="https://github.com/interviewcrew/codebase" target="_blank">git clone https://github.com/interviewcrew/codebase.git</a>`,
   who: (username: string): string => {
     const user = team.find((t) => t.username === username);
     if (user) {

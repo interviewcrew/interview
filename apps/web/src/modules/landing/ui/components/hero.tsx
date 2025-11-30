@@ -59,7 +59,7 @@ export default function Hero({ landingPageAudience }: HeroProps) {
           </div>
           <div className="flex flex-1 justify-end items-center">
             <Link
-              href="https://github.com/interviewcrew/interview"
+              href="https://github.com/interviewcrew/codebase"
               target="_blank"
               className="font-semibold text-gray-900 dark:text-white mr-4 "
             >

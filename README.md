@@ -80,7 +80,7 @@ We maintain a log of all major architectural decisions in our **[Architecture De
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/interviewcrew/interview.git
+    git clone https://github.com/interviewcrew/codebase.git
     cd interview
     ```
 
