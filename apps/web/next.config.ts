@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["@interview/shared"],
   serverExternalPackages: [
     "ws",
     "bufferutil",
