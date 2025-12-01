@@ -2,7 +2,7 @@
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 
 // import from the libraries
-import { CoachForm } from "@/modules/coaches/ui/components/coach-form";
+import { UpdateCoachForm } from "@/modules/coaches/ui/components/update-coach-form";
 import { CoachGetById } from "@/modules/coaches/types";
 
 interface UpdateCoachDialogProps {
@@ -18,12 +18,12 @@ export const UpdateCoachDialog = ({
 }: UpdateCoachDialogProps) => {
   return (
     <ResponsiveDialog
-      title="New Coach"
-      description="Create a new coach"
+      title="Update Coach"
+      description="Update the coach details"
       open={open}
       onOpenChange={onOpenChange}
     >
-      <CoachForm
+      <UpdateCoachForm
         onSuccess={() => onOpenChange(false)}
         onCancel={() => onOpenChange(false)}
         initialValues={coach}

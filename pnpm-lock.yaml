@@ -362,8 +362,8 @@ importers:
   packages/shared:
     dependencies:
       zod:
-        specifier: ^3.22.4
-        version: 3.25.76
+        specifier: ^4.1.12
+        version: 4.1.13
     devDependencies:
       eslint:
         specifier: ^8.56.0

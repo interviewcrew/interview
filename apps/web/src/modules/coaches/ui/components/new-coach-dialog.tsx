@@ -1,6 +1,6 @@
 // import from the components
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
-import { CoachForm } from "@/modules/coaches/ui/components/coach-form";
+import { CreateCoachForm } from "@/modules/coaches/ui/components/create-coach-form";
 
 export const NewCoachDialog = ({
   open,
@@ -16,7 +16,7 @@ export const NewCoachDialog = ({
       open={open}
       onOpenChange={onOpenChange}
     >
-      <CoachForm
+      <CreateCoachForm
         onSuccess={() => onOpenChange(false)}
         onCancel={() => onOpenChange(false)}
       />

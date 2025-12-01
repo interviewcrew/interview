@@ -23,6 +23,7 @@ import { ErrorState } from "@/components/error-state";
 import { LoadingState } from "@/components/loading-state";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 import { Badge } from "@/components/ui/badge";
+import { InterviewInstructionsEditor } from "@/modules/coaches/ui/components/interview-instructions-editor";
 
 // import from the hooks
 import { useConfirm } from "@/hooks/use-confirm";
@@ -128,6 +129,7 @@ export const CoachIdView = ({ coachId }: CoachIdViewProps) => {
               </div>
             </div>
           </div>
+          <InterviewInstructionsEditor coach={coach} />
         </div>
       )}
     </>

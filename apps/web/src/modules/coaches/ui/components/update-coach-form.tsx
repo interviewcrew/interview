@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form";
 // import from the libraries
 import { CoachGetById } from "@/modules/coaches/types";
 import { useTRPC } from "@/trpc/client";
-import { createCoachSchema } from "@/modules/coaches/schemas";
+import {
+  updateCoachSchema,
+} from "@/modules/coaches/schemas";
 
 // import from the packages
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -26,35 +28,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 
-interface CoachFormProps {
+interface UpdateCoachFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
   initialValues?: CoachGetById;
 }
 
-export const CoachForm = ({
+export const UpdateCoachForm = ({
   onSuccess,
   onCancel,
   initialValues,
-}: CoachFormProps) => {
+}: UpdateCoachFormProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-
-  const createCoachMutation = useMutation(
-    trpc.coaches.create.mutationOptions({
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(
-          trpc.coaches.getMany.queryOptions({})
-        );
-
-        onSuccess?.();
-        toast.success("Coach created successfully");
-      },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    })
-  );
 
   const updateCoachMutation = useMutation(
     trpc.coaches.update.mutationOptions({
@@ -78,34 +64,26 @@ export const CoachForm = ({
     })
   );
 
-  const form = useForm<z.infer<typeof createCoachSchema>>({
-    resolver: zodResolver(createCoachSchema),
+  const form = useForm<z.infer<typeof updateCoachSchema>>({
+    resolver: zodResolver(updateCoachSchema),
     defaultValues: {
       name: initialValues?.name || "",
       systemPrompt: initialValues?.systemPrompt || "",
+      interviewInstructions: initialValues?.interviewInstructions || undefined,
     },
   });
 
-  const isEditing = !!initialValues?.id;
-  const isPending =
-    createCoachMutation.isPending || updateCoachMutation.isPending;
+  const isPending = updateCoachMutation.isPending;
 
-  const onSubmit = (data: z.infer<typeof createCoachSchema>) => {
-    if (isEditing) {
-      updateCoachMutation.mutate({
-        id: initialValues!.id,
-        ...data,
-      });
-    } else {
-      createCoachMutation.mutate(data);
-    }
+  const onSubmit = (data: z.infer<typeof updateCoachSchema>) => {
+    updateCoachMutation.mutate(data);
   };
 
   return (
     <Form {...form}>
       <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <GeneratedAvatar
-          seed={form.watch("name")}
+          seed={form.watch("name") || ""}
           variant="botttsNeutral"
           className="border size-16"
         />
@@ -150,7 +128,7 @@ export const CoachForm = ({
             </Button>
           )}
           <Button type="submit" disabled={isPending}>
-            {isEditing ? "Update" : "Create"}
+            Update
           </Button>
         </div>
       </form>
