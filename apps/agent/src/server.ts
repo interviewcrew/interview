@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { StreamService } from "./lib/stream";
 import { InterviewConductor } from "./interview-conductor";
-import { InterviewInstructions } from "@interview/shared";
+import { INTERVIEWER_PERSONA, InterviewInstructions } from "@interview/shared";
 
 dotenv.config();
 
@@ -63,7 +63,12 @@ app.post("/start-agent", async (req, res) => {
       `Interview ${interviewId}: Updating session with initial instructions which is ${systemPrompt}\n${interviewInstructions.phases[0]?.instructions || ""}`
     );
     await realtimeClient.updateSession({
-      instructions: `${systemPrompt}\n${interviewInstructions.phases[0]?.instructions || ""}`,
+      instructions:
+        systemPrompt +
+          "\n\n" +
+          INTERVIEWER_PERSONA +
+          "\n\n" +
+          interviewInstructions.phases[0]?.instructions || "",
       voice: voice || "verse",
       turn_detection: {
         type: "server_vad",

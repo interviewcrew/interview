@@ -1,4 +1,4 @@
-import { InterviewInstructions } from "@interview/shared";
+import { INTERVIEWER_PERSONA, InterviewInstructions } from "@interview/shared";
 import { StreamClient } from "@stream-io/node-sdk";
 
 type OpenAIAgent = Awaited<ReturnType<StreamClient["video"]["connectOpenAi"]>>;
@@ -78,11 +78,11 @@ export class InterviewConductor {
       if (newPhase.instructions && newPhase.instructions.trim().length > 0) {
         try {
           await this.openAIAgent.updateSession({
-            instructions: `
-              ${this.systemMessage}
-              
-              ${newPhase.instructions}
-            `,
+            instructions:
+              this.systemMessage + "\n\n" +
+              "Remember you are only an interviewer and this is an interview. So you need to follow the interviewer persona and style guide: " +
+              INTERVIEWER_PERSONA + "\n\n" +
+              newPhase.instructions,
           });
         } catch (error) {
           console.error(
