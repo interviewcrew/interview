@@ -33,11 +33,22 @@ export const coachesRouter = createTRPCRouter({
           .max(MAX_PAGE_SIZE)
           .default(DEFAULT_PAGE_SIZE),
         search: z.string().nullish(),
+        scope: z.enum(["all", "user", "official"]).default("all").nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const { page, pageSize, search } = input;
+      const { page, pageSize, search, scope } = input;
       const userId = ctx.auth.user.id;
+      const safeScope = scope || "all";
+
+      const whereCondition = and(
+        search ? ilike(coaches.name, `%${search}%`) : undefined,
+        safeScope === "all"
+          ? or(eq(coaches.userId, userId), isNull(coaches.userId))
+          : safeScope === "user"
+          ? eq(coaches.userId, userId)
+          : isNull(coaches.userId)
+      );
 
       const data = await db
         .select({
@@ -46,12 +57,7 @@ export const coachesRouter = createTRPCRouter({
           isOfficial: isNull(coaches.userId),
         })
         .from(coaches)
-        .where(
-          and(
-            search ? ilike(coaches.name, `%${search}%`) : undefined,
-            or(eq(coaches.userId, userId), isNull(coaches.userId))
-          )
-        )
+        .where(whereCondition)
         .orderBy(desc(coaches.createdAt), desc(coaches.id))
         .offset(
           (page ? page - 1 : DEFAULT_PAGE - 1) *
@@ -62,12 +68,7 @@ export const coachesRouter = createTRPCRouter({
       const [total] = await db
         .select({ count: count() })
         .from(coaches)
-        .where(
-          and(
-            search ? ilike(coaches.name, `%${search}%`) : undefined,
-            or(eq(coaches.userId, userId), isNull(coaches.userId))
-          )
-        );
+        .where(whereCondition);
 
       const totalPages = Math.ceil(
         total.count / (pageSize ?? DEFAULT_PAGE_SIZE)

@@ -140,23 +140,25 @@ export const InterviewInstructionsEditor = ({
                 interview, the phases will change based on the time elapsed.
               </p>
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                append({
-                  name: "",
-                  durationMinutes:
-                    DEFAULT_INTERVIEW_INSTRUCTIONS.phases[fields.length]
-                      ?.durationMinutes || 5,
-                  instructions: "",
-                });
-              }}
-            >
-              <Plus className="size-4 mr-2" />
-              Add Phase
-            </Button>
+            {!coach.isOfficial && (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  append({
+                    name: "",
+                    durationMinutes:
+                      DEFAULT_INTERVIEW_INSTRUCTIONS.phases[fields.length]
+                        ?.durationMinutes || 5,
+                    instructions: "",
+                  });
+                }}
+              >
+                <Plus className="size-4 mr-2" />
+                Add Phase
+              </Button>
+            )}
           </div>
 
           <Accordion
@@ -181,18 +183,20 @@ export const InterviewInstructionsEditor = ({
                     <AccordionTrigger className="py-0 hover:no-underline flex-1">
                       <PhaseTitle index={index} control={form.control} />
                     </AccordionTrigger>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="ml-2 text-destructive hover:text-destructive/90 shrink-0"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        remove(index);
-                      }}
-                    >
-                      <Trash2 className="size-4" />
-                    </Button>
+                    {!coach.isOfficial && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="ml-2 text-destructive hover:text-destructive/90 shrink-0"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          remove(index);
+                        }}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    )}
                   </div>
                   <AccordionContent className="pb-4 space-y-4">
                     <div className="grid grid-cols-4 gap-4">
@@ -299,11 +303,13 @@ export const InterviewInstructionsEditor = ({
           )}
         </div>
 
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isPending}>
-            Save Instructions
-          </Button>
-        </div>
+        {!coach.isOfficial && (
+          <div className="flex justify-end">
+            <Button type="submit" disabled={isPending}>
+              Save Instructions
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );

@@ -36,7 +36,18 @@ const CoachesPage = async ({ searchParams }: CoachesPageProps) => {
   }
 
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(trpc.coaches.getMany.queryOptions({ ...filters }));
+  await Promise.all([
+    queryClient.prefetchQuery(
+      trpc.coaches.getMany.queryOptions({
+        search: filters.search,
+        scope: "official",
+        pageSize: 100,
+      })
+    ),
+    queryClient.prefetchQuery(
+      trpc.coaches.getMany.queryOptions({ ...filters, scope: "user" })
+    ),
+  ]);
 
   return (
     <>
