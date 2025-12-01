@@ -50,6 +50,13 @@
       "when": 1764499322623,
       "tag": "0006_add_voice_to_coaches",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1764599342222,
+      "tag": "0007_add_transcript_to_interviews",
+      "breakpoints": true
     }
   ]
 }

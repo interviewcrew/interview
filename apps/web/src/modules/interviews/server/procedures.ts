@@ -282,6 +282,15 @@ export const interviewsRouter = createTRPCRouter({
         });
       }
 
+      if (interview.transcript) {
+        return interview.transcript as (StreamTranscriptItem & {
+          user: {
+            name: string;
+            image: string | null;
+          };
+        })[];
+      }
+
       if (!interview.transcriptUrl) {
         return [];
       }
@@ -350,6 +359,11 @@ export const interviewsRouter = createTRPCRouter({
           },
         };
       });
+
+      await db
+        .update(interviews)
+        .set({ transcript: transcriptWithSpeakers })
+        .where(eq(interviews.id, input.id));
 
       return transcriptWithSpeakers;
     }),
