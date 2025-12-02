@@ -118,18 +118,18 @@ export const CompletedState = ({ interview }: CompletedStateProps) => {
                       <h4 className="text-base font-medium mb-6" {...props} />
                     ),
                     p: (props) => (
-                      <p className="mb-6 leading-relaxed" {...props} />
+                      <p className="mb-6 leading-relaxed last:mb-0" {...props} />
                     ),
                     ul: (props) => (
-                      <ul className="list-disc list-inside mb-6" {...props} />
+                      <ul className="list-disc list-inside mb-6 ml-6" {...props} />
                     ),
                     ol: (props) => (
                       <ol
-                        className="list-decimal list-inside mb-6"
+                        className="list-decimal list-inside mb-6 ml-6"
                         {...props}
                       />
                     ),
-                    li: (props) => <li className="mb-1" {...props} />,
+                    li: (props) => <li className="mb-1 [&>p]:inline" {...props} />,
                     strong: (props) => (
                       <strong className="font-semibold" {...props} />
                     ),
