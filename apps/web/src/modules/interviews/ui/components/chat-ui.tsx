@@ -57,7 +57,15 @@ export const ChatUI = ({
       members: [userId, interview.coachId],
     });
 
-    setChannel(_channel);
+    // Watch the channel to ensure it's initialized and we receive events
+    _channel.watch().then(() => {
+      setChannel(_channel);
+    });
+
+    // Clean up listener when component unmounts or dependencies change
+    return () => {
+      _channel.stopWatching();
+    };
   }, [client, interview.id, userId, interview.coachId]);
 
   if (!client) {

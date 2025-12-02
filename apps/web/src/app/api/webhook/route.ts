@@ -2,8 +2,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // import from the packages
-import OpenAI from "openai";
-import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { and, eq } from "drizzle-orm";
 import {
   MessageNewEvent,
@@ -21,8 +19,6 @@ import { db } from "@/db";
 import { interviews, coaches } from "@/db/schema";
 import { InterviewStatus } from "@/modules/interviews/types";
 import { inngest } from "@/inngest/client";
-import { generateAvatarUri } from "@/lib/avatar";
-import { streamChat } from "@/lib/stream-chat";
 
 function verifySignatureWithSDK(body: string, signature: string): boolean {
   return streamVideo.verifyWebhook(body, signature);
@@ -317,6 +313,7 @@ export async function POST(request: NextRequest) {
     const userId = event.user?.id;
     const channelId = event.channel_id;
     const text = event.message?.text;
+    const messageId = event.message?.id;
 
     if (!userId || !channelId || !text) {
       return NextResponse.json(
@@ -325,127 +322,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const [interview] = await db
-      .select()
-      .from(interviews)
-      .where(
-        and(
-          eq(interviews.id, channelId),
-          eq(interviews.status, InterviewStatus.COMPLETED)
-        )
-      );
-
-    if (!interview) {
-      return NextResponse.json(
-        { error: "Interview not found" },
-        { status: 404 }
-      );
-    }
-
-    const [coach] = await db
-      .select()
-      .from(coaches)
-      .where(eq(coaches.id, interview.coachId));
-
-    if (!coach) {
-      return NextResponse.json({ error: "Coach not found" }, { status: 404 });
-    }
-
-    if (userId !== coach.id) {
-      const systemPrompt = `
-              You are an AI assistant helping the user revisit a recently completed interview.
-              
-              Here is the context of the interview:
-              - Summary: ${interview.summary}
-              - Original System Prompt: ${coach.systemPrompt}
-              - Interview Instructions: 
-              \`\`\`JSON
-              ${JSON.stringify(coach.interviewInstructions)}
-              \`\`\`
-              - Transcription:
-              \`\`\`JSON
-              ${JSON.stringify(interview.transcript)}
-              \`\`\`
-
-              Your goal is to help the candidate learn from their interview. 
-              
-              Guidelines:
-              1. Use the summary to understand the key points and feedback already generated.
-              2. Adhere to the persona defined in the Original System Prompt.
-              3. Reference the Interview Instructions to understand the structure and goals of the interview phases.
-              4. Provide constructive, specific feedback based on the transcript (which the user might reference).
-              5. If the user asks about "good answers", offer guidance based on best practices for the specific question types (e.g., STAR method for behavioral questions, architectural patterns for system design).
-              
-              The user may ask questions about the meeting, request clarifications, or ask for follow-up actions.
-              Always base your responses on the context provided above.
-              
-              You also have access to the recent conversation history between you and the user. Use the context of previous messages to provide relevant, coherent, and helpful responses. If the user's question refers to something discussed earlier, make sure to take that into account and maintain continuity in the conversation.
-              
-              If the provided context does not contain enough information to answer a question, politely let the user know.
-              
-              Be concise, helpful, and focus on providing accurate information from the meeting and the ongoing conversation.
-            `;
-
-      const channel = streamChat.channel("messaging", channelId);
-      await channel.watch();
-
-      const previousMessages = channel.state.messages
-        .slice(-5)
-        .filter((message) => message.text && message.text.trim() !== "")
-        .map<ChatCompletionMessageParam>((message) => ({
-          role: message.user?.id === coach.id ? "assistant" : "user",
-          content: message.text || "",
-        }));
-
-      const apiKey = process.env.OPENAI_API_KEY;
-
-      if (!apiKey) {
-        return NextResponse.json(
-          { error: "OpenAI API key not configured" },
-          { status: 500 }
-        );
-      }
-
-      const openai = new OpenAI({ apiKey });
-
-      const response = await openai.chat.completions.create({
-        model: "gpt-5.1",
-        messages: [
-          { role: "system", content: systemPrompt },
-          ...previousMessages,
-          { role: "user", content: text },
-        ],
-      });
-
-      const responseText = response.choices[0].message.content;
-
-      if (!responseText) {
-        return NextResponse.json(
-          { error: "Failed to generate response" },
-          { status: 500 }
-        );
-      }
-
-      const avatarUrl = generateAvatarUri({
-        seed: coach.id,
-        variant: "botttsNeutral",
-      });
-
-      streamChat.upsertUser({
-        id: coach.id,
-        name: coach.name,
-        image: avatarUrl,
-      });
-
-      channel.sendMessage({
-        text: responseText,
-        user: {
-          id: coach.id,
-          name: coach.name,
-          image: avatarUrl,
-        },
-      });
-    }
+    // Offload processing to Inngest to avoid webhook timeouts and retries
+    await inngest.send({
+      name: "chat/message.created",
+      data: {
+        userId,
+        channelId,
+        text,
+        messageId,
+      },
+    });
   }
   return NextResponse.json({ message: "Webhook received" }, { status: 200 });
 }
