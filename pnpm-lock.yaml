@@ -34,10 +34,13 @@ importers:
         version: 4.21.2
       openai:
         specifier: ^4.20.1
-        version: 4.104.0
+        version: 4.104.0(ws@8.18.3)
       tsx:
         specifier: ^4.7.0
         version: 4.20.6
+      ws:
+        specifier: ^8.18.0
+        version: 8.18.3(bufferutil@4.0.9)(utf-8-validate@6.0.5)
     devDependencies:
       '@types/cors':
         specifier: ^2.8.17
@@ -48,6 +51,9 @@ importers:
       '@types/node':
         specifier: ^20.10.0
         version: 20.19.25
+      '@types/ws':
+        specifier: ^8.5.10
+        version: 8.18.1
       eslint:
         specifier: ^8.56.0
         version: 8.57.1
@@ -300,6 +306,9 @@ importers:
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.2.3)(@types/react@19.2.7)(react-dom@19.1.0)(react@19.1.0)
+      ws:
+        specifier: ^8.18.0
+        version: 8.18.3(bufferutil@4.0.9)(utf-8-validate@6.0.5)
       zod:
         specifier: ^4.1.12
         version: 4.1.13
@@ -328,6 +337,9 @@ importers:
       '@types/react-highlight-words':
         specifier: ^0.20.0
         version: 0.20.0
+      '@types/ws':
+        specifier: ^8.5.10
+        version: 8.18.1
       drizzle-kit:
         specifier: ^0.31.5
         version: 0.31.7
@@ -4955,7 +4967,6 @@ packages:
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
     dependencies:
       '@types/node': 20.19.25
-    dev: false
 
   /@typescript-eslint/eslint-plugin@8.48.0(@typescript-eslint/parser@8.48.0)(eslint@9.39.1)(typescript@5.9.3):
     resolution: {integrity: sha512-XxXP5tL1txl13YFtrECECQYeZjBZad4fyd3cFV4a19LkAY/bIp9fev3US4S5fDVV2JaYFiKAZ/GRTOLer+mbyQ==}
@@ -9105,7 +9116,7 @@ packages:
     dependencies:
       wrappy: 1.0.2
 
-  /openai@4.104.0:
+  /openai@4.104.0(ws@8.18.3):
     resolution: {integrity: sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA==}
     hasBin: true
     peerDependencies:
@@ -9124,6 +9135,7 @@ packages:
       form-data-encoder: 1.7.2
       formdata-node: 4.4.1
       node-fetch: 2.7.0
+      ws: 8.18.3(bufferutil@4.0.9)(utf-8-validate@6.0.5)
     transitivePeerDependencies:
       - encoding
     dev: false
