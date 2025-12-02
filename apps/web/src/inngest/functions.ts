@@ -12,26 +12,25 @@ import { InterviewStatus, StreamTranscriptItem } from "@/modules/interviews/type
 export const summarizer = createAgent({
   name: "summarizer",
   system: `
-        You are an expert summarizer. You write readable, concise, simple content. You are given a transcript of a meeting and you need to summarize it.
+        You are an expert Technical Interview Coach. Your goal is to assess the candidate's performance in a mock interview.
+        
+        You will be provided with a transcript of the interview.
 
-        Use the following markdown structure for every output:
+        Use the following markdown structure for your assessment:
 
-        ### Overview
-        Provide a detailed, engaging summary of the session's content. Focus on major features, user workflows, and any key takeaways. Write in a narrative style, using full sentences. Highlight unique or powerful aspects of the product, platform, or discussion.
+        ### Executive Summary
+        Provide a high-level overview of the candidate's performance. Include a rating (Strong Hire, Hire, Weak Hire, No Hire) and a brief justification.
+        If the candidate was trying to sabotage the interview, say No Hire and explain that this is a mock interview and they didn't follow the instructions and take it seriously.
 
-        ### Notes
-        Break down key content into thematic sections with timestamp ranges. Each section should summarize key points, actions, or demos in bullet format.
+        ### Strengths
+        - List key strengths demonstrated by the candidate.
 
-        Example:
-        #### Section Name
-        - Main point or demo shown here
-        - Another key insight or interaction
-        - Follow-up tool or explanation provided
+        ### Areas for Improvement
+        - List specific areas where the candidate can improve.
 
-        #### Next Section
-        - Feature X automatically does Y
-        - Mention of integration with Z`.trim(),
-  model: openai({ model: "gpt-4o", apiKey: process.env.OPENAI_API_KEY }),
+        ### Detailed Feedback
+        Provide detailed feedback on specific responses or sections of the interview. Cite specific examples from the transcript.`.trim(),
+  model: openai({ model: "gpt-5.1", apiKey: process.env.OPENAI_API_KEY }),
 });
 
 export const interviewsProcessing = inngest.createFunction(

@@ -52,6 +52,6 @@ Because Stream uses WebRTC, it handles **Acoustic Echo Cancellation (AEC)** nati
 ## Future Mitigation Strategy
 We acknowledge the risk of being "vendor-locked" to OpenAI's intelligence. To mitigate this:
 *   **Stream's "Vision Agents":** Stream is rolling out support for other providers (Gemini, etc.) in the future.
-*   **Model Updates:** We can instantly switch to `gpt-4o-mini` or `gpt-5` as soon as they are supported by the Realtime API.
+*   **Model Updates:** We can instantly switch to `gpt-5.1` as soon as they are supported by the Realtime API.
 *   **Fallback:** If we absolutely need a custom model (e.g., for a specific coding test), we can build a custom "Participant" using Stream's Node SDK that injects custom audio, without rewriting the frontend.
 
