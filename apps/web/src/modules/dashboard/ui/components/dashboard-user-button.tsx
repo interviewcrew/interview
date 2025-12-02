@@ -47,7 +47,12 @@ export const DashboardUserButton = () => {
     });
   };
 
-  if (isPending || !data?.user) {
+  // Avoid hydration mismatch by not rendering until mounted
+  if (isPending) {
+    return null;
+  }
+
+  if (!data?.user) {
     return null;
   }
 
