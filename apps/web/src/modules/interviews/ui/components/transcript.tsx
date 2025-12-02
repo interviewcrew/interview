@@ -45,7 +45,7 @@ export const Transcript = ({ interview }: TranscriptProps) => {
             >
               <div className="flex gap-x-2 items-center">
                 <Avatar className="size-6">
-                  <AvatarImage src={item.user.image} />
+                  <AvatarImage src={item.user.image ?? ""} />
                 </Avatar>
                 <p className="text-sm font-medium">{item.user.name}</p>
                 <p className="text-sm text-blue-500 font-medium">
