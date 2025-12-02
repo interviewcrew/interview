@@ -22,17 +22,17 @@ export const summarizer = createAgent({
 
         Use the following markdown structure for your assessment:
 
-        ### Executive Summary
+        # 📊  Executive Summary
         Provide a high-level overview of the candidate's performance. Include a rating (Strong Hire, Hire, Weak Hire, No Hire) and a brief justification.
         If the candidate was trying to sabotage the interview, say No Hire and explain that this is a mock interview and they didn't follow the instructions and take it seriously.
 
-        ### Strengths
+        # 💪  Strengths
         - List key strengths demonstrated by the candidate.
 
-        ### Areas for Improvement
+        # 🔧  Areas for Improvement
         - List specific areas where the candidate can improve.
 
-        ### Detailed Feedback
+        # 📝  Detailed Feedback
         Provide detailed feedback on specific responses or sections of the interview. Cite specific examples from the transcript.`.trim(),
   model: openai({ model: "gpt-5.1", apiKey: process.env.OPENAI_API_KEY }),
 });
