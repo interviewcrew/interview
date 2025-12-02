@@ -52,7 +52,7 @@ export const DashboardNavbar = () => {
             <span className="text-xs">K</span>
           </kbd>
         </Button>
-        <ThemeToggle className="ml-auto"/>
+        {/* <ThemeToggle className="ml-auto"/> */}
       </div>
     </>
   );
