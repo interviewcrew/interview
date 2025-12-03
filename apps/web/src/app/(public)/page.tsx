@@ -12,6 +12,7 @@ import CompaniesFeatures from "@/modules/landing/ui/components/companies-feature
 import Clients from "@/modules/landing/ui/components/clients";
 import CompaniesFAQ from "@/modules/landing/ui/components/companies-faq";
 import CompaniesContactUs from "@/modules/landing/ui/components/companies-contact-us";
+import Footer from "@/modules/landing/ui/components/footer";
 import Testimonials from "@/modules/landing/ui/components/testimonials";
 
 function HomeContent() {
@@ -28,11 +29,11 @@ function HomeContent() {
   }, [landingPageAudience]);
 
   return (
-    <div id="root">
+    <div id="root" className="flex min-h-screen flex-col">
+      <Hero landingPageAudience={landingPageAudience || LandingPageAudience.CANDIDATES} />
       <CircleBackground />
       {landingPageAudience === LandingPageAudience.CANDIDATES && (
         <>
-          {/* Candidates */}
           {isTerminalVisible && (
             <Terminal exitTerminal={() => setIsTerminalVisible(false)} />
           )}
@@ -54,13 +55,12 @@ function HomeContent() {
       )}
       {landingPageAudience === LandingPageAudience.COMPANIES && (
         <>
-          {/* Companies */}
-          <Clients />
           <CompaniesFeatures />
           <CompaniesFAQ />
           <CompaniesContactUs />
         </>
       )}
+      <Footer />
       <noscript>
         <div style={{ padding: "2rem" }}>
           <h1>Interview Crew Candidate Preparation Portal</h1>
