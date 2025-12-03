@@ -1,17 +1,13 @@
-// import from the framework
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-
-// import from packages
+import { GoogleTagManager } from "@next/third-parties/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
-// import from the libraries
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 
-// import from the components
 const inter = Inter({
   subsets: ["latin"],
 });
@@ -44,6 +40,9 @@ export default function RootLayout({
     <NuqsAdapter>
       <TRPCReactProvider>
         <html lang="en" suppressHydrationWarning>
+          {process.env.NEXT_PUBLIC_GTM_ID && (
+            <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+          )}
           <body className={`${inter.className} antialiased`}>
             {children}
             <SpeedInsights />
