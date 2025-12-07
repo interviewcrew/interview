@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Clients() {
   return (
-    <div className="bg-white py-24 sm:py-32 dark:bg-gray-900">
+    <div className="bg-transparent mt-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <h2 className="text-center text-lg/8 font-semibold text-gray-900 dark:text-white">
           Trusted by some of the world&apos;s most innovative teams
@@ -13,7 +13,7 @@ export default function Clients() {
             src="/client-logos/emma-sleep.svg"
             width={158}
             height={55}
-            className="col-span-2 max-h-10 w-full object-contain lg:col-span-1 dark:invert"
+            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1 dark:invert"
           />
           <Image
             alt="Faircado"
@@ -27,14 +27,14 @@ export default function Clients() {
             src="/client-logos/enopai.svg"
             width={158}
             height={28}
-            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1 dark:invert"
+            className="col-span-2 max-h-14 w-full object-contain lg:col-span-1 dark:invert"
           />
           <Image
             alt="Zeeg"
             src="/client-logos/zeeg.svg"
             width={158}
             height={65}
-            className="col-span-2 max-h-11 w-full object-contain sm:col-start-2 lg:col-span-1 dark:invert"
+            className="col-span-2 max-h-14 w-full object-contain sm:col-start-2 lg:col-span-1 dark:invert"
           />
         </div>
       </div>

@@ -5,13 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { LandingPageAudience } from "@/modules/landing/ui/components/select-landing-page-audience";
+import SelectLandingPageAudience from "@/modules/landing/ui/components/select-landing-page-audience";
 import ThemeToggle from "@/components/ui/theme-toggle";
 
 interface HeroProps {
   landingPageAudience: LandingPageAudience;
+  setLandingPageAudience: (landingPageAudience: LandingPageAudience) => void;
+  setIsTerminalVisible: (isVisible: boolean) => void;
 }
 
-export default function Hero({ landingPageAudience }: HeroProps) {
+export default function Hero({
+  landingPageAudience,
+  setLandingPageAudience,
+  setIsTerminalVisible,
+}: HeroProps) {
   return (
     <div className="bg-transparent min-h-[20vh]">
       <header className="absolute inset-x-0 top-0 z-50">
@@ -64,8 +71,8 @@ export default function Hero({ landingPageAudience }: HeroProps) {
               className="font-semibold text-gray-900 dark:text-white mr-4 "
             >
               <Button variant="outline" size="sm" className="p-0 m-0">
-                <FaGithub className="size-4"/>
-                <span className="hidden lg:block">Checkout the code</span>
+                <FaGithub className="size-4" />
+                <span className="hidden lg:block">star us on github</span>
               </Button>
             </Link>
             <Link
@@ -78,7 +85,8 @@ export default function Hero({ landingPageAudience }: HeroProps) {
         </nav>
       </header>
 
-      <div className="relative isolate pt-24">
+      <div className="relative isolate">
+        {/* Background shades*/}
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -91,9 +99,15 @@ export default function Hero({ landingPageAudience }: HeroProps) {
             className="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75 dark:opacity-20"
           />
         </div>
-        <div className="mt-14">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
+        {/* Content */}
+        <div className="">
+          <div className="mx-auto max-w-7xl">
+            <SelectLandingPageAudience
+              landingPageAudience={landingPageAudience}
+              setLandingPageAudience={setLandingPageAudience}
+              className="mt-24"
+            />
+            <div className="mx-auto max-w-7xl text-center p-24 mt-16 bg-gray-200/30 dark:bg-white/10 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-sm border shadow-lg dark:shadow-gray-100/10">
               <h1 className="text-4xl tracking-tight text-gray-900 sm:text-5xl lg:text-balance dark:text-white">
                 <span className="block text-base font-bold tracking-widest uppercase text-cyan-600 dark:text-cyan-400 mb-4">
                   Interview Crew
@@ -118,6 +132,46 @@ export default function Hero({ landingPageAudience }: HeroProps) {
                   </>
                 )}
               </h1>
+              <div className="mt-10 flex items-center justify-center gap-x-6">
+                {landingPageAudience === LandingPageAudience.CANDIDATES ? (
+                  <>
+                    <Link href="/sign-up">
+                      <Button
+                        size="lg"
+                        className="text-base bg-cyan-800 dark:bg-cyan-700 dark:text-white"
+                      >
+                        Get started
+                      </Button>
+                    </Link>
+                    <button
+                      onClick={() => setIsTerminalVisible(true)}
+                      className="text-sm font-semibold leading-6 text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer flex items-center gap-1"
+                    >
+                      <span className="font-mono text-green-600 dark:text-green-500 mr-1">
+                        &gt;
+                      </span>
+                      sudo open_terminal
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="https://zeeg.me/interviewcrew/introduction-call"
+                      target="_blank"
+                    >
+                      <Button size="lg" className="text-base bg-cyan-800 dark:text-white dark:bg-cyan-700">
+                        Hire A-Players
+                      </Button>
+                    </Link>
+                    <Link
+                      href="/blog"
+                      className="text-sm font-semibold leading-6 text-gray-900 dark:text-white"
+                    >
+                      Learn more <span aria-hidden="true">→</span>
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

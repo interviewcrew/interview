@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 export enum LandingPageAudience {
   CANDIDATES = "candidates",
   COMPANIES = "companies",
@@ -5,15 +7,17 @@ export enum LandingPageAudience {
 
 interface SelectLandingPageAudienceProps {
   landingPageAudience: LandingPageAudience;
+  className?: string;
   setLandingPageAudience: (landingPageAudience: LandingPageAudience) => void;
 }
 
 export default function SelectLandingPageAudience({
   landingPageAudience,
+  className,
   setLandingPageAudience,
 }: SelectLandingPageAudienceProps) {
   return (
-    <div className="flex items-center justify-center mt-12">
+    <div className={cn("flex items-center justify-center mt-12", className)}>
       <div className="relative inline-flex items-center p-1 rounded-full bg-linear-to-r from-yellow-200 via-cyan-200 to-fuchsia-200 dark:from-gray-700 dark:via-gray-700 dark:to-gray-700 shadow-lg">
         {/* Inner background container */}
         <div className="relative inline-flex items-center rounded-full bg-amber-50 dark:bg-gray-900 p-1">
@@ -37,7 +41,7 @@ export default function SelectLandingPageAudience({
             onClick={() =>
               setLandingPageAudience(LandingPageAudience.CANDIDATES)
             }
-            className={`relative z-10 px-8 py-3 rounded-full font-medium text-sm transition-all duration-300 ease-out transform ${
+            className={`relative z-10 px-6 py-2 rounded-full font-medium text-xs transition-all duration-300 ease-out transform ${
               landingPageAudience === LandingPageAudience.CANDIDATES
                 ? "text-white scale-105"
                 : "text-gray-800 dark:text-gray-300 hover:scale-105"
@@ -54,7 +58,7 @@ export default function SelectLandingPageAudience({
             onClick={() =>
               setLandingPageAudience(LandingPageAudience.COMPANIES)
             }
-            className={`relative z-10 px-8 py-3 rounded-full font-medium text-sm transition-all duration-300 ease-out transform ${
+            className={`relative z-10 px-6 py-2 rounded-full font-medium text-xs transition-all duration-300 ease-out transform ${
               landingPageAudience === LandingPageAudience.COMPANIES
                 ? "text-white scale-105"
                 : "text-gray-800 dark:text-gray-300 hover:scale-105"

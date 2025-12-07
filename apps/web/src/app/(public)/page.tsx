@@ -2,23 +2,21 @@
 
 import Hero from "@/modules/landing/ui/components/hero";
 import CircleBackground from "@/modules/landing/ui/components/circle-background";
-import SelectLandingPageAudience, {
+import {
   LandingPageAudience,
 } from "@/modules/landing/ui/components/select-landing-page-audience";
 import { Suspense, useEffect, useState } from "react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
-import TerminalButton from "@/modules/landing/ui/components/terminal-button";
 import Terminal from "@/modules/landing/ui/components/terminal";
-import { useIsMobile } from "@/hooks/use-mobile";
 import CandidateFeatures from "@/modules/landing/ui/components/candidate-features";
 import CandidateFAQ from "@/modules/landing/ui/components/candidate-faq";
 import CompaniesFeatures from "@/modules/landing/ui/components/companies-features";
 import Clients from "@/modules/landing/ui/components/clients";
 import CompaniesFAQ from "@/modules/landing/ui/components/companies-faq";
 import CompaniesContactUs from "@/modules/landing/ui/components/companies-contact-us";
+import Testimonials from "@/modules/landing/ui/components/testimonials";
 
 function HomeContent() {
-  const isMobile = useIsMobile();
   const [isTerminalVisible, setIsTerminalVisible] = useState(false);
   const [landingPageAudience, setLandingPageAudience] = useQueryState(
     "audience",
@@ -33,12 +31,12 @@ function HomeContent() {
 
   return (
     <div id="root">
-      <Hero landingPageAudience={landingPageAudience || LandingPageAudience.CANDIDATES} />
-      <CircleBackground />
-      <SelectLandingPageAudience
-        landingPageAudience={landingPageAudience}
+      <Hero
+        landingPageAudience={landingPageAudience || LandingPageAudience.CANDIDATES}
         setLandingPageAudience={setLandingPageAudience}
+        setIsTerminalVisible={setIsTerminalVisible}
       />
+      <CircleBackground />
       {landingPageAudience === LandingPageAudience.CANDIDATES && (
         <>
           {/* Candidates */}
@@ -47,12 +45,7 @@ function HomeContent() {
           )}
           {!isTerminalVisible && (
             <>
-              {!isMobile && (
-                <TerminalButton
-                  isTerminalVisible={isTerminalVisible}
-                  setIsTerminalVisible={setIsTerminalVisible}
-                />
-              )}
+              <Testimonials />
               <CandidateFeatures />
               <CandidateFAQ />
             </>
@@ -62,8 +55,8 @@ function HomeContent() {
       {landingPageAudience === LandingPageAudience.COMPANIES && (
         <>
           {/* Companies */}
-          <CompaniesFeatures />
           <Clients />
+          <CompaniesFeatures />
           <CompaniesFAQ />
           <CompaniesContactUs />
         </>
