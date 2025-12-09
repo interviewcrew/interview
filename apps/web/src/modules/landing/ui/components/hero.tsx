@@ -107,7 +107,7 @@ export default function Hero({
               setLandingPageAudience={setLandingPageAudience}
               className="mt-24"
             />
-            <div className="mx-auto max-w-7xl text-center p-24 mt-16 bg-gray-200/30 dark:bg-white/10 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-sm border shadow-lg dark:shadow-gray-100/10">
+            <div className="mx-auto max-w-xl md:max-w-4xl xl:max-w-7xl text-center p-6 mt-6 md:p-24 md:mt-16 md:bg-gray-200/30 md:dark:bg-white/10 md:rounded-lg md:bg-clip-padding md:backdrop-filter md:backdrop-blur-sm md:border md:shadow-lg md:dark:shadow-gray-100/10">
               <h1 className="text-4xl tracking-tight text-gray-900 sm:text-5xl lg:text-balance dark:text-white">
                 <span className="block text-base font-bold tracking-widest uppercase text-cyan-600 dark:text-cyan-400 mb-4">
                   Interview Crew
@@ -145,7 +145,7 @@ export default function Hero({
                     </Link>
                     <button
                       onClick={() => setIsTerminalVisible(true)}
-                      className="text-sm font-semibold leading-6 text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer flex items-center gap-1"
+                      className="text-sm font-semibold leading-6 text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer items-center gap-1 hidden md:flex"
                     >
                       <span className="font-mono text-green-600 dark:text-green-500 mr-1">
                         &gt;
