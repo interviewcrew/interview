@@ -5,7 +5,7 @@ WORKDIR /app
 # Install pnpm and python3 for node-gyp
 # python3-dev and linux-headers are needed for some native modules
 RUN apk add --no-cache python3 make g++ py3-setuptools
-RUN npm install -g pnpm
+RUN corepack enable
 
 # Copy workspace config
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json turbo.json ./
@@ -20,4 +20,3 @@ COPY packages/config/package.json ./packages/config/
 RUN pnpm install
 
 CMD ["pnpm", "--filter", "@interview/web", "dev"]
-
