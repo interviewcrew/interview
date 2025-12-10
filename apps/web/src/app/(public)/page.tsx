@@ -2,9 +2,7 @@
 
 import Hero from "@/modules/landing/ui/components/hero";
 import CircleBackground from "@/modules/landing/ui/components/circle-background";
-import {
-  LandingPageAudience,
-} from "@/modules/landing/ui/components/select-landing-page-audience";
+import { LandingPageAudience } from "@/modules/landing/ui/components/select-landing-page-audience";
 import { Suspense, useEffect, useState } from "react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import Terminal from "@/modules/landing/ui/components/terminal";
@@ -31,11 +29,6 @@ function HomeContent() {
 
   return (
     <div id="root">
-      <Hero
-        landingPageAudience={landingPageAudience || LandingPageAudience.CANDIDATES}
-        setLandingPageAudience={setLandingPageAudience}
-        setIsTerminalVisible={setIsTerminalVisible}
-      />
       <CircleBackground />
       {landingPageAudience === LandingPageAudience.CANDIDATES && (
         <>
@@ -45,6 +38,13 @@ function HomeContent() {
           )}
           {!isTerminalVisible && (
             <>
+              <Hero
+                landingPageAudience={
+                  landingPageAudience || LandingPageAudience.CANDIDATES
+                }
+                setLandingPageAudience={setLandingPageAudience}
+                setIsTerminalVisible={setIsTerminalVisible}
+              />
               <Testimonials />
               <CandidateFeatures />
               <CandidateFAQ />
