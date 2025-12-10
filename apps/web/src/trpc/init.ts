@@ -38,3 +38,13 @@ export const protectedProcedure = baseProcedure.use(async ({ ctx, next }) => {
 
     return next({ ctx: { ...ctx, auth: session } });
 });
+
+export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
+    const { user } = ctx.auth;
+
+    if (!user.email.endsWith("@interviewcrew.io") || !user.emailVerified) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "You are not authorized to view this page" });
+    }
+
+    return next({ ctx });
+});
