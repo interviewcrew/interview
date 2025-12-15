@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 // Imports from packages
-import { BotIcon, SettingsIcon, VideoIcon, ShieldCheckIcon } from "lucide-react";
+import { BotIcon, SettingsIcon, VideoIcon, ShieldCheckIcon, FileTextIcon } from "lucide-react";
 
 // Imports from components
 import { cn } from "@/lib/utils";
@@ -46,6 +46,11 @@ const secondSection = [
 ];
 
 const adminSection = [
+  {
+    icon: FileTextIcon,
+    label: "Blog",
+    href: "/dashboard/blog",
+  },
   {
     icon: ShieldCheckIcon,
     label: "Admin",
