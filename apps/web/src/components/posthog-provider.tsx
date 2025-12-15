@@ -4,6 +4,12 @@ import posthog from "posthog-js";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { useEffect, useState } from "react";
 
+declare global {
+  interface Window {
+    posthog?: typeof posthog;
+  }
+}
+
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -20,6 +26,8 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       capture_pageview: true,
       capture_pageleave: true,
     });
+
+    window.posthog = posthog;
     setIsInitialized(true);
   }, []);
 
