@@ -70,6 +70,7 @@
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.6",
     "embla-carousel-react": "^8.6.0",
+    "gray-matter": "^4.0.3",
     "humanize-duration": "^3.33.1",
     "inngest": "^3.46.0",
     "input-otp": "^1.4.2",

@@ -126,3 +126,26 @@ export const contactInquiries = pgTable("contact_inquiries", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export const postStatus = pgEnum("post_status", ["draft", "published"]);
+
+export const posts = pgTable("posts", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  excerpt: text("excerpt"),
+  content: text("content").notNull(),
+  coverImage: text("cover_image"),
+  status: postStatus("status").notNull().default("draft"),
+  author: text("author").notNull(),
+  category: text("category"),
+  tags: json("tags").$type<string[]>().default([]),
+  publishedAt: timestamp("published_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
