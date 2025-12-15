@@ -3,12 +3,10 @@ import { Inter } from "next/font/google";
 import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/next";
-
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { CookieConsent } from "@/components/cookie-consent";
+import { AnalyticsWrapper } from "@/components/analytics-wrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -42,26 +40,26 @@ export default function RootLayout({
     <NuqsAdapter>
       <TRPCReactProvider>
         <html lang="en" suppressHydrationWarning>
-          <Script id="gtm-consent-init" strategy="beforeInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('consent', 'default', {
-                'analytics_storage': 'denied',
-                'ad_storage': 'denied',
-                'ad_user_data': 'denied',
-                'ad_personalization': 'denied'
-              });
-            `}
-          </Script>
           {process.env.NEXT_PUBLIC_GTM_ID && (
             <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
           )}
           <body className={`${inter.className} antialiased`}>
+            <Script id="gtm-consent-init" strategy="beforeInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('consent', 'default', {
+                  'analytics_storage': 'denied',
+                  'ad_storage': 'denied',
+                  'ad_user_data': 'denied',
+                  'ad_personalization': 'denied'
+                });
+              `}
+            </Script>
             {children}
             <CookieConsent />
-            <SpeedInsights />
-            <Analytics />
+            <AnalyticsWrapper />
           </body>
         </html>
       </TRPCReactProvider>

@@ -20,6 +20,7 @@ import {
   setCookiePreferences,
   updateGTMConsent,
 } from "@/lib/cookies";
+import { logConsentAction } from "@/lib/consent-actions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -76,6 +77,18 @@ export function CookieConsent() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleOpenPreferences = () => {
+      setConsent(getCookiePreferences()?.consent ?? defaultConsent);
+      setIsVisible(true);
+      setIsAnimating(true);
+      setShowPreferences(true);
+    };
+
+    window.addEventListener("open-cookie-preferences", handleOpenPreferences);
+    return () => window.removeEventListener("open-cookie-preferences", handleOpenPreferences);
+  }, []);
+
   const savePreferences = useCallback(
     (newConsent: CookieConsentType, status: CookiePreferences["status"]) => {
       const preferences: CookiePreferences = {
@@ -85,6 +98,7 @@ export function CookieConsent() {
       };
       setCookiePreferences(preferences);
       updateGTMConsent(newConsent);
+      logConsentAction(newConsent, status);
       setIsAnimating(false);
       setTimeout(() => setIsVisible(false), 300);
     },
@@ -254,8 +268,7 @@ export function CookieSettingsButton({
   className?: string;
 }) {
   const handleOpenSettings = useCallback(() => {
-    localStorage.removeItem("cookie-consent");
-    window.location.reload();
+    window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
   }, []);
 
   return (

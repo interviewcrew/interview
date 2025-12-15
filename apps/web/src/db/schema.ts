@@ -126,3 +126,19 @@ export const contactInquiries = pgTable("contact_inquiries", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export const consentLogs = pgTable("consent_logs", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
+  ipAddressHash: text("ip_address_hash"),
+  consentSnapshot: json("consent_snapshot").$type<{
+    necessary: boolean;
+    analytics: boolean;
+    marketing: boolean;
+  }>().notNull(),
+  status: text("status").notNull(),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});

@@ -20,6 +20,25 @@ export const defaultConsent: CookieConsent = {
   marketing: false,
 };
 
+function isValidCookiePreferences(parsed: unknown): parsed is CookiePreferences {
+  if (typeof parsed !== "object" || parsed === null) return false;
+
+  const p = parsed as Record<string, unknown>;
+
+  if (typeof p.consent !== "object" || p.consent === null) return false;
+  const consent = p.consent as Record<string, unknown>;
+  if (typeof consent.necessary !== "boolean") return false;
+  if (typeof consent.analytics !== "boolean") return false;
+  if (typeof consent.marketing !== "boolean") return false;
+
+  if (typeof p.status !== "string") return false;
+  if (!["pending", "accepted", "rejected", "customized"].includes(p.status)) return false;
+
+  if (typeof p.updatedAt !== "string") return false;
+
+  return true;
+}
+
 export function getCookiePreferences(): CookiePreferences | null {
   if (typeof window === "undefined") return null;
 
@@ -27,7 +46,11 @@ export function getCookiePreferences(): CookiePreferences | null {
   if (!stored) return null;
 
   try {
-    return JSON.parse(stored) as CookiePreferences;
+    const parsed = JSON.parse(stored);
+    if (isValidCookiePreferences(parsed)) {
+      return parsed;
+    }
+    return null;
   } catch {
     return null;
   }
@@ -36,26 +59,31 @@ export function getCookiePreferences(): CookiePreferences | null {
 export function setCookiePreferences(preferences: CookiePreferences): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(preferences));
+  window.dispatchEvent(new CustomEvent("cookie-consent-updated"));
 }
 
 export function updateGTMConsent(consent: CookieConsent): void {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || !window.gtag) return;
 
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: "consent_update",
-    consent: {
-      analytics_storage: consent.analytics ? "granted" : "denied",
-      ad_storage: consent.marketing ? "granted" : "denied",
-      ad_user_data: consent.marketing ? "granted" : "denied",
-      ad_personalization: consent.marketing ? "granted" : "denied",
-    },
+  window.gtag("consent", "update", {
+    analytics_storage: consent.analytics ? "granted" : "denied",
+    ad_storage: consent.marketing ? "granted" : "denied",
+    ad_user_data: consent.marketing ? "granted" : "denied",
+    ad_personalization: consent.marketing ? "granted" : "denied",
   });
 }
 
+type ConsentArg = {
+  analytics_storage: "granted" | "denied";
+  ad_storage: "granted" | "denied";
+  ad_user_data: "granted" | "denied";
+  ad_personalization: "granted" | "denied";
+};
+
 declare global {
   interface Window {
-    dataLayer: Record<string, unknown>[];
+    dataLayer: unknown[];
+    gtag: (command: "consent", action: "update" | "default", params: ConsentArg) => void;
   }
 }
 
