@@ -1,10 +1,10 @@
 import { MetadataRoute } from "next";
-import { trpc } from "@/trpc/server";
+import { caller } from "@/trpc/server";
 
 const BASE_URL = "https://interviewcrew.io";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const slugs = await trpc.posts.getAllSlugs();
+  const slugs = await caller().posts.getAllSlugs();
 
   const blogUrls = slugs.map((slug) => ({
     url: `${BASE_URL}/blog/${slug}/`,

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
-import { trpc } from "@/trpc/server";
+import { caller } from "@/trpc/server";
 import BlogHeader from "@/modules/blog/ui/components/blog-header";
 import BlogFooter from "@/modules/blog/ui/components/blog-footer";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +20,7 @@ function calculateReadingTime(content: string): number {
 }
 
 export async function generateStaticParams() {
-  const slugs = await trpc.posts.getAllSlugs();
+  const slugs = await caller().posts.getAllSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
   try {
-    const post = await trpc.posts.getBySlug({ slug });
+    const post = await caller().posts.getBySlug({ slug });
 
     return {
       title: `${post.title} | Interview Crew Blog`,
@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   let post;
   try {
-    post = await trpc.posts.getBySlug({ slug });
+    post = await caller().posts.getBySlug({ slug });
   } catch {
     notFound();
   }

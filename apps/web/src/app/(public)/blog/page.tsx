@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { trpc } from "@/trpc/server";
+import { caller } from "@/trpc/server";
 import BlogCard from "@/modules/blog/ui/components/blog-card";
 import BlogHeader from "@/modules/blog/ui/components/blog-header";
 import BlogFooter from "@/modules/blog/ui/components/blog-footer";
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-  const { items: posts } = await trpc.posts.getPublished({ pageSize: 100 });
+  const { items: posts } = await caller().posts.getPublished({ pageSize: 100 });
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-muted/20">

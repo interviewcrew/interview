@@ -2,7 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { PostForm } from "@/modules/blog/ui/components/post-form";
-import { trpc } from "@/trpc/server";
+import { caller } from "@/trpc/server";
 
 type EditPostPageProps = {
   params: Promise<{ postId: string }>;
@@ -26,7 +26,7 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
     redirect("/dashboard/interviews");
   }
 
-  const post = await trpc.posts.getById({ id: postId });
+  const post = await caller().posts.getById({ id: postId });
 
   if (!post) {
     notFound();
