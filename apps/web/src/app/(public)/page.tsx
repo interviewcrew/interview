@@ -13,6 +13,7 @@ import Clients from "@/modules/landing/ui/components/clients";
 import CompaniesFAQ from "@/modules/landing/ui/components/companies-faq";
 import CompaniesContactUs from "@/modules/landing/ui/components/companies-contact-us";
 import Testimonials from "@/modules/landing/ui/components/testimonials";
+import Footer from "@/modules/landing/ui/components/footer";
 
 function HomeContent() {
   const [isTerminalVisible, setIsTerminalVisible] = useState(false);
@@ -55,12 +56,20 @@ function HomeContent() {
       {landingPageAudience === LandingPageAudience.COMPANIES && (
         <>
           {/* Companies */}
+          <Hero
+            landingPageAudience={
+              landingPageAudience || LandingPageAudience.COMPANIES
+            }
+            setLandingPageAudience={setLandingPageAudience}
+            setIsTerminalVisible={setIsTerminalVisible}
+          />
           <Clients />
           <CompaniesFeatures />
           <CompaniesFAQ />
           <CompaniesContactUs />
         </>
       )}
+      <Footer />
       <noscript>
         <div style={{ padding: "2rem" }}>
           <h1>Interview Crew Candidate Preparation Portal</h1>

@@ -57,6 +57,13 @@
       "when": 1764599342222,
       "tag": "0007_add_transcript_to_interviews",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1765921647119,
+      "tag": "0008_create_conset_logs",
+      "breakpoints": true
     }
   ]
 }
