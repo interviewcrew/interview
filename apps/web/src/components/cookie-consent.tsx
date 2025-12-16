@@ -171,7 +171,7 @@ export function CookieConsent() {
               <Button
                 onClick={handleAcceptAll}
                 size="sm"
-                className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+                className="bg-cyan-800 text-white hover:bg-cyan-600 dark:bg-cyan-700 dark:hover:bg-cyan-600"
               >
                 Accept All
               </Button>
@@ -251,7 +251,7 @@ export function CookieConsent() {
             </Button>
             <Button
               onClick={handleSavePreferences}
-              className="flex-1 bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 sm:flex-none sm:min-w-[120px]"
+              className="flex-1 bg-cyan-800 text-white hover:bg-cyan-600 dark:bg-cyan-700 dark:hover:bg-cyan-600 sm:flex-none sm:min-w-[120px]"
             >
               Save Preferences
             </Button>

@@ -12,8 +12,8 @@ import CompaniesFeatures from "@/modules/landing/ui/components/companies-feature
 import Clients from "@/modules/landing/ui/components/clients";
 import CompaniesFAQ from "@/modules/landing/ui/components/companies-faq";
 import CompaniesContactUs from "@/modules/landing/ui/components/companies-contact-us";
-import Footer from "@/modules/landing/ui/components/footer";
 import Testimonials from "@/modules/landing/ui/components/testimonials";
+import Footer from "@/modules/landing/ui/components/footer";
 
 function HomeContent() {
   const [isTerminalVisible, setIsTerminalVisible] = useState(false);
@@ -29,10 +29,11 @@ function HomeContent() {
   }, [landingPageAudience]);
 
   return (
-    <div id="root" className="flex min-h-screen flex-col">
+    <div id="root">
       <CircleBackground />
       {landingPageAudience === LandingPageAudience.CANDIDATES && (
         <>
+          {/* Candidates */}
           {isTerminalVisible && (
             <Terminal exitTerminal={() => setIsTerminalVisible(false)} />
           )}
@@ -54,6 +55,7 @@ function HomeContent() {
       )}
       {landingPageAudience === LandingPageAudience.COMPANIES && (
         <>
+          {/* Companies */}
           <Hero
             landingPageAudience={
               landingPageAudience || LandingPageAudience.COMPANIES
@@ -61,6 +63,7 @@ function HomeContent() {
             setLandingPageAudience={setLandingPageAudience}
             setIsTerminalVisible={setIsTerminalVisible}
           />
+          <Clients />
           <CompaniesFeatures />
           <CompaniesFAQ />
           <CompaniesContactUs />

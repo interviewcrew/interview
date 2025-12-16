@@ -14,7 +14,11 @@ type ConsentSnapshot = {
 
 function hashIpAddress(ip: string | null): string | null {
   if (!ip) return null;
-  return createHash("sha256").update(ip).digest("hex").slice(0, 16);
+  const salt = process.env.IP_SALT || "default-salt-interview-crew"; // Fallback if env not set
+  return createHash("sha256")
+    .update(ip + salt)
+    .digest("hex")
+    .slice(0, 16);
 }
 
 export async function logConsentAction(

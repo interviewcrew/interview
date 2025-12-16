@@ -82,7 +82,6 @@ type ConsentArg = {
 
 declare global {
   interface Window {
-    dataLayer: unknown[];
     gtag: (command: "consent", action: "update" | "default", params: ConsentArg) => void;
   }
 }
