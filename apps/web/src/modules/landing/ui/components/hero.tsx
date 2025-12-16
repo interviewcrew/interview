@@ -138,7 +138,7 @@ export default function Hero({
                     <Link href="/sign-up">
                       <Button
                         size="lg"
-                        className="text-base bg-cyan-800 dark:bg-cyan-700 dark:text-white"
+                        className="text-base bg-cyan-800 dark:bg-cyan-700 dark:text-white hover:bg-cyan-600 dark:hover:bg-cyan-500"
                       >
                         Get started
                       </Button>
@@ -159,7 +159,7 @@ export default function Hero({
                       href="https://zeeg.me/interviewcrew/introduction-call"
                       target="_blank"
                     >
-                      <Button size="lg" className="text-base bg-cyan-800 dark:text-white dark:bg-cyan-700">
+                      <Button size="lg" className="text-base bg-cyan-800 dark:text-white dark:bg-cyan-700 hover:bg-cyan-600 dark:hover:bg-cyan-500">
                         Hire A-Players
                       </Button>
                     </Link>

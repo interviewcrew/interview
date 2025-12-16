@@ -30,7 +30,6 @@ function HomeContent() {
 
   return (
     <div id="root" className="flex min-h-screen flex-col">
-      <Hero landingPageAudience={landingPageAudience || LandingPageAudience.CANDIDATES} />
       <CircleBackground />
       {landingPageAudience === LandingPageAudience.CANDIDATES && (
         <>
@@ -55,6 +54,13 @@ function HomeContent() {
       )}
       {landingPageAudience === LandingPageAudience.COMPANIES && (
         <>
+          <Hero
+            landingPageAudience={
+              landingPageAudience || LandingPageAudience.COMPANIES
+            }
+            setLandingPageAudience={setLandingPageAudience}
+            setIsTerminalVisible={setIsTerminalVisible}
+          />
           <CompaniesFeatures />
           <CompaniesFAQ />
           <CompaniesContactUs />
