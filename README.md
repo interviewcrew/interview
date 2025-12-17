@@ -110,7 +110,7 @@ We use a hybrid approach for local development:
 
 1.  **Start Backend Services:**
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
     This starts:
     *   `agent`: The AI Voice Agent (port 8000)

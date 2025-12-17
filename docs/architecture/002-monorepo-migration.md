@@ -89,7 +89,7 @@ This architecture will separate the project into distinct applications and share
 
 ### Local Development
 
-To simplify the complexity of running multiple services (Next.js, Agent, Inngest, Webhook tunnels), we will use `docker-compose` for local development.
+To simplify the complexity of running multiple services (Next.js, Agent, Inngest, Webhook tunnels), we will use `docker compose` for local development.
 
 #### `docker-compose.yml`
 The compose file will spin up:
