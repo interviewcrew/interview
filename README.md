@@ -121,12 +121,14 @@ We use a hybrid approach for local development:
 2.  **Setup Database:**
     Run migrations to the local or remote database:
     ```bash
-    pnpm --filter @interview/web db:push
+    docker compose exec web pnpm db:migrate
     ```
 
 3.  **Start Web App:**
+    The `dev` script automatically runs with the docker compose instructions & runs the app on [http://localhost:3000](http://localhost:3000).
+    If any changes made on `.env*` files, you need to restart the web app using:
     ```bash
-    pnpm --filter @interview/web dev
+    docker compose restart web
     ```
     Open [http://localhost:3000](http://localhost:3000) to see the app.
 
