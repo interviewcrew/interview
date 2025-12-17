@@ -41,7 +41,7 @@ export const ChatUI = ({
 
   const [channel, setChannel] = useState<StreamChannel>();
   const client = useCreateChatClient({
-    apiKey: process.env.NEXT_PUBLIC_STREAM_CHAT_API_KEY!,
+    apiKey: process.env.STREAM_API_KEY!,
     tokenOrProvider: generateChatToken,
     userData: {
       id: userId,
