@@ -44,7 +44,7 @@ export const CallConnect = ({
   const [client, setClient] = useState<StreamVideoClient>();
   useEffect(() => {
     const _client = new StreamVideoClient({
-      apiKey: process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY as string,
+      apiKey: process.env.STREAM_API_KEY as string,
       user: {
         id: userId,
         name: userName,
