@@ -92,7 +92,7 @@ We maintain a log of all major architectural decisions in our **[Architecture De
 3.  **Environment Setup:**
     Copy the example environment file and configure your secrets:
     ```bash
-    cp .env.example .env.local
+    cp .env.example .env
     ```
     You will need keys for:
     *   Database (Postgres connection)
