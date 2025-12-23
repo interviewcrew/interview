@@ -5,6 +5,7 @@ import Script from "next/script";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
+import { PostHogProvider } from "@/components/posthog-provider";
 import { CookieConsent } from "@/components/cookie-consent";
 import { AnalyticsWrapper } from "@/components/analytics-wrapper";
 
@@ -57,9 +58,11 @@ export default function RootLayout({
                 });
               `}
             </Script>
-            {children}
-            <CookieConsent />
-            <AnalyticsWrapper />
+            <PostHogProvider>
+              {children}
+              <CookieConsent />
+              <AnalyticsWrapper />
+            </PostHogProvider>
           </body>
         </html>
       </TRPCReactProvider>

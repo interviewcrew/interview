@@ -11,6 +11,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { toast } from "sonner";
+import { track } from "@/lib/analytics";
 
 // import from the components
 import {
@@ -60,6 +61,7 @@ export const InterviewForm = ({
           trpc.interviews.getMany.queryOptions({})
         );
 
+        track("interview_created", { interview_id: data.id, coach_id: data.coachId });
         onSuccess?.(data.id);
         toast.success("Interview created successfully");
       },
@@ -77,6 +79,7 @@ export const InterviewForm = ({
         );
 
         if (initialValues?.id) {
+          track("interview_updated", { interview_id: initialValues.id });
           await queryClient.invalidateQueries(
             trpc.interviews.getById.queryOptions({ id: initialValues.id })
           );

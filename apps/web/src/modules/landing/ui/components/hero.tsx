@@ -7,6 +7,7 @@ import { FaGithub } from "react-icons/fa";
 import { LandingPageAudience } from "@/modules/landing/ui/components/select-landing-page-audience";
 import SelectLandingPageAudience from "@/modules/landing/ui/components/select-landing-page-audience";
 import ThemeToggle from "@/components/ui/theme-toggle";
+import { track } from "@/lib/analytics";
 
 interface HeroProps {
   landingPageAudience: LandingPageAudience;
@@ -135,7 +136,10 @@ export default function Hero({
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 {landingPageAudience === LandingPageAudience.CANDIDATES ? (
                   <>
-                    <Link href="/sign-up">
+                    <Link
+                      href="/sign-up"
+                      onClick={() => track("cta_clicked", { cta: "get_started", location: "hero" })}
+                    >
                       <Button
                         size="lg"
                         className="text-base bg-cyan-800 dark:bg-cyan-700 dark:text-white hover:bg-cyan-600 dark:hover:bg-cyan-500"
@@ -144,7 +148,10 @@ export default function Hero({
                       </Button>
                     </Link>
                     <button
-                      onClick={() => setIsTerminalVisible(true)}
+                      onClick={() => {
+                        track("cta_clicked", { cta: "open_terminal", location: "hero" });
+                        setIsTerminalVisible(true);
+                      }}
                       className="text-sm font-semibold leading-6 text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer items-center gap-1 hidden md:flex"
                     >
                       <span className="font-mono text-green-600 dark:text-green-500 mr-1">
@@ -158,6 +165,7 @@ export default function Hero({
                     <Link
                       href="https://zeeg.me/interviewcrew/introduction-call"
                       target="_blank"
+                      onClick={() => track("cta_clicked", { cta: "hire_a_players", location: "hero" })}
                     >
                       <Button size="lg" className="text-base bg-cyan-800 dark:text-white dark:bg-cyan-700 hover:bg-cyan-600 dark:hover:bg-cyan-500">
                         Hire A-Players
@@ -165,6 +173,7 @@ export default function Hero({
                     </Link>
                     <Link
                       href="/blog"
+                      onClick={() => track("cta_clicked", { cta: "learn_more", location: "hero" })}
                       className="text-sm font-semibold leading-6 text-gray-900 dark:text-white"
                     >
                       Learn more <span aria-hidden="true">→</span>

@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, OctagonAlertIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { FaGithub, FaGoogle } from "react-icons/fa";
+import { track } from "@/lib/analytics";
 
 // Imports from the components
 import { Input } from "@/components/ui/input";
@@ -49,6 +50,7 @@ export const SignInView = () => {
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     setPending(true);
     setError(null);
+    track("sign_in_started", { provider: "email" });
 
     authClient.signIn.email(
       {
@@ -58,10 +60,12 @@ export const SignInView = () => {
       },
       {
         onError: ({ error }) => {
+          track("sign_in_failed", { provider: "email", error: error.message });
           setError(error.message);
           setPending(false);
         },
         onSuccess: () => {
+          track("sign_in_completed", { provider: "email" });
           setPending(false);
           router.push("/dashboard");
         },
@@ -72,7 +76,8 @@ export const SignInView = () => {
   const onSocialSubmit = (provider: "github" | "google") => {
     setPending(true);
     setError(null);
-  
+    track("sign_in_started", { provider });
+
     authClient.signIn.social(
       {
         provider,
@@ -80,10 +85,12 @@ export const SignInView = () => {
       },
       {
         onError: ({ error }) => {
+          track("sign_in_failed", { provider, error: error.message });
           setError(error.message);
           setPending(false);
         },
         onSuccess: () => {
+          track("sign_in_completed", { provider });
           setPending(false);
           router.push("/dashboard");
         },
